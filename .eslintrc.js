@@ -1,46 +1,57 @@
 module.exports = {
-  'env': {
-    'browser': true,
-    'es2021': true
+  root: true,
+  env: {
+    browser: true,
+    es2021: true,
   },
-  'extends': [
+  extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
     'airbnb',
     'prettier',
   ],
-  'parser': '@typescript-eslint/parser',
-  'parserOptions': {
-    'ecmaVersion': 12,
-    'sourceType': 'module'
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 12,
+    sourceType: 'module',
   },
-  'plugins': [
-    '@typescript-eslint'
-  ],
+  plugins: ['@typescript-eslint'],
   settings: {
     'import/resolver': {
-      typescript: {},
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        moduleDirectory: ['node_modules', 'src/'],
+        typescript: {},
+      },
     },
   },
-  'rules': {
+  rules: {
     'no-unneeded-ternary': 'off',
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
-    'indent': [
+    indent: ['error', 2],
+    'linebreak-style': ['error', 'unix'],
+    quotes: ['error', 'single'],
+    semi: ['error', 'never'],
+    'import/no-unresolved': 'warn',
+    'import/extensions': 'off',
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    'no-param-reassign': [
       'error',
-      2
+      {
+        props: true,
+        ignorePropertyModificationsFor: ['state'],
+      },
     ],
-    'linebreak-style': [
-      'error',
-      'unix'
+    '@typescript-eslint/explicit-function-return-type': [
+      'off',
+      {
+        allowExpressions: true,
+      },
     ],
-    'quotes': [
-      'error',
-      'single'
-    ],
-    'semi': [
-      'error',
-      'never'
-    ]
-  }
+  },
 }

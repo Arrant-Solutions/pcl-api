@@ -1,13 +1,9 @@
 {
   "emitDecoratorMetadata": true,
   "experimentalDecorators": true,
-  "watch": [
-    "src",
-    ".env"
-  ],
+  "baseUrl": "src",
+  "watch": ["src", ".env"],
   "ext": "js,ts,json",
-  "ignore": [
-    "src/**/*.spec.ts"
-  ],
+  "ignore": ["src/**/*.spec.ts"],
   "exec": "ts-node  --transpile-only ./src/index.ts"
 }
