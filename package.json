@@ -1,0 +1,19 @@
+{
+  "name": "pastor-choolwe-library-api",
+  "version": "1.0.0",
+  "description": "a nodejs api for the PCL app and dashboard",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Arrant-Solutions/pcl-api.git"
+  },
+  "author": "willymilimo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Arrant-Solutions/pcl-api/issues"
+  },
+  "homepage": "https://github.com/Arrant-Solutions/pcl-api#readme"
+}
