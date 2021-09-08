@@ -35,6 +35,12 @@ module.exports = {
     'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single'],
     semi: ['error', 'never'],
+    camelcase: 'off',
+    'lines-between-class-members': [
+      'off',
+      'never',
+      {exceptAfterSingleLine: true},
+    ],
     'import/no-unresolved': 'warn',
     'import/extensions': 'off',
     'no-shadow': 'off',
@@ -53,5 +59,6 @@ module.exports = {
         allowExpressions: true,
       },
     ],
+    'max-len': ['warn', {code: 120}],
   },
 }
