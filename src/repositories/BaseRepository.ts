@@ -12,11 +12,13 @@ export interface RepositoryI<T = unknown> {
 
   findById(id: number): Promise<T | null>
 
-  findAll(): Promise<T[]>
+  findAll(offset?: number): Promise<T[]>
 
-  deleteById(id: number): Promise<boolean>
+  deleteById(id: number): Promise<T | boolean>
 
-  find(filter: Record<string, string | number>): Promise<T[]>
+  find(filter: Partial<T>): Promise<T[]>
+
+  findWildCard(filter: Record<string, string | number>): Promise<T[]>
 }
 
 export abstract class BaseRepository<T = unknown> implements RepositoryI<T> {
@@ -35,8 +37,8 @@ export abstract class BaseRepository<T = unknown> implements RepositoryI<T> {
     columns: string[]
   }) {
     this.pool = pool
-    this.idColumn = idColumn || 'id'
-    this.columns = columns
+    this.idColumn = idColumn || tableName.replace(/(es|s)$/, '_id')
+    this.columns = [...columns, 'createed_at', 'updated_at']
     this.tableName = tableName
   }
 
@@ -65,7 +67,11 @@ export abstract class BaseRepository<T = unknown> implements RepositoryI<T> {
     return false
   }
 
-  public abstract insertMany(models: T[]): Promise<boolean>
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line class-methods-use-this
+  public insertMany(models: T[]): Promise<boolean> {
+    throw new Error('Method not implemented')
+  }
 
   public async findById(id: number): Promise<T | null> {
     const columns = this.getColumns()
@@ -79,11 +85,57 @@ export abstract class BaseRepository<T = unknown> implements RepositoryI<T> {
     return null
   }
 
-  public abstract findAll(): Promise<T[]>
+  public async findAll(offset?: number): Promise<T[]> {
+    const columns = this.getColumns()
 
-  public abstract deleteById(id: number): Promise<boolean>
+    const {rows} = await this.pool.query<T>(
+      `SELECT ${columns} FROM ${this.tableName} ORDER BY ${
+        this.idColumn
+      } LIMIT 100 OFFSET ${offset || 0}`,
+    )
 
-  public abstract find(filter: Record<string, string | number>): Promise<T[]>
+    return rows
+  }
+
+  public async deleteById(id: number): Promise<T | boolean> {
+    const {rows} = await this.pool.query<T>(
+      `DELETE FROM ${this.tableName} WHERE $1 RETURNING *`,
+      [id],
+    )
+
+    return rows.length ? rows[0] : false
+  }
+
+  public async find(filter: Partial<T>): Promise<T[]> {
+    const columns = this.getColumns()
+
+    const {query, values} = BaseRepository.generateSearchQueryParts<T>(filter)
+
+    const {rows} = await this.pool.query<T>(
+      `SELECT ${columns} FROM ${this.tableName} WHERE ${query}`,
+      values,
+    )
+
+    return rows
+  }
+
+  public async findWildCard(
+    filter: Record<string, string | number>,
+  ): Promise<T[]> {
+    const columns = this.getColumns()
+
+    const {query, values} = BaseRepository.generateSearchQueryParts(
+      filter,
+      true,
+    )
+
+    const {rows} = await this.pool.query<T>(
+      `SELECT ${columns} FROM ${this.tableName} WHERE ${query}`,
+      values,
+    )
+
+    return rows
+  }
 
   private generateInsertQueryParts(model: Partial<T>) {
     const cols = this.columns.filter(
@@ -126,6 +178,30 @@ export abstract class BaseRepository<T = unknown> implements RepositoryI<T> {
         return acc
       },
       {columns: '', values: []},
+    )
+  }
+
+  private static generateSearchQueryParts<T>(
+    model: Partial<T>,
+    wildcard?: boolean,
+  ) {
+    return Object.keys(model).reduce(
+      (acc, col, index, arr) => {
+        const param = index + 1
+        const operator = wildcard ? 'LIKE' : '='
+        // eslint-disable-next-line no-param-reassign
+        acc.query +=
+          index === arr.length - 1
+            ? `\`${col}\` ${operator} $${param}`
+            : `\`${col}\` ${operator} $${param} AND `
+
+        const value = wildcard ? `%${model[col]}%` : model[col]
+        // eslint-disable-next-line no-param-reassign
+        acc.values.push(value)
+
+        return acc
+      },
+      {query: '', values: []},
     )
   }
 

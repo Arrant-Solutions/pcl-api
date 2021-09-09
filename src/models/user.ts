@@ -12,9 +12,9 @@ export interface IUserView {
   user_group_name: string
   user_group_id: number
   branch_name: string
-  branch_id: string
+  branch_id: number
   country_name: string
-  country_id: string
+  country_id: number
   country_abbr: string
   gender_name: string
   gender_id
