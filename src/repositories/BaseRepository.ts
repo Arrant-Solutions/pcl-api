@@ -42,7 +42,7 @@ implements IBaseRepository<T>
   }) {
     this.pool = pool
     this.idColumn = idColumn || tableName.replace(/(es|s)$/, '_id')
-    this.columns = [...columns, 'createed_at', 'updated_at']
+    this.columns = [...columns, 'created_at', 'updated_at']
     this.tableName = tableName
   }
 
@@ -51,9 +51,9 @@ implements IBaseRepository<T>
 
     const query = `INSERT INTO ${this.tableName} (${columns}) VALUES (${placeholders}) RETURNING *`
 
-    const {rows} = await this.pool.query(query, values)
+    const {rowCount, rows} = await this.pool.query(query, values)
 
-    return rows.length ? rows[0] : false
+    return rowCount ? rows[0] : false
   }
 
   public async update(id: number, model: Partial<T>): Promise<T | false> {
@@ -65,9 +65,9 @@ implements IBaseRepository<T>
         this.idColumn
       } = $${values.length + 1} RETURNING *`
 
-      const {rows} = await this.pool.query<T>(query, [...values, id])
+      const {rowCount, rows} = await this.pool.query<T>(query, [...values, id])
 
-      if (rows.length) return rows[0]
+      if (rowCount) return rows[0]
     }
 
     return false
@@ -81,12 +81,12 @@ implements IBaseRepository<T>
 
   public async findById(id: number): Promise<T | null> {
     const columns = this.getColumns()
-    const {rows} = await this.pool.query<T>(
-      `SELECT ${columns} FROM ${this.tableName} WHERE ${this.idColumn} = ?`,
+    const {rowCount, rows} = await this.pool.query<T>(
+      `SELECT ${columns} FROM ${this.tableName} WHERE ${this.idColumn} = $1`,
       [id],
     )
 
-    if (rows.length) return rows[0]
+    if (rowCount) return rows[0]
 
     return null
   }
@@ -104,12 +104,12 @@ implements IBaseRepository<T>
   }
 
   public async deleteById(id: number): Promise<T | false> {
-    const {rows} = await this.pool.query<T>(
+    const {rowCount, rows} = await this.pool.query<T>(
       `DELETE FROM ${this.tableName} WHERE $1 RETURNING *`,
       [id],
     )
 
-    return rows.length ? rows[0] : false
+    return rowCount ? rows[0] : false
   }
 
   public async find(filter: Partial<T>): Promise<T[]> {
@@ -156,7 +156,7 @@ implements IBaseRepository<T>
     return cols.reduce(
       (acc, col, index) => {
         // eslint-disable-next-line no-param-reassign
-        acc.columns += index === cols.length - 1 ? `\`${col}\`` : `\`${col}\`, `
+        acc.columns += index === cols.length - 1 ? `${col}` : `${col}, `
 
         const param = index + 1
         // eslint-disable-next-line no-param-reassign
@@ -182,8 +182,8 @@ implements IBaseRepository<T>
         // eslint-disable-next-line no-param-reassign
         acc.columns +=
           index === cols.length - 1
-            ? `\`${col}\` = $${param}`
-            : `\`${col}\` = $${param}, `
+            ? `${col} = $${param}`
+            : `${col} = $${param}, `
 
         acc.values.push(model[col])
 
@@ -204,8 +204,8 @@ implements IBaseRepository<T>
         // eslint-disable-next-line no-param-reassign
         acc.query +=
           index === arr.length - 1
-            ? `\`${col}\` ${operator} $${param}`
-            : `\`${col}\` ${operator} $${param} AND `
+            ? `${col} ${operator} $${param}`
+            : `${col} ${operator} $${param} AND `
 
         const value = wildcard ? `%${model[col]}%` : model[col]
         // eslint-disable-next-line no-param-reassign
@@ -220,7 +220,7 @@ implements IBaseRepository<T>
   private getColumns(): string {
     return this.columns.reduce((acc, col, index) => {
       // eslint-disable-next-line no-param-reassign
-      acc += index === this.columns.length - 1 ? `\`${col}\`` : `\`${col}\`, `
+      acc += index === this.columns.length - 1 ? `${col}` : `${col}, `
 
       return acc
     }, '')

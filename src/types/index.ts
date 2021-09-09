@@ -9,3 +9,8 @@ export interface PCLRequest extends Request {
   tokenData: Pick<IUser, 'email' | 'phone' | 'user_id'>
   user: IUser
 }
+
+export interface IResponse<T = unknown> {
+  statusCode: number
+  data: T | string
+}

@@ -1,4 +1,5 @@
 import {IBaseRepository} from '../repositories/BaseRepository'
+import {IResponse} from '../types'
 
 abstract class BaseService<T> {
   private repository: IBaseRepository<T>
@@ -7,32 +8,124 @@ abstract class BaseService<T> {
     this.repository = repository
   }
 
-  insert(model: T): Promise<T | false> {
-    return this.repository.insert(model)
+  public async insert(model: T): Promise<IResponse<T | false>> {
+    try {
+      const result = await this.repository.insert(model)
+
+      if (typeof result === 'boolean') {
+        return {statusCode: 500, data: 'Failed to upload'}
+      }
+
+      return {statusCode: 200, data: result}
+    } catch (error) {
+      return {statusCode: 500, data: error.message}
+    }
   }
-  update(id: number, model: T): Promise<T | false> {
-    return this.repository.update(id, model)
+  public async update(id: number, model: T): Promise<IResponse<T | false>> {
+    try {
+      const result = await this.repository.update(id, model)
+
+      if (typeof result === 'boolean') {
+        return {statusCode: 500, data: 'Failed to upload'}
+      }
+
+      return {statusCode: 200, data: result}
+    } catch (error) {
+      return {statusCode: 500, data: error.message}
+    }
   }
-  insertMany(models: T[]): Promise<boolean> {
-    return this.repository.insertMany(models)
+  public async insertMany(models: T[]): Promise<IResponse<boolean>> {
+    try {
+      const result = await this.repository.insertMany(models)
+
+      if (typeof result === 'boolean') {
+        return {statusCode: 500, data: 'Failed to upload'}
+      }
+
+      return {statusCode: 200, data: result}
+    } catch (error) {
+      return {statusCode: 500, data: error.message}
+    }
   }
-  findById(id: number): Promise<T | null> {
-    return this.repository.findById(id)
+  public async findById(id: number): Promise<IResponse<T | null>> {
+    try {
+      const result = await this.repository.findById(id)
+
+      if (typeof result === 'boolean') {
+        return {statusCode: 500, data: 'Failed to fetch with specified id'}
+      }
+
+      return {statusCode: 200, data: result}
+    } catch (error) {
+      return {statusCode: 500, data: error.message}
+    }
   }
-  findAll(offset?: number): Promise<T[]> {
-    return this.findAll(offset)
+  public async findAll(offset?: number): Promise<IResponse<T[]>> {
+    try {
+      const result = await this.repository.findAll(offset)
+
+      if (typeof result === 'boolean') {
+        return {statusCode: 500, data: 'Failed to fetch content'}
+      }
+
+      return {statusCode: 200, data: result}
+    } catch (error) {
+      return {statusCode: 500, data: error.message}
+    }
   }
-  findOne(filter: Partial<T>): Promise<T> {
-    return this.findOne(filter)
+  public async findOne(filter: Partial<T>): Promise<IResponse<T>> {
+    try {
+      const result = await this.repository.findOne(filter)
+
+      if (typeof result === 'boolean') {
+        return {statusCode: 500, data: 'Failed to fetch content'}
+      }
+
+      return {statusCode: 200, data: result}
+    } catch (error) {
+      return {statusCode: 500, data: error.message}
+    }
   }
-  deleteById(id: number): Promise<T | false> {
-    return this.deleteById(id)
+  public async deleteById(id: number): Promise<IResponse<T | false>> {
+    try {
+      const result = await this.repository.deleteById(id)
+
+      if (typeof result === 'boolean') {
+        return {statusCode: 500, data: 'Failed to delete'}
+      }
+
+      return {statusCode: 200, data: result}
+    } catch (error) {
+      return {statusCode: 500, data: error.message}
+    }
   }
-  find(filter: Partial<T>): Promise<T[]> {
-    return this.repository.find(filter)
+  public async find(filter: Partial<T>): Promise<IResponse<T[]>> {
+    try {
+      const result = await this.repository.find(filter)
+
+      if (typeof result === 'boolean') {
+        return {statusCode: 500, data: 'Failed to fetch items'}
+      }
+
+      return {statusCode: 200, data: result}
+    } catch (error) {
+      return {statusCode: 500, data: error.message}
+    }
   }
-  findWildCard(filter: Record<string, string | number>): Promise<T[]> {
-    return this.repository.findWildCard(filter)
+  public async findWildCard(
+    filter: Record<string, string | number>,
+  ): Promise<IResponse<T[]>> {
+    try {
+      const result = await this.repository.findWildCard(filter)
+
+      if (typeof result === 'boolean') {
+        return {statusCode: 500, data: 'Failed to delete'}
+      }
+
+      return {statusCode: 200, data: result}
+    } catch (error) {
+      return {statusCode: 500, data: error.message}
+    }
   }
 }
 

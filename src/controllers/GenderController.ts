@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable class-methods-use-this */
 import {
   JsonController,
@@ -13,55 +12,55 @@ import {
 } from 'routing-controllers'
 import {Response} from 'express'
 import {PCLRequest} from '../types'
-import {branchService} from '../loaders/services'
-import {IBranch} from '../models/branch'
+import {genderService} from '../loaders/services'
+import {IGender} from '../models/gender'
 
 @JsonController()
-export default class BranchController {
-  @Get('/branches')
+export default class genderController {
+  @Get('/gender')
   async getAll(@Req() request: PCLRequest, @Res() response: Response) {
-    const {statusCode, data} = await branchService.findAll()
+    const {statusCode, data} = await genderService.findAll()
     return response.status(statusCode).json({statusCode, data})
   }
 
-  @Get('/branches/:id')
+  @Get('/gender/:id')
   async getOne(
     @Param('id') id: number,
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
-    const {statusCode, data} = await branchService.findById(id)
+    const {statusCode, data} = await genderService.findById(id)
     return response.status(statusCode).json({statusCode, data})
   }
 
-  @Post('/branches')
+  @Post('/gender')
   async post(
-    @Body() branch: IBranch,
+    @Body() gender: IGender,
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
-    const {statusCode, data} = await branchService.insert(branch)
+    const {statusCode, data} = await genderService.insert(gender)
     return response.status(statusCode).json({statusCode, data})
   }
 
-  @Put('/branches/:id')
+  @Put('/gender/:id')
   async put(
     @Param('id') id: number,
-    @Body() branch: IBranch,
+    @Body() gender: IGender,
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
-    const {statusCode, data} = await branchService.update(id, branch)
+    const {statusCode, data} = await genderService.update(id, gender)
     return response.status(statusCode).json({statusCode, data})
   }
 
-  @Delete('/branches/:id')
+  @Delete('/gender/:id')
   async remove(
     @Param('id') id: number,
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
-    const {statusCode, data} = await branchService.deleteById(id)
+    const {statusCode, data} = await genderService.deleteById(id)
     return response.status(statusCode).json({statusCode, data})
   }
 }

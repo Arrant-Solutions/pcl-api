@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable class-methods-use-this */
 import {
   JsonController,
@@ -13,55 +12,55 @@ import {
 } from 'routing-controllers'
 import {Response} from 'express'
 import {PCLRequest} from '../types'
-import {branchService} from '../loaders/services'
-import {IBranch} from '../models/branch'
+import {countryService} from '../loaders/services'
+import {ICountry} from '../models/country'
 
 @JsonController()
-export default class BranchController {
-  @Get('/branches')
+export default class countryController {
+  @Get('/country')
   async getAll(@Req() request: PCLRequest, @Res() response: Response) {
-    const {statusCode, data} = await branchService.findAll()
+    const {statusCode, data} = await countryService.findAll()
     return response.status(statusCode).json({statusCode, data})
   }
 
-  @Get('/branches/:id')
+  @Get('/country/:id')
   async getOne(
     @Param('id') id: number,
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
-    const {statusCode, data} = await branchService.findById(id)
+    const {statusCode, data} = await countryService.findById(id)
     return response.status(statusCode).json({statusCode, data})
   }
 
-  @Post('/branches')
+  @Post('/country')
   async post(
-    @Body() branch: IBranch,
+    @Body() country: ICountry,
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
-    const {statusCode, data} = await branchService.insert(branch)
+    const {statusCode, data} = await countryService.insert(country)
     return response.status(statusCode).json({statusCode, data})
   }
 
-  @Put('/branches/:id')
+  @Put('/country/:id')
   async put(
     @Param('id') id: number,
-    @Body() branch: IBranch,
+    @Body() country: ICountry,
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
-    const {statusCode, data} = await branchService.update(id, branch)
+    const {statusCode, data} = await countryService.update(id, country)
     return response.status(statusCode).json({statusCode, data})
   }
 
-  @Delete('/branches/:id')
+  @Delete('/country/:id')
   async remove(
     @Param('id') id: number,
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
-    const {statusCode, data} = await branchService.deleteById(id)
+    const {statusCode, data} = await countryService.deleteById(id)
     return response.status(statusCode).json({statusCode, data})
   }
 }

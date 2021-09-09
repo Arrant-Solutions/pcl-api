@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable class-methods-use-this */
 import {
   JsonController,
@@ -13,55 +12,55 @@ import {
 } from 'routing-controllers'
 import {Response} from 'express'
 import {PCLRequest} from '../types'
-import {branchService} from '../loaders/services'
-import {IBranch} from '../models/branch'
+import {userGroupService} from '../loaders/services'
+import {IUserGroup} from '../models/user_group'
 
 @JsonController()
-export default class BranchController {
-  @Get('/branches')
+export default class userGroupController {
+  @Get('/userGroup')
   async getAll(@Req() request: PCLRequest, @Res() response: Response) {
-    const {statusCode, data} = await branchService.findAll()
+    const {statusCode, data} = await userGroupService.findAll()
     return response.status(statusCode).json({statusCode, data})
   }
 
-  @Get('/branches/:id')
+  @Get('/userGroup/:id')
   async getOne(
     @Param('id') id: number,
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
-    const {statusCode, data} = await branchService.findById(id)
+    const {statusCode, data} = await userGroupService.findById(id)
     return response.status(statusCode).json({statusCode, data})
   }
 
-  @Post('/branches')
+  @Post('/userGroup')
   async post(
-    @Body() branch: IBranch,
+    @Body() userGroup: IUserGroup,
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
-    const {statusCode, data} = await branchService.insert(branch)
+    const {statusCode, data} = await userGroupService.insert(userGroup)
     return response.status(statusCode).json({statusCode, data})
   }
 
-  @Put('/branches/:id')
+  @Put('/userGroup/:id')
   async put(
     @Param('id') id: number,
-    @Body() branch: IBranch,
+    @Body() userGroup: IUserGroup,
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
-    const {statusCode, data} = await branchService.update(id, branch)
+    const {statusCode, data} = await userGroupService.update(id, userGroup)
     return response.status(statusCode).json({statusCode, data})
   }
 
-  @Delete('/branches/:id')
+  @Delete('/userGroup/:id')
   async remove(
     @Param('id') id: number,
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
-    const {statusCode, data} = await branchService.deleteById(id)
+    const {statusCode, data} = await userGroupService.deleteById(id)
     return response.status(statusCode).json({statusCode, data})
   }
 }

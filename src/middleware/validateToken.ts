@@ -10,7 +10,7 @@ export default async (req: PCLRequest, res: Response, next: NextFunction) => {
   req.user = userRecord
 
   if (!userRecord) {
-    return res.status(401).end('User not found')
+    return res.status(401).json({statusCode: 401, data: 'User not found'})
   }
   return next()
 }
