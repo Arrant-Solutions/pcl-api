@@ -22,6 +22,9 @@ abstract class BaseService<T> {
   findAll(offset?: number): Promise<T[]> {
     return this.findAll(offset)
   }
+  findOne(filter: Partial<T>): Promise<T> {
+    return this.findOne(filter)
+  }
   deleteById(id: number): Promise<T | false> {
     return this.deleteById(id)
   }

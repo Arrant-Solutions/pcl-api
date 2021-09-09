@@ -3,4 +3,8 @@ export const database = {
   dbURL: process.env.pgConnectionString || '',
 }
 
+export const jwtSecret = process.env.jwtSecret || ''
+
+export const jwtExpiry = process.env.jwtExpiry || '6h'
+
 export default {database}

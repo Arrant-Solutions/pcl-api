@@ -18,10 +18,14 @@ export interface IBaseRepository<T = unknown> {
 
   find(filter: Partial<T>): Promise<T[]>
 
+  findOne(filter: Partial<T>): Promise<T | null>
+
   findWildCard(filter: Record<string, string | number>): Promise<T[]>
 }
 
-export abstract class BaseRepository<T = unknown> implements IBaseRepository<T> {
+export abstract class BaseRepository<T = unknown>
+implements IBaseRepository<T>
+{
   protected pool: Pool
   protected tableName: string
   protected columns: string[]
@@ -119,6 +123,12 @@ export abstract class BaseRepository<T = unknown> implements IBaseRepository<T> 
     )
 
     return rows
+  }
+
+  public async findOne(filter: Partial<T>): Promise<T | null> {
+    const rows = await this.find(filter)
+
+    return rows.length ? rows[0] : null
   }
 
   public async findWildCard(

@@ -8,6 +8,7 @@ export interface IUserView {
   last_name: string
   email: string
   phone: string
+  password?: string
   date_of_birth: string
   user_group_name: string
   user_group_id: number
@@ -21,10 +22,12 @@ export interface IUserView {
 }
 
 export interface IUser {
+  user_id?: number
   first_name: string
   last_name: string
   email: string
   phone: string
+  password?: string
   date_of_birth: string
   user_group: IUserGroup
   branch: IBranch
@@ -33,10 +36,12 @@ export interface IUser {
 }
 
 export class User implements IUser {
+  user_id?: number
   first_name: string
   last_name: string
   email: string
   phone: string
+  password?: string
   date_of_birth: string
   user_group: IUserGroup
   branch: IBranch
@@ -70,10 +75,12 @@ export class User implements IUser {
   constructor(object: Partial<IUser & IUserView>) {
     if (User.isUserView(object)) {
       const {
+        user_id,
         first_name,
         last_name,
         email,
         phone,
+        password,
         date_of_birth,
         user_group_id,
         user_group_name,
@@ -85,10 +92,12 @@ export class User implements IUser {
         gender_id,
         gender_name,
       } = object
+      this.user_id = user_id
       this.first_name = first_name
       this.last_name = last_name
       this.email = email
       this.phone = phone
+      this.password = password
       this.date_of_birth = date_of_birth
       this.user_group = new UserGroup({user_group_id, user_group_name})
       this.branch = new Branch({branch_id, branch_name})
@@ -96,10 +105,12 @@ export class User implements IUser {
       this.gender = new Gender({gender_id, gender_name})
     } else {
       const {
+        user_id,
         first_name,
         last_name,
         email,
         phone,
+        password,
         date_of_birth,
         user_group,
         branch,
@@ -107,10 +118,12 @@ export class User implements IUser {
         gender,
       } = object
 
+      this.user_id = user_id
       this.first_name = first_name
       this.last_name = last_name
       this.email = email
       this.phone = phone
+      this.password = password
       this.date_of_birth = date_of_birth
       this.user_group = user_group
       this.branch = branch
