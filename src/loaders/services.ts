@@ -5,13 +5,12 @@ import {
   UserGroupRepository,
   UserRepository,
 } from '../repositories'
-import {
-  BranchService,
-  CountryService,
-  GenderService,
-  UserGroupService,
-  UserService,
-} from '../services'
+import BranchService from '../services/BranchService'
+import CountryService from '../services/CountryService'
+import GenderService from '../services/GenderService'
+import UserGroupService from '../services/UserGroupService'
+import UserService from '../services/UserService'
+
 
 export const branchService = new BranchService(
   new BranchRepository({
