@@ -5,12 +5,12 @@ config()
 import 'reflect-metadata'
 import {useExpressServer} from 'routing-controllers'
 import * as express from 'express'
-import BranchController from './controllers/BranchController'
 
-const app = express() // your created express server
-// app.use() // you can configure it the way you want
+const app = express()
+
 useExpressServer(app, {
-  // register created express server in routing-controllers
-  controllers: [BranchController], // and configure it the way you need (controllers, validation, etc.)
+  cors: true,
+  routePrefix: '/api/v1.0',
+  controllers: [`${__dirname}/controllers/*.ts`],
 })
-app.listen(3000) // run your express server
+app.listen(3000)

@@ -1,9 +1,11 @@
+import {Type} from 'class-transformer'
 import {Branch, IBranch} from './branch'
 import {Country, ICountry} from './country'
 import {Gender, IGender} from './gender'
+import {IModel, Model} from './IModel'
 import {IUserGroup, UserGroup} from './user_group'
 
-export interface IUserView {
+export interface IUserView extends IModel {
   first_name: string
   last_name: string
   email: string
@@ -21,7 +23,7 @@ export interface IUserView {
   gender_id
 }
 
-export interface IUser {
+export interface IUser extends IModel {
   user_id?: number
   first_name: string
   last_name: string
@@ -35,7 +37,7 @@ export interface IUser {
   gender: IGender
 }
 
-export class User implements IUser {
+export class User extends Model implements IUser {
   user_id?: number
   first_name: string
   last_name: string
@@ -43,15 +45,19 @@ export class User implements IUser {
   phone: string
   password?: string
   date_of_birth: string
+  @Type(() => UserGroup)
   user_group: IUserGroup
+  @Type(() => Branch)
   branch: IBranch
+  @Type(() => Country)
   country: ICountry
+  @Type(() => Gender)
   gender: IGender
 
   static isUserView(
     object: Record<
       string,
-      number | string | IGender | ICountry | IUserGroup | IBranch
+      number | string | IGender | ICountry | IUserGroup | IBranch | Date
     >,
   ): boolean {
     return (
@@ -70,65 +76,5 @@ export class User implements IUser {
       typeof object.user_group_id === 'number' &&
       typeof object.user_group_name === 'string'
     )
-  }
-
-  constructor(object: Partial<IUser & IUserView>) {
-    if (User.isUserView(object)) {
-      const {
-        user_id,
-        first_name,
-        last_name,
-        email,
-        phone,
-        password,
-        date_of_birth,
-        user_group_id,
-        user_group_name,
-        branch_id,
-        branch_name,
-        country_id,
-        country_name,
-        country_abbr,
-        gender_id,
-        gender_name,
-      } = object
-      this.user_id = user_id
-      this.first_name = first_name
-      this.last_name = last_name
-      this.email = email
-      this.phone = phone
-      this.password = password
-      this.date_of_birth = date_of_birth
-      this.user_group = new UserGroup({user_group_id, user_group_name})
-      this.branch = new Branch({branch_id, branch_name})
-      this.country = new Country({country_id, country_name, country_abbr})
-      this.gender = new Gender({gender_id, gender_name})
-    } else {
-      const {
-        user_id,
-        first_name,
-        last_name,
-        email,
-        phone,
-        password,
-        date_of_birth,
-        user_group,
-        branch,
-        country,
-        gender,
-      } = object
-
-      this.user_id = user_id
-      this.first_name = first_name
-      this.last_name = last_name
-      this.email = email
-      this.phone = phone
-      this.password = password
-      this.date_of_birth = date_of_birth
-      this.user_group = user_group
-      this.branch = branch
-      this.country = country
-      this.gender = gender
-    }
   }
 }

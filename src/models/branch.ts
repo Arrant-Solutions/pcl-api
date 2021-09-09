@@ -1,14 +1,11 @@
-export interface IBranch {
+import {IModel, Model} from './IModel'
+
+export interface IBranch extends IModel {
   branch_id: number
   branch_name: string
 }
 
-export class Branch implements IBranch {
+export class Branch extends Model implements IBranch {
   branch_id: number
   branch_name: string
-
-  constructor({branch_id, branch_name}: IBranch) {
-    this.branch_id = branch_id
-    this.branch_name = branch_name
-  }
 }

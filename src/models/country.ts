@@ -1,17 +1,13 @@
-export interface ICountry {
+import {IModel, Model} from './IModel'
+
+export interface ICountry extends IModel {
   country_id: number
   country_name: string
   country_abbr: string
 }
 
-export class Country implements ICountry {
+export class Country extends Model implements ICountry {
   country_id: number
   country_name: string
   country_abbr: string
-
-  constructor({country_id, country_name, country_abbr}: ICountry) {
-    this.country_id = country_id
-    this.country_name = country_name
-    this.country_abbr = country_abbr
-  }
 }

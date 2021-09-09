@@ -4,12 +4,12 @@ import {PCLRequest} from '../types'
 
 export default async (req: PCLRequest, res: Response, next: NextFunction) => {
   const decodedTokenData = req.tokenData
-  const userRecord = await userService.findOne(decodedTokenData)
+  const {data} = await userService.findOne(decodedTokenData)
 
   // eslint-disable-next-line no-param-reassign
-  req.user = userRecord
+  if (typeof data === 'object') req.user = data
 
-  if (!userRecord) {
+  if (!data) {
     return res.status(401).json({statusCode: 401, data: 'User not found'})
   }
   return next()

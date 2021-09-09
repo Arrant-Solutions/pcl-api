@@ -3,6 +3,12 @@
 import {Pool} from 'pg'
 import {pool} from '../loaders/database'
 
+interface IJoin<T> {
+  model: T
+  local: string
+  foreign: string
+}
+
 export interface IBaseRepository<T = unknown> {
   insert(model: T): Promise<T | false>
 
@@ -24,26 +30,30 @@ export interface IBaseRepository<T = unknown> {
 }
 
 export abstract class BaseRepository<T = unknown>
-implements IBaseRepository<T>
+  implements IBaseRepository<T>
 {
   protected pool: Pool
   protected tableName: string
   protected columns: string[]
   protected idColumn: string
+  protected hasA: IJoin<T>[]
 
   constructor({
     tableName,
     columns,
     idColumn,
+    hasA,
   }: {
     idColumn?: string
     tableName: string
     columns: string[]
+    hasA?: IJoin<T>[]
   }) {
     this.pool = pool
     this.idColumn = idColumn || tableName.replace(/(es|s)$/, '_id')
     this.columns = [...columns, 'created_at', 'updated_at']
     this.tableName = tableName
+    this.hasA = hasA || []
   }
 
   public async insert(model: T): Promise<T | false> {
@@ -220,7 +230,10 @@ implements IBaseRepository<T>
   private getColumns(): string {
     return this.columns.reduce((acc, col, index) => {
       // eslint-disable-next-line no-param-reassign
-      acc += index === this.columns.length - 1 ? `${col}` : `${col}, `
+      acc +=
+        index === this.columns.length - 1
+          ? `${this.tableName}.${col}`
+          : `${this.tableName}.${col}, `
 
       return acc
     }, '')
