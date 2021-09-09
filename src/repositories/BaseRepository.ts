@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 
-import {Pool, QueryResult} from 'pg'
+import {Pool} from 'pg'
 import {pool} from '../loaders/database'
 
-export interface RepositoryI<T = unknown> {
-  insert(model: T): Promise<QueryResult<T>>
+export interface IBaseRepository<T = unknown> {
+  insert(model: T): Promise<T | false>
 
   update(id: number, model: T): Promise<T | false>
 
@@ -14,14 +14,14 @@ export interface RepositoryI<T = unknown> {
 
   findAll(offset?: number): Promise<T[]>
 
-  deleteById(id: number): Promise<T | boolean>
+  deleteById(id: number): Promise<T | false>
 
   find(filter: Partial<T>): Promise<T[]>
 
   findWildCard(filter: Record<string, string | number>): Promise<T[]>
 }
 
-export abstract class BaseRepository<T = unknown> implements RepositoryI<T> {
+export abstract class BaseRepository<T = unknown> implements IBaseRepository<T> {
   protected pool: Pool
   protected tableName: string
   protected columns: string[]
@@ -42,12 +42,14 @@ export abstract class BaseRepository<T = unknown> implements RepositoryI<T> {
     this.tableName = tableName
   }
 
-  public insert(model: T): Promise<QueryResult<T>> {
+  public async insert(model: T): Promise<T | false> {
     const {columns, placeholders, values} = this.generateInsertQueryParts(model)
 
     const query = `INSERT INTO ${this.tableName} (${columns}) VALUES (${placeholders}) RETURNING *`
 
-    return this.pool.query(query, values)
+    const {rows} = await this.pool.query(query, values)
+
+    return rows.length ? rows[0] : false
   }
 
   public async update(id: number, model: Partial<T>): Promise<T | false> {
@@ -97,7 +99,7 @@ export abstract class BaseRepository<T = unknown> implements RepositoryI<T> {
     return rows
   }
 
-  public async deleteById(id: number): Promise<T | boolean> {
+  public async deleteById(id: number): Promise<T | false> {
     const {rows} = await this.pool.query<T>(
       `DELETE FROM ${this.tableName} WHERE $1 RETURNING *`,
       [id],
