@@ -4,6 +4,7 @@ import {Country, ICountry} from './Country'
 import {Gender, IGender} from './Gender'
 import {IModel, Model} from './IModel'
 import {IUserGroup, UserGroup} from './UserGroup'
+import {IUserStatus, UserStatus} from './UserStatus'
 
 export interface IUserView extends IModel {
   first_name: string
@@ -21,6 +22,8 @@ export interface IUserView extends IModel {
   gender_id
   branch_id: number
   branch_name: string
+  user_status_id: number
+  user_status_name: string
 }
 
 export interface IUser extends IModel {
@@ -34,6 +37,7 @@ export interface IUser extends IModel {
   user_group: IUserGroup
   country: ICountry
   gender: IGender
+  user_status: IUserStatus
   readonly branch: IBranch
 }
 
@@ -45,14 +49,21 @@ export class User extends Model implements IUser {
   phone: string
   password?: string
   date_of_birth: string
+
   @Type(() => UserGroup)
   user_group: IUserGroup
+
   @Type(() => Country)
   country: ICountry
+
   @Type(() => Gender)
   gender: IGender
+
   @Type(() => Branch)
   branch: IBranch
+
+  @Type(() => UserStatus)
+  user_status: IUserStatus
 
   static isUserView(
     object: Record<

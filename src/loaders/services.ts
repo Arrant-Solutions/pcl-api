@@ -2,14 +2,24 @@ import {
   BranchRepository,
   CountryRepository,
   GenderRepository,
+  MediaTypeRepository,
+  ResourceAvailabilityRepository,
+  ResourceCategoryRepository,
+  ResourceTypeRepository,
   UserGroupRepository,
   UserRepository,
+  UserStatusRepository,
 } from '../repositories'
 import BranchService from '../services/BranchService'
 import CountryService from '../services/CountryService'
 import GenderService from '../services/GenderService'
+import MediaTypeService from '../services/MediaTypeService'
+import ResourceAvailabilityService from '../services/ResourceAvailabilityService'
+import ResourceCategoryService from '../services/ResourceCategoryService'
+import ResourceTypeService from '../services/ResourceTypeService'
 import UserGroupService from '../services/UserGroupService'
 import UserService from '../services/UserService'
+import UserStatusService from '../services/UserStatusService'
 
 export const branchService = new BranchService(
   new BranchRepository({
@@ -37,6 +47,41 @@ export const userGroupService = new UserGroupService(
     columns: ['user_group_name'],
   }),
 )
+export const mediaTypeService = new MediaTypeService(
+  new MediaTypeRepository({
+    tableName: 'media_types',
+    columns: ['media_type_name'],
+  }),
+)
+export const resourceAvailabilityService = new ResourceAvailabilityService(
+  new ResourceAvailabilityRepository({
+    tableName: 'resource_availability',
+    columns: ['resource_availability_name'],
+  }),
+)
+export const resourceCategoryService = new ResourceCategoryService(
+  new ResourceCategoryRepository({
+    tableName: 'resource_categories',
+    columns: ['resource_category_name'],
+    idColumn: 'resource_category_id',
+  }),
+)
+
+export const resourceTypeService = new ResourceTypeService(
+  new ResourceTypeRepository({
+    tableName: 'resource_types',
+    columns: ['resource_type_name'],
+  }),
+)
+
+export const userStatusService = new UserStatusService(
+  new UserStatusRepository({
+    tableName: 'user_statuses',
+    columns: ['user_status_name'],
+    idColumn: 'user_status_id',
+  }),
+)
+
 export const userService = new UserService(
   new UserRepository({
     tableName: 'users',

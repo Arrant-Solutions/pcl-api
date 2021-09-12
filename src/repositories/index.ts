@@ -9,6 +9,7 @@ import {IResourceType} from '../models/ResourceType'
 import {IUser} from '../models/User'
 import {IUserGroup} from '../models/UserGroup'
 import {BaseRepository} from './BaseRepository'
+import {IUserStatus} from '../models/UserStatus'
 
 export class BranchRepository extends BaseRepository<IBranch> {}
 
@@ -27,3 +28,5 @@ export class ResourceTypeRepository extends BaseRepository<IResourceType> {}
 export class ResourceCategoryRepository extends BaseRepository<IResourceCategory> {}
 
 export class UserRepository extends BaseRepository<IUser> {}
+
+export class UserStatusRepository extends BaseRepository<IUserStatus> {}
