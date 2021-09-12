@@ -13,7 +13,7 @@ import {
 import {Response} from 'express'
 import {PCLRequest} from '../types'
 import {userService} from '../loaders/services'
-import {IUser} from '../models/user'
+import {IUser} from '../models/User'
 
 @JsonController()
 export default class userController {

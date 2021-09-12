@@ -1,7 +1,7 @@
 import * as argon2 from 'argon2'
 import * as jwt from 'jsonwebtoken'
 import { jwtExpiry, jwtSecret } from '../config'
-import {IUser} from '../models/user'
+import {IUser} from '../models/User'
 import {UserRepository} from '../repositories'
 
 export default class AuthService {

@@ -13,7 +13,7 @@ import {
 import {Response} from 'express'
 import {PCLRequest} from '../types'
 import {genderService} from '../loaders/services'
-import {IGender} from '../models/gender'
+import {IGender} from '../models/Gender'
 
 @JsonController()
 export default class genderController {

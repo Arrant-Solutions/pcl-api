@@ -1,5 +1,5 @@
 import {Request} from 'express'
-import {IUser} from '../models/user'
+import {IUser} from '../models/User'
 
 export function StaticImplements<T>(t: T) {
   return t

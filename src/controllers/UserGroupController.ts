@@ -13,7 +13,7 @@ import {
 import {Response} from 'express'
 import {PCLRequest} from '../types'
 import {userGroupService} from '../loaders/services'
-import {IUserGroup} from '../models/user_group'
+import {IUserGroup} from '../models/UserGroup'
 
 @JsonController()
 export default class userGroupController {

@@ -14,7 +14,7 @@ import {
 import {Response} from 'express'
 import {PCLRequest} from '../types'
 import {branchService} from '../loaders/services'
-import {IBranch} from '../models/branch'
+import {IBranch} from '../models/Branch'
 
 @JsonController()
 export default class BranchController {

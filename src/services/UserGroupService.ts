@@ -1,4 +1,4 @@
-import {IUserGroup} from '../models/user_group'
+import {IUserGroup} from '../models/UserGroup'
 import BaseService from './BaseService'
 
 export default class UserGroupService extends BaseService<IUserGroup> {}

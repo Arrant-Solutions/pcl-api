@@ -13,7 +13,7 @@ import {
 import {Response} from 'express'
 import {PCLRequest} from '../types'
 import {countryService} from '../loaders/services'
-import {ICountry} from '../models/country'
+import {ICountry} from '../models/Country'
 
 @JsonController()
 export default class countryController {

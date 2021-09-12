@@ -1,9 +1,9 @@
 import {Type} from 'class-transformer'
-import {Branch, IBranch} from './branch'
-import {Country, ICountry} from './country'
-import {Gender, IGender} from './gender'
+import {Branch, IBranch} from './Branch'
+import {Country, ICountry} from './Country'
+import {Gender, IGender} from './Gender'
 import {IModel, Model} from './IModel'
-import {IUserGroup, UserGroup} from './user_group'
+import {IUserGroup, UserGroup} from './UserGroup'
 
 export interface IUserView extends IModel {
   first_name: string
