@@ -11,7 +11,7 @@ interface IJoin<T> {
 }
 
 export interface IBaseRepository<T = unknown> {
-  insert(model: T): Promise<T | false>
+  insert<Q = T>(model: Q): Promise<Q | false>
 
   update(id: number, model: T): Promise<T | false>
 
@@ -57,12 +57,12 @@ export abstract class BaseRepository<T = unknown>
     this.hasA = hasA || []
   }
 
-  public async insert(model: T): Promise<T | false> {
+  public async insert<Q = T>(model: Q): Promise<Q | false> {
     const {columns, placeholders, values} = this.generateInsertQueryParts(model)
 
     const query = `INSERT INTO ${this.tableName} (${columns}) VALUES (${placeholders}) RETURNING *`
 
-    const {rowCount, rows} = await this.pool.query(query, values)
+    const {rowCount, rows} = await this.pool.query<Q>(query, values)
 
     return rowCount ? rows[0] : false
   }

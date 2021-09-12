@@ -27,6 +27,10 @@ export class ResourceTypeRepository extends BaseRepository<IResourceType> {}
 
 export class ResourceCategoryRepository extends BaseRepository<IResourceCategory> {}
 
-export class UserRepository extends BaseRepository<IUser> {}
+export class UserRepository extends BaseRepository<IUser> {
+  public async insert<T>(model: T): Promise<T | false> {
+    return super.insert<T>(model)
+  }
+}
 
 export class UserStatusRepository extends BaseRepository<IUserStatus> {}

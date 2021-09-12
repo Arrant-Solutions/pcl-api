@@ -6,12 +6,14 @@ import {IModel, Model} from './IModel'
 import {IUserGroup, UserGroup} from './UserGroup'
 import {IUserStatus, UserStatus} from './UserStatus'
 
+// due to dependency cycle dude brought here
+type Optional<T, K extends keyof T> = Omit<T, K> & Partial<T>
+
 export interface IUserView extends IModel {
   first_name: string
   last_name: string
   email: string
   phone: string
-  password?: string
   date_of_birth: string
   user_group_name: string
   user_group_id: number
@@ -26,6 +28,20 @@ export interface IUserView extends IModel {
   user_status_name: string
 }
 
+export type ICreateUser = Optional<
+  IUserView,
+  | 'user_group_name'
+  | 'gender_name'
+  | 'country_name'
+  | 'country_abbr'
+  | 'branch_name'
+  | 'user_status_id'
+  | 'user_status_name'
+> & {
+  password: string
+  salt: string
+}
+
 export interface IUser extends IModel {
   user_id?: number
   first_name: string
@@ -33,6 +49,7 @@ export interface IUser extends IModel {
   email: string
   phone: string
   password?: string
+  salt?: string
   date_of_birth: string
   user_group: IUserGroup
   country: ICountry
@@ -48,6 +65,7 @@ export class User extends Model implements IUser {
   email: string
   phone: string
   password?: string
+  salt?: string
   date_of_birth: string
 
   @Type(() => UserGroup)

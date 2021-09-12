@@ -1,16 +1,16 @@
 import {IBaseRepository} from '../repositories/BaseRepository'
 import {IResponse} from '../types'
 
-abstract class BaseService<T> {
-  private repository: IBaseRepository<T>
+abstract class BaseService<T, R = unknown> {
+  protected readonly repository: IBaseRepository<T>
 
   constructor(repository: IBaseRepository<T>) {
     this.repository = repository
   }
 
-  public async insert(model: T): Promise<IResponse<T | false>> {
+  public async insert<Q = T>(model: Q & R): Promise<IResponse<R | false>> {
     try {
-      const result = await this.repository.insert(model)
+      const result = await this.repository.insert<R>(model)
 
       if (typeof result === 'boolean') {
         return {statusCode: 500, data: 'Failed to upload'}
