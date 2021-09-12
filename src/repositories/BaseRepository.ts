@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /* eslint-disable no-unused-vars */
 
 import {Pool} from 'pg'
@@ -139,6 +140,12 @@ export abstract class BaseRepository<T = unknown>
     const rows = await this.find(filter)
 
     return rows.length ? rows[0] : null
+  }
+
+  public async executeRawQuery<Q = unknown>(query: string): Promise<Q[]> {
+    const {rows} = await this.pool.query<Q>(query)
+
+    return rows
   }
 
   public async findWildCard(

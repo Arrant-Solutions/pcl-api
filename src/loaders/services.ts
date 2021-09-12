@@ -11,7 +11,6 @@ import GenderService from '../services/GenderService'
 import UserGroupService from '../services/UserGroupService'
 import UserService from '../services/UserService'
 
-
 export const branchService = new BranchService(
   new BranchRepository({
     tableName: 'branches',
@@ -22,7 +21,7 @@ export const branchService = new BranchService(
 export const countryService = new CountryService(
   new CountryRepository({
     tableName: 'countries',
-    columns: ['country_name', 'country_abbr'],
+    columns: ['country_name', 'country_abbr', 'country_code'],
     idColumn: 'country_id',
   }),
 )
@@ -49,8 +48,8 @@ export const userService = new UserService(
       'date_of_birth',
       'user_group_name',
       'user_group_id',
-      'branch_name',
-      'branch_id',
+      // 'branch_name',
+      // 'branch_id',
       'country_name',
       'country_id',
       'country_abbr',

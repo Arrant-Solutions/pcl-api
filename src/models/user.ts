@@ -14,13 +14,13 @@ export interface IUserView extends IModel {
   date_of_birth: string
   user_group_name: string
   user_group_id: number
-  branch_name: string
-  branch_id: number
   country_name: string
   country_id: number
   country_abbr: string
   gender_name: string
   gender_id
+  branch_id: number
+  branch_name: string
 }
 
 export interface IUser extends IModel {
@@ -32,9 +32,9 @@ export interface IUser extends IModel {
   password?: string
   date_of_birth: string
   user_group: IUserGroup
-  branch: IBranch
   country: ICountry
   gender: IGender
+  readonly branch: IBranch
 }
 
 export class User extends Model implements IUser {
@@ -47,17 +47,17 @@ export class User extends Model implements IUser {
   date_of_birth: string
   @Type(() => UserGroup)
   user_group: IUserGroup
-  @Type(() => Branch)
-  branch: IBranch
   @Type(() => Country)
   country: ICountry
   @Type(() => Gender)
   gender: IGender
+  @Type(() => Branch)
+  branch: IBranch
 
   static isUserView(
     object: Record<
       string,
-      number | string | IGender | ICountry | IUserGroup | IBranch | Date
+      number | string | IGender | ICountry | IUserGroup | Date
     >,
   ): boolean {
     return (
@@ -69,8 +69,6 @@ export class User extends Model implements IUser {
       typeof object.country_id === 'number' &&
       typeof object.country_abbr === 'string' &&
       typeof object.country_name === 'string' &&
-      typeof object.branch_id === 'number' &&
-      typeof object.branch_name === 'string' &&
       typeof object.gender_id === 'number' &&
       typeof object.gender_name === 'string' &&
       typeof object.user_group_id === 'number' &&
