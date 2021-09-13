@@ -15,7 +15,7 @@ export interface IBaseRepository<T = unknown> {
 
   update(id: number, model: T): Promise<T | false>
 
-  insertMany(models: T[]): Promise<boolean>
+  insertMany(models: T[]): Promise<{model: T; success: boolean}[]>
 
   findById(id: number): Promise<T | null>
 
@@ -84,10 +84,20 @@ export abstract class BaseRepository<T = unknown>
     return false
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // eslint-disable-next-line class-methods-use-this
-  public insertMany(models: T[]): Promise<boolean> {
-    throw new Error('Method not implemented')
+  public async insertMany(
+    models: T[],
+  ): Promise<{model: T; success: boolean}[]> {
+    const output: {model: T; success: boolean}[] = []
+    // eslint-disable-next-line no-restricted-syntax
+    for await (const model of models) {
+      const result = await this.insert(model)
+      output.push({
+        model: result || model,
+        success: Boolean(result),
+      })
+    }
+
+    return output
   }
 
   public async findById(id: number): Promise<T | null> {
