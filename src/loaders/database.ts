@@ -15,5 +15,3 @@ export const client = new Client({
     rejectUnauthorized: false,
   },
 })
-
-pool.connect()

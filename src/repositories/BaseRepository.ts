@@ -3,6 +3,8 @@
 
 import {Pool} from 'pg'
 import {pool} from '../loaders/database'
+import {IModel} from '../models/IModel'
+import {Optional} from '../types'
 
 interface IJoin<T> {
   model: T
@@ -10,12 +12,14 @@ interface IJoin<T> {
   foreign: string
 }
 
-export interface IBaseRepository<T = unknown> {
+export interface IBaseRepository<T extends IModel> {
   insert<Q = T>(model: Q): Promise<Q | false>
 
   update(id: number, model: T): Promise<T | false>
 
-  insertMany(models: T[]): Promise<{model: T; success: boolean}[]>
+  insertMany(
+    models: Optional<T, 'created_at' | 'updated_at'>[],
+  ): Promise<boolean>
 
   findById(id: number): Promise<T | null>
 
@@ -30,7 +34,7 @@ export interface IBaseRepository<T = unknown> {
   findWildCard(filter: Record<string, string | number>): Promise<T[]>
 }
 
-export abstract class BaseRepository<T = unknown>
+export abstract class BaseRepository<T extends IModel>
   implements IBaseRepository<T>
 {
   protected pool: Pool
@@ -84,20 +88,27 @@ export abstract class BaseRepository<T = unknown>
     return false
   }
 
-  public async insertMany(
-    models: T[],
-  ): Promise<{model: T; success: boolean}[]> {
-    const output: {model: T; success: boolean}[] = []
-    // eslint-disable-next-line no-restricted-syntax
-    for await (const model of models) {
-      const result = await this.insert(model)
-      output.push({
-        model: result || model,
-        success: Boolean(result),
-      })
-    }
+  public async insertMany(models: T[]): Promise<boolean> {
+    const client = await pool.connect()
+    try {
+      client.query('BEGIN')
 
-    return output
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const model of models) {
+        const result = await this.insert(model)
+
+        if (!result)
+          throw new Error(`failed to insert: ${JSON.stringify(model)}`)
+      }
+
+      await client.query('COMMIT')
+      return true
+    } catch (e) {
+      await client.query('ROLLBACK')
+      return false
+    } finally {
+      client.release()
+    }
   }
 
   public async findById(id: number): Promise<T | null> {
