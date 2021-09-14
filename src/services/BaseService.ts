@@ -82,12 +82,16 @@ abstract class BaseService<T extends IModel, R = unknown> {
       return {statusCode: 500, data: error.message}
     }
   }
-  public async findOne(filter: Partial<T>): Promise<IResponse<T>> {
+  public async findOne(filter: Partial<T>): Promise<IResponse<T | null>> {
     try {
       const result = await this.repository.findOne(filter)
 
       if (typeof result === 'boolean') {
         return {statusCode: 500, data: 'Failed to fetch content'}
+      }
+
+      if (result === null) {
+        return {statusCode: 404, data: 'Resource not found'}
       }
 
       return {statusCode: 200, data: result}

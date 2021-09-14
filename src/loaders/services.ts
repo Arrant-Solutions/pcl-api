@@ -10,6 +10,7 @@ import {
   UserRepository,
   UserStatusRepository,
 } from '../repositories'
+import AuthService from '../services/AuthService'
 import BranchService from '../services/BranchService'
 import CountryService from '../services/CountryService'
 import GenderService from '../services/GenderService'
@@ -119,3 +120,5 @@ export const userService = new UserService(
     ],
   }),
 )
+
+export const authService = new AuthService(userService)

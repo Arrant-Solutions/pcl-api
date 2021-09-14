@@ -82,7 +82,7 @@ export abstract class BaseRepository<T extends IModel>
     )
 
     const query = `INSERT INTO ${this.tableName} (${columns}) VALUES (${placeholders}) RETURNING *`
-    // console.log(query)
+    // console.log(columns)
     // console.log(values)
 
     const {rowCount, rows} = await (client || this.pool).query<Q>(query, values)
@@ -294,10 +294,13 @@ export abstract class BaseRepository<T extends IModel>
   }
 
   private getColumns(): string {
-    return this.columns.reduce((acc, col, index) => {
+    const columns = this.columns
+      // eslint-disable-next-line no-bitwise
+      .filter(col => !~this.ignore.indexOf(col))
+    return columns.reduce((acc, col, index) => {
       // eslint-disable-next-line no-param-reassign
       acc +=
-        index === this.columns.length - 1
+        index === columns.length - 1
           ? `${this.tableName}.${col}`
           : `${this.tableName}.${col}, `
 

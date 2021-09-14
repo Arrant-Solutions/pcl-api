@@ -13,4 +13,6 @@ useExpressServer(app, {
   routePrefix: '/api/v1.0',
   controllers: [`${__dirname}/controllers/*.ts`],
 })
-app.listen(3000)
+app.listen(process.env.PORT, () =>
+  console.log(`Server running on: http://localhost:${process.env.PORT}`),
+)

@@ -23,8 +23,6 @@ export default class UserService extends BaseService<IUser, ICreateUser> {
         withID,
       )
 
-      console.log(result)
-
       if (typeof result === 'boolean') {
         return {statusCode: 500, data: 'Failed to upload'}
       }

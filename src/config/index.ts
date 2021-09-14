@@ -7,3 +7,8 @@ export const database = {
 export const jwtSecret = process.env.jwtSecret || ''
 
 export const jwtExpiry = process.env.jwtExpiry || '6h'
+
+export enum Errors {
+  // eslint-disable-next-line no-unused-vars
+  System = 'Error occured. Unable to process request.',
+}

@@ -28,6 +28,11 @@ export interface IUserView extends IModel {
   user_status_name: string
 }
 
+export interface ICredential {
+  email: string
+  password: string
+}
+
 export type ICreateUser = Optional<
   IUserView,
   | 'user_group_name'

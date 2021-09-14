@@ -13,7 +13,7 @@ import {
 import {Response} from 'express'
 import {PCLRequest} from '../types'
 import {userService} from '../loaders/services'
-import {IUser} from '../models/User'
+import {ICreateUser, IUser} from '../models/User'
 
 @JsonController()
 export default class userController {
@@ -35,7 +35,7 @@ export default class userController {
 
   @Post('/users')
   async post(
-    @Body() user: IUser,
+    @Body() user: ICreateUser,
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
