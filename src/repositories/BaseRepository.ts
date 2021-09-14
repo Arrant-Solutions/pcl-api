@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 /* eslint-disable no-unused-vars */
 
-import {Pool} from 'pg'
+import {PoolClient, Pool} from 'pg'
 import {pool} from '../loaders/database'
 import {IModel} from '../models/IModel'
 import {Optional} from '../types'
@@ -13,12 +13,17 @@ interface IJoin<T> {
 }
 
 export interface IBaseRepository<T extends IModel> {
-  insert<Q = T>(model: Q): Promise<Q | false>
+  insert<Q = T>(
+    model: Q,
+    withID?: boolean,
+    client?: Pool | PoolClient,
+  ): Promise<Q | false>
 
   update(id: number, model: T): Promise<T | false>
 
   insertMany(
     models: Optional<T, 'created_at' | 'updated_at'>[],
+    withID?: boolean,
   ): Promise<boolean>
 
   findById(id: number): Promise<T | null>
@@ -40,6 +45,7 @@ export abstract class BaseRepository<T extends IModel>
   protected pool: Pool
   protected tableName: string
   protected columns: string[]
+  protected ignore: string[]
   protected idColumn: string
   protected hasA: IJoin<T>[]
 
@@ -48,25 +54,37 @@ export abstract class BaseRepository<T extends IModel>
     columns,
     idColumn,
     hasA,
+    ignore,
   }: {
     idColumn?: string
     tableName: string
     columns: string[]
     hasA?: IJoin<T>[]
+    ignore?: string[]
   }) {
     this.pool = pool
     this.idColumn = idColumn || tableName.replace(/(es|s)$/, '_id')
     this.columns = [...columns, 'created_at', 'updated_at']
     this.tableName = tableName
     this.hasA = hasA || []
+    this.ignore = ignore || []
   }
 
-  public async insert<Q = T>(model: Q): Promise<Q | false> {
-    const {columns, placeholders, values} = this.generateInsertQueryParts(model)
+  public async insert<Q = T>(
+    model: Q,
+    id?: boolean,
+    client?: Pool | PoolClient,
+  ): Promise<Q | false> {
+    const {columns, placeholders, values} = this.generateInsertQueryParts(
+      model,
+      id,
+    )
 
     const query = `INSERT INTO ${this.tableName} (${columns}) VALUES (${placeholders}) RETURNING *`
+    console.log(query)
+    console.log(values)
 
-    const {rowCount, rows} = await this.pool.query<Q>(query, values)
+    const {rowCount, rows} = await (client || this.pool).query<Q>(query, values)
 
     return rowCount ? rows[0] : false
   }
@@ -88,14 +106,14 @@ export abstract class BaseRepository<T extends IModel>
     return false
   }
 
-  public async insertMany(models: T[]): Promise<boolean> {
+  public async insertMany(models: T[], withID?: boolean): Promise<boolean> {
     const client = await pool.connect()
     try {
       client.query('BEGIN')
 
       // eslint-disable-next-line no-restricted-syntax
       for await (const model of models) {
-        const result = await this.insert(model)
+        const result = await this.insert(model, withID, client)
 
         if (!result)
           throw new Error(`failed to insert: ${JSON.stringify(model)}`)
@@ -104,6 +122,7 @@ export abstract class BaseRepository<T extends IModel>
       await client.query('COMMIT')
       return true
     } catch (e) {
+      console.log(e)
       await client.query('ROLLBACK')
       return false
     } finally {
@@ -187,19 +206,27 @@ export abstract class BaseRepository<T extends IModel>
     return rows
   }
 
-  private generateInsertQueryParts(model: Partial<T>) {
+  private generateInsertQueryParts(model: Partial<T>, withID?: boolean) {
     const cols = this.columns.filter(
-      col => col !== this.idColumn || !/atedAt$/g.test(col),
+      col =>
+        !(
+          col === this.idColumn ||
+          /ated_at$/g.test(col) ||
+          // eslint-disable-next-line no-bitwise
+          ~this.ignore.indexOf(col)
+        ),
     ) // remove id column and date guys
-    return cols.reduce(
+
+    const columns = withID ? [this.idColumn, ...cols] : cols
+    return columns.reduce(
       (acc, col, index) => {
         // eslint-disable-next-line no-param-reassign
-        acc.columns += index === cols.length - 1 ? `${col}` : `${col}, `
+        acc.columns += index === columns.length - 1 ? `${col}` : `${col}, `
 
         const param = index + 1
         // eslint-disable-next-line no-param-reassign
         acc.placeholders +=
-          index === cols.length - 1 ? `$${param}` : `$${param}, `
+          index === columns.length - 1 ? `$${param}` : `$${param}, `
 
         // eslint-disable-next-line no-param-reassign
         acc.values.push(model[col])
@@ -212,7 +239,13 @@ export abstract class BaseRepository<T extends IModel>
 
   private generateUpdateQueryParts(model: Partial<T>) {
     const cols = Object.keys(model).filter(
-      col => col !== this.idColumn || !/atedAt$/g.test(col),
+      col =>
+        !(
+          col === this.idColumn ||
+          /ated_at$/g.test(col) ||
+          // eslint-disable-next-line no-bitwise
+          ~this.ignore.indexOf(col)
+        ),
     ) // remove id column and date guys
     return cols.reduce(
       (acc, col, index) => {

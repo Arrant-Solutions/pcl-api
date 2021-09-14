@@ -45,18 +45,21 @@ export const userGroupService = new UserGroupService(
   new UserGroupRepository({
     tableName: 'user_groups',
     columns: ['user_group_name'],
+    idColumn: 'user_group_id',
   }),
 )
 export const mediaTypeService = new MediaTypeService(
   new MediaTypeRepository({
     tableName: 'media_types',
     columns: ['media_type_name'],
+    idColumn: 'media_type_id',
   }),
 )
 export const resourceAvailabilityService = new ResourceAvailabilityService(
   new ResourceAvailabilityRepository({
     tableName: 'resource_availability',
     columns: ['resource_availability_name'],
+    idColumn: 'resource_availability_id',
   }),
 )
 export const resourceCategoryService = new ResourceCategoryService(
@@ -71,6 +74,7 @@ export const resourceTypeService = new ResourceTypeService(
   new ResourceTypeRepository({
     tableName: 'resource_types',
     columns: ['resource_type_name'],
+    idColumn: 'resource_type_id',
   }),
 )
 
@@ -93,13 +97,25 @@ export const userService = new UserService(
       'date_of_birth',
       'user_group_name',
       'user_group_id',
-      // 'branch_name',
-      // 'branch_id',
+      'branch_name',
+      'branch_id',
       'country_name',
       'country_id',
       'country_abbr',
       'gender_name',
       'gender_id',
+      'user_status_id',
+      'password',
+      'password_salt  ',
+    ],
+    ignore: [
+      'user_group_name',
+      'branch_id',
+      'country_abbr',
+      'branch_name',
+      'country_name',
+      'gender_name',
+      'user_status_name',
     ],
   }),
 )

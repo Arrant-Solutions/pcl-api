@@ -9,9 +9,13 @@ abstract class BaseService<T extends IModel, R = unknown> {
     this.repository = repository
   }
 
-  public async insert<Q = T>(model: Q & R): Promise<IResponse<R | false>> {
+  public async insert<Q = T>(
+    model: Q & R,
+    withID?: boolean,
+  ): Promise<IResponse<R | false>> {
+    console.log('base servicee: ', model)
     try {
-      const result = await this.repository.insert<R>(model)
+      const result = await this.repository.insert<R>(model, withID)
 
       if (typeof result === 'boolean') {
         return {statusCode: 500, data: 'Failed to upload'}
@@ -37,9 +41,10 @@ abstract class BaseService<T extends IModel, R = unknown> {
   }
   public async insertMany(
     models: Optional<T, 'created_at' | 'updated_at'>[],
+    withID?: boolean,
   ): Promise<IResponse<boolean>> {
     try {
-      const result = await this.repository.insertMany(models)
+      const result = await this.repository.insertMany(models, withID)
 
       if (!result) {
         return {statusCode: 500, data: 'Failed to upload'}
