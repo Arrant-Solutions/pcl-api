@@ -35,11 +35,10 @@ export type ICreateUser = Optional<
   | 'country_name'
   | 'country_abbr'
   | 'branch_name'
-  | 'user_status_id'
   | 'user_status_name'
 > & {
   password: string
-  salt: string
+  password_salt: string
 }
 
 export interface IUser extends IModel {

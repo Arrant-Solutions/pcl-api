@@ -106,7 +106,7 @@ export const userService = new UserService(
       'gender_id',
       'user_status_id',
       'password',
-      'password_salt  ',
+      'password_salt',
     ],
     ignore: [
       'user_group_name',

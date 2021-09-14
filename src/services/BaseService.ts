@@ -1,6 +1,6 @@
 import {IModel} from '../models/IModel'
 import {IBaseRepository} from '../repositories/BaseRepository'
-import {IResponse, Optional} from '../types'
+import {IResponse} from '../types'
 
 abstract class BaseService<T extends IModel, R = unknown> {
   protected readonly repository: IBaseRepository<T>
@@ -13,7 +13,7 @@ abstract class BaseService<T extends IModel, R = unknown> {
     model: Q & R,
     withID?: boolean,
   ): Promise<IResponse<R | false>> {
-    console.log('base servicee: ', model)
+    console.log('base service: ', model)
     try {
       const result = await this.repository.insert<R>(model, withID)
 
@@ -39,12 +39,12 @@ abstract class BaseService<T extends IModel, R = unknown> {
       return {statusCode: 500, data: error.message}
     }
   }
-  public async insertMany(
-    models: Optional<T, 'created_at' | 'updated_at'>[],
+  public async insertMany<Q extends T>(
+    models: (Q & R)[], // Optional<T, 'created_at' | 'updated_at'>[],
     withID?: boolean,
   ): Promise<IResponse<boolean>> {
     try {
-      const result = await this.repository.insertMany(models, withID)
+      const result = await this.repository.insertMany<R & Q>(models, withID)
 
       if (!result) {
         return {statusCode: 500, data: 'Failed to upload'}

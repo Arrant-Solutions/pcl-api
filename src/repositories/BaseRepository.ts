@@ -21,10 +21,11 @@ export interface IBaseRepository<T extends IModel> {
 
   update(id: number, model: T): Promise<T | false>
 
-  insertMany(
-    models: Optional<T, 'created_at' | 'updated_at'>[],
-    withID?: boolean,
-  ): Promise<boolean>
+  // insertMany(
+  //   models: Optional<T, 'created_at' | 'updated_at'>[],
+  //   withID?: boolean,
+  // ): Promise<boolean>
+  insertMany<Q extends T>(models: Q[], withID?: boolean): Promise<boolean>
 
   findById(id: number): Promise<T | null>
 
@@ -81,8 +82,8 @@ export abstract class BaseRepository<T extends IModel>
     )
 
     const query = `INSERT INTO ${this.tableName} (${columns}) VALUES (${placeholders}) RETURNING *`
-    console.log(query)
-    console.log(values)
+    // console.log(query)
+    // console.log(values)
 
     const {rowCount, rows} = await (client || this.pool).query<Q>(query, values)
 
@@ -106,7 +107,11 @@ export abstract class BaseRepository<T extends IModel>
     return false
   }
 
-  public async insertMany(models: T[], withID?: boolean): Promise<boolean> {
+  // insertMany<Q = T>(models: Q[], withID?: boolean): Promise<boolean>
+  public async insertMany<Q extends T>(
+    models: Q[],
+    withID?: boolean,
+  ): Promise<boolean> {
     const client = await pool.connect()
     try {
       client.query('BEGIN')
