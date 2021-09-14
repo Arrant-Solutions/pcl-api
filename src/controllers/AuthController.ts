@@ -10,10 +10,9 @@ export default class AuthController {
   @Post('/auth/login')
   async login(
     @Body() credential: ICredential,
-    // @Req() request: PCLRequest,
+    @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
-    console.log('got here')
     const {statusCode, data} = await authService.login(credential)
 
     return response.status(statusCode).json({statusCode, data})

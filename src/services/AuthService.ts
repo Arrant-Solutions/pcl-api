@@ -1,7 +1,7 @@
 import * as argon2 from 'argon2'
 import * as jwt from 'jsonwebtoken'
 import {Errors, jwtExpiry, jwtSecret} from '../config'
-import {ICreateUser, ICredential, IUser} from '../models/User'
+import {ICreateUser, ICredential, IUser, IUserView, User} from '../models/User'
 import {IResponse} from '../types'
 import UserService from './UserService'
 
@@ -14,28 +14,33 @@ export default class AuthService {
   public async login({
     email,
     password,
-  }: ICredential): Promise<IResponse<{user: IUser; token: string}>> {
-    const {statusCode, data} = await this.userService.findOne({email})
+  }: ICredential): Promise<
+    IResponse<{user: Omit<IUser, 'password' | 'password_salt'>; token: string}>
+  > {
+    const {statusCode, data} =
+      await this.userService.executeRawQuery<IUserView>(
+        'SELECT * FROM user_view WHERE email = $1',
+        [email],
+      )
 
-    if (typeof data === 'string' || data === null) {
+    if (typeof data === 'string' || data === null || data.length === 0) {
       return {statusCode, data: 'Unable to find user with specified email'}
     }
 
-    console.log(statusCode, data)
-
-    const correctPassword = await argon2.verify(data.password, password)
+    const found = data[0]
+    const correctPassword = await argon2.verify(found.password, password)
     if (!correctPassword) {
       return {statusCode: 403, data: 'Invalid email/password combination'}
     }
 
+    const user = new User(found)
+    delete user.password
+
     return {
       statusCode: 200,
       data: {
-        user: {
-          ...data,
-          password: '',
-        },
-        token: this.generateJWT(data),
+        user,
+        token: this.generateJWT(found),
       },
     }
   }
@@ -81,7 +86,7 @@ export default class AuthService {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  generateJWT(user: IUser): string {
+  generateJWT(user: IUserView): string {
     const data = {
       user_id: user.user_id,
       phone: user.phone,

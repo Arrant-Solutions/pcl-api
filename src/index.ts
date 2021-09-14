@@ -8,6 +8,9 @@ import * as express from 'express'
 
 const app = express()
 
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+
 useExpressServer(app, {
   cors: true,
   routePrefix: '/api/v1.0',

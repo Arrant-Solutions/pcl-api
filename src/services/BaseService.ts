@@ -140,6 +140,23 @@ abstract class BaseService<T extends IModel, R = unknown> {
       return {statusCode: 500, data: error.message}
     }
   }
+
+  public async executeRawQuery<Q>(
+    query: string,
+    params?: string[],
+  ): Promise<IResponse<Q[]>> {
+    try {
+      const result = await this.repository.executeRawQuery<Q>(query, params)
+
+      if (Array.isArray(result)) {
+        return {statusCode: 200, data: result}
+      }
+
+      throw new Error('Unexpected response')
+    } catch (error) {
+      return {statusCode: 500, data: error.message}
+    }
+  }
 }
 
 export default BaseService

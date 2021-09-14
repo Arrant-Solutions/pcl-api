@@ -4,7 +4,6 @@
 import {PoolClient, Pool} from 'pg'
 import {pool} from '../loaders/database'
 import {IModel} from '../models/IModel'
-import {Optional} from '../types'
 
 interface IJoin<T> {
   model: T
@@ -38,6 +37,8 @@ export interface IBaseRepository<T extends IModel> {
   findOne(filter: Partial<T>): Promise<T | null>
 
   findWildCard(filter: Record<string, string | number>): Promise<T[]>
+
+  executeRawQuery<Q>(query: string, params?: (string | number)[]): Promise<Q[]>
 }
 
 export abstract class BaseRepository<T extends IModel>
@@ -170,6 +171,7 @@ export abstract class BaseRepository<T extends IModel>
 
   public async find(filter: Partial<T>): Promise<T[]> {
     const columns = this.getColumns()
+    console.log(columns)
 
     const {query, values} = BaseRepository.generateSearchQueryParts<T>(filter)
 
@@ -187,8 +189,11 @@ export abstract class BaseRepository<T extends IModel>
     return rows.length ? rows[0] : null
   }
 
-  public async executeRawQuery<Q = unknown>(query: string): Promise<Q[]> {
-    const {rows} = await this.pool.query<Q>(query)
+  public async executeRawQuery<Q = unknown>(
+    query: string,
+    params?: (string | number)[],
+  ): Promise<Q[]> {
+    const {rows} = await this.pool.query<Q>(query, params)
 
     return rows
   }

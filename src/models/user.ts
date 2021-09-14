@@ -10,6 +10,7 @@ import {IUserStatus, UserStatus} from './UserStatus'
 type Optional<T, K extends keyof T> = Omit<T, K> & Partial<T>
 
 export interface IUserView extends IModel {
+  user_id: number
   first_name: string
   last_name: string
   email: string
@@ -20,12 +21,16 @@ export interface IUserView extends IModel {
   country_name: string
   country_id: number
   country_abbr: string
+  country_code: string
   gender_name: string
   gender_id
   branch_id: number
   branch_name: string
   user_status_id: number
   user_status_name: string
+  password: string
+  created_at: Date
+  updated_at: Date
 }
 
 export interface ICredential {
@@ -53,7 +58,7 @@ export interface IUser extends IModel {
   email: string
   phone: string
   password?: string
-  salt?: string
+  password_salt?: string
   date_of_birth: string
   user_group: IUserGroup
   country: ICountry
@@ -69,7 +74,7 @@ export class User extends Model implements IUser {
   email: string
   phone: string
   password?: string
-  salt?: string
+  password_salt?: string
   date_of_birth: string
 
   @Type(() => UserGroup)
@@ -87,12 +92,43 @@ export class User extends Model implements IUser {
   @Type(() => UserStatus)
   user_status: IUserStatus
 
-  static isUserView(
-    object: Record<
-      string,
-      number | string | IGender | ICountry | IUserGroup | Date
-    >,
-  ): boolean {
+  constructor(param: Partial<IUser & IUserView & ICreateUser>) {
+    super()
+
+    if (User.isUserView(param)) {
+      this.user_id = param.user_id
+      this.first_name = param.first_name
+      this.last_name = param.last_name
+      this.email = param.email
+      this.phone = param.phone
+      this.password = param.password
+      this.password_salt = param.password_salt
+      this.user_group = {
+        user_group_id: param.user_group_id,
+        user_group_name: param.user_group_name,
+      }
+      this.country = {
+        country_id: param.country_id,
+        country_name: param.country_name,
+        country_abbr: param.country_abbr,
+        country_code: param.country_code,
+      }
+      this.gender = {
+        gender_id: param.gender_id,
+        gender_name: param.gender_name,
+      }
+      this.branch = {
+        branch_id: param.branch_id,
+        branch_name: param.branch_name,
+      }
+      this.user_status = {
+        user_status_id: param.user_status_id,
+        user_status_name: param.user_status_name,
+      }
+    }
+  }
+
+  static isUserView(object: Partial<IUser & IUserView & ICreateUser>): boolean {
     return (
       typeof object === 'object' &&
       typeof object.first_name === 'string' &&
