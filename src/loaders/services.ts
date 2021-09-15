@@ -5,6 +5,7 @@ import {
   MediaTypeRepository,
   ResourceAvailabilityRepository,
   ResourceCategoryRepository,
+  ResourceRepository,
   ResourceTypeRepository,
   UserGroupRepository,
   UserRepository,
@@ -17,6 +18,7 @@ import GenderService from '../services/GenderService'
 import MediaTypeService from '../services/MediaTypeService'
 import ResourceAvailabilityService from '../services/ResourceAvailabilityService'
 import ResourceCategoryService from '../services/ResourceCategoryService'
+import ResourceService from '../services/ResourceService'
 import ResourceTypeService from '../services/ResourceTypeService'
 import UserGroupService from '../services/UserGroupService'
 import UserService from '../services/UserService'
@@ -117,6 +119,70 @@ export const userService = new UserService(
       'country_name',
       'gender_name',
       'user_status_name',
+    ],
+  }),
+)
+
+export const resourceService = new ResourceService(
+  new ResourceRepository({
+    idColumn: 'resource_id',
+    tableName: 'resources',
+    columns: [
+      'resource_id',
+      'title',
+      'description',
+      'author',
+      'resource_url',
+      'thumbnail_url',
+
+      'user_id',
+      'first_name',
+      'last_name',
+      'email',
+      'phone',
+      'date_of_birth',
+      'user_group_name',
+      'user_group_id',
+      'branch_name',
+      'branch_id',
+      'country_name',
+      'country_id',
+      'country_abbr',
+      'gender_name',
+      'gender_id',
+      'user_status_id',
+
+      'resource_category_id',
+      'resource_category_name',
+
+      'resource_type_id',
+      'resource_type_name',
+
+      'resource_availability_id',
+      'resource_availability_name',
+
+      'media_type_id',
+      'media_type_name',
+    ],
+    ignore: [
+      'first_name',
+      'last_name',
+      'email',
+      'phone',
+      'date_of_birth',
+      'user_group_name',
+      'user_group_id',
+      'branch_name',
+      'branch_id',
+      'country_name',
+      'country_id',
+      'country_abbr',
+      'gender_name',
+      'gender_id',
+      'resource_category_name',
+      'resource_type_name',
+      'resource_availability_name',
+      'media_type_name',
     ],
   }),
 )

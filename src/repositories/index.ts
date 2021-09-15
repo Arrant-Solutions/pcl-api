@@ -10,6 +10,7 @@ import {IUser} from '../models/User'
 import {IUserGroup} from '../models/UserGroup'
 import {BaseRepository} from './BaseRepository'
 import {IUserStatus} from '../models/UserStatus'
+import { IResource } from '../models/Resource'
 
 export class BranchRepository extends BaseRepository<IBranch> {}
 
@@ -25,7 +26,9 @@ export class ResourceAvailabilityRepository extends BaseRepository<IResourceAvai
 
 export class ResourceTypeRepository extends BaseRepository<IResourceType> {}
 
-export class ResourceCategoryRepository extends BaseRepository<IResourceCategory> {}
+export class ResourceCategoryRepository extends BaseRepository<IResourceCategory> { }
+
+export class ResourceRepository extends BaseRepository<IResource> {}
 
 export class UserRepository extends BaseRepository<IUser> {}
 
