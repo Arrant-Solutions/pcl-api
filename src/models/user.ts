@@ -23,7 +23,7 @@ export interface IUserView extends IModel {
   country_abbr: string
   country_code: string
   gender_name: string
-  gender_id
+  gender_id: number
   branch_id: number
   branch_name: string
   user_status_id: number

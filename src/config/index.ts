@@ -12,3 +12,5 @@ export enum Errors {
   // eslint-disable-next-line no-unused-vars
   System = 'Error occured. Unable to process request.',
 }
+
+export const {emailRegex} = process.env

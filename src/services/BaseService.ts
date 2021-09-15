@@ -82,9 +82,12 @@ abstract class BaseService<T extends IModel, R = unknown> {
       return {statusCode: 500, data: error.message}
     }
   }
-  public async findOne(filter: Partial<T>): Promise<IResponse<T | null>> {
+  public async findOne(
+    filter: Partial<T>,
+    or?: boolean,
+  ): Promise<IResponse<T | null>> {
     try {
-      const result = await this.repository.findOne(filter)
+      const result = await this.repository.findOne(filter, or)
 
       if (typeof result === 'boolean') {
         return {statusCode: 500, data: 'Failed to fetch content'}
@@ -112,9 +115,9 @@ abstract class BaseService<T extends IModel, R = unknown> {
       return {statusCode: 500, data: error.message}
     }
   }
-  public async find(filter: Partial<T>): Promise<IResponse<T[]>> {
+  public async find(filter: Partial<T>, or?: boolean): Promise<IResponse<T[]>> {
     try {
-      const result = await this.repository.find(filter)
+      const result = await this.repository.find(filter, or)
 
       if (typeof result === 'boolean') {
         return {statusCode: 500, data: 'Failed to fetch items'}
@@ -127,9 +130,10 @@ abstract class BaseService<T extends IModel, R = unknown> {
   }
   public async findWildCard(
     filter: Record<string, string | number>,
+    or?: boolean,
   ): Promise<IResponse<T[]>> {
     try {
-      const result = await this.repository.findWildCard(filter)
+      const result = await this.repository.findWildCard(filter, or)
 
       if (typeof result === 'boolean') {
         return {statusCode: 500, data: 'Failed to delete'}

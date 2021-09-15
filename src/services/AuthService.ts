@@ -1,6 +1,7 @@
 import * as argon2 from 'argon2'
 import * as jwt from 'jsonwebtoken'
-import {Errors, jwtExpiry, jwtSecret} from '../config'
+import {emailRegex, Errors, jwtExpiry, jwtSecret} from '../config'
+import {isUnderAge} from '../helpers'
 import {ICreateUser, ICredential, IUser, IUserView, User} from '../models/User'
 import {IResponse} from '../types'
 import UserService from './UserService'
@@ -19,7 +20,7 @@ export default class AuthService {
   > {
     const {statusCode, data} =
       await this.userService.executeRawQuery<IUserView>(
-        'SELECT * FROM user_view WHERE email = $1',
+        'SELECT * FROM user_view WHERE lower(email) = lower($1)',
         [email],
       )
 
@@ -28,6 +29,18 @@ export default class AuthService {
     }
 
     const found = data[0]
+
+    if (found.user_status_name === 'Pending Verification') {
+      return {statusCode: 401, data: 'Please verify your account and try again'}
+    }
+
+    if (/^(Blocked|Disabled)$/i.test(found.user_status_name)) {
+      return {
+        statusCode: 401,
+        data: `Your account was ${found.user_status_name}. Please contact support.`,
+      }
+    }
+
     const correctPassword = await argon2.verify(found.password, password)
     if (!correctPassword) {
       return {statusCode: 403, data: 'Invalid email/password combination'}
@@ -48,13 +61,8 @@ export default class AuthService {
   public async register(
     user: ICreateUser,
   ): Promise<IResponse<ICreateUser | false>> {
-    const found = await this.userService.findOne({
-      phone: user.phone,
-      email: user.email,
-    })
-
     if (
-      !/^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*\\{}%()//])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8,}$/.test(
+      !/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/.test(
         user.password,
       )
     ) {
@@ -69,14 +77,50 @@ export default class AuthService {
       }
     }
 
-    if (found) {
+    if (isUnderAge(user.date_of_birth)) {
+      return {statusCode: 422, data: 'You are under age.'}
+    }
+
+    if (!/^[\p{L}'][ \p{L}'-]*[\p{L}]$/u.test(user.first_name)) {
+      return {statusCode: 422, data: 'Please input a valid first name'}
+    }
+
+    if (!/^[\p{L}'][ \p{L}'-]*[\p{L}]$/u.test(user.last_name)) {
+      return {statusCode: 422, data: 'Please input a valid last name'}
+    }
+
+    if (!/^(1|2|3)$/.test(String(user.gender_id))) {
+      return {statusCode: 422, data: 'Please select a valid gender'}
+    }
+
+    if (!(user.country_id > 0 && user.country_id < 254)) {
+      return {statusCode: 422, data: 'Please select a valid country'}
+    }
+
+    if (!new RegExp(emailRegex, 'i').test(user.email)) {
+      return {statusCode: 422, data: 'Please input a valid email address'}
+    }
+
+    const {statusCode} = await this.userService.findOne(
+      {
+        phone: user.phone,
+        email: user.email,
+      },
+      true,
+    )
+
+    if (statusCode !== 404) {
       return {
         statusCode: 409,
         data: `Duplicate phone: ${user.phone} or email: ${user.email}`,
       }
     }
 
-    const created = await this.userService.insert(user)
+    const created = await this.userService.insert({
+      ...user,
+      user_group_id: 4, // default to customer
+      user_status_id: 3, // default to pending verification
+    })
 
     if (created) {
       return created

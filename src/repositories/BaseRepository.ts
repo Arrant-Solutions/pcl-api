@@ -20,10 +20,6 @@ export interface IBaseRepository<T extends IModel> {
 
   update(id: number, model: T): Promise<T | false>
 
-  // insertMany(
-  //   models: Optional<T, 'created_at' | 'updated_at'>[],
-  //   withID?: boolean,
-  // ): Promise<boolean>
   insertMany<Q extends T>(models: Q[], withID?: boolean): Promise<boolean>
 
   findById(id: number): Promise<T | null>
@@ -32,11 +28,14 @@ export interface IBaseRepository<T extends IModel> {
 
   deleteById(id: number): Promise<T | false>
 
-  find(filter: Partial<T>): Promise<T[]>
+  find(filter: Partial<T>, or?: boolean): Promise<T[]>
 
-  findOne(filter: Partial<T>): Promise<T | null>
+  findOne(filter: Partial<T>, or?: boolean): Promise<T | null>
 
-  findWildCard(filter: Record<string, string | number>): Promise<T[]>
+  findWildCard(
+    filter: Record<string, string | number>,
+    or?: boolean,
+  ): Promise<T[]>
 
   executeRawQuery<Q>(query: string, params?: (string | number)[]): Promise<Q[]>
 }
@@ -169,11 +168,14 @@ export abstract class BaseRepository<T extends IModel>
     return rowCount ? rows[0] : false
   }
 
-  public async find(filter: Partial<T>): Promise<T[]> {
+  public async find(filter: Partial<T>, or?: boolean): Promise<T[]> {
     const columns = this.getColumns()
-    console.log(columns)
 
-    const {query, values} = BaseRepository.generateSearchQueryParts<T>(filter)
+    const {query, values} = BaseRepository.generateSearchQueryParts<T>(
+      filter,
+      false,
+      or,
+    )
 
     const {rows} = await this.pool.query<T>(
       `SELECT ${columns} FROM ${this.tableName} WHERE ${query}`,
@@ -183,8 +185,8 @@ export abstract class BaseRepository<T extends IModel>
     return rows
   }
 
-  public async findOne(filter: Partial<T>): Promise<T | null> {
-    const rows = await this.find(filter)
+  public async findOne(filter: Partial<T>, or?: boolean): Promise<T | null> {
+    const rows = await this.find(filter, or)
 
     return rows.length ? rows[0] : null
   }
@@ -200,12 +202,14 @@ export abstract class BaseRepository<T extends IModel>
 
   public async findWildCard(
     filter: Record<string, string | number>,
+    or?: boolean,
   ): Promise<T[]> {
     const columns = this.getColumns()
 
     const {query, values} = BaseRepository.generateSearchQueryParts(
       filter,
       true,
+      or,
     )
 
     const {rows} = await this.pool.query<T>(
@@ -277,16 +281,18 @@ export abstract class BaseRepository<T extends IModel>
   private static generateSearchQueryParts<T>(
     model: Partial<T>,
     wildcard?: boolean,
+    or?: boolean,
   ) {
     return Object.keys(model).reduce(
       (acc, col, index, arr) => {
         const param = index + 1
         const operator = wildcard ? 'LIKE' : '='
+        const glue = or ? 'OR' : 'AND'
         // eslint-disable-next-line no-param-reassign
         acc.query +=
           index === arr.length - 1
             ? `${col} ${operator} $${param}`
-            : `${col} ${operator} $${param} AND `
+            : `${col} ${operator} $${param} ${glue} `
 
         const value = wildcard ? `%${model[col]}%` : model[col]
         // eslint-disable-next-line no-param-reassign
