@@ -1,6 +1,6 @@
 import * as argon2 from 'argon2'
 import * as jwt from 'jsonwebtoken'
-import {emailRegex, Errors, jwtExpiry, jwtSecret} from '../config'
+import {emailRegex, jwtExpiry, jwtSecret} from '../config'
 import {isUnderAge} from '../helpers'
 import {ICreateUser, ICredential, IUser, IUserView, User} from '../models/User'
 import {IResponse} from '../types'
@@ -119,7 +119,7 @@ export default class AuthService {
     const {statusCode: status, data} = await this.userService.insert({
       ...user,
       user_group_id: 4, // default to customer
-      user_status_id: 3, // default to pending verification
+      user_status_id: 1, // default to active
     })
 
     if (status === 200 && typeof data === 'object') {
