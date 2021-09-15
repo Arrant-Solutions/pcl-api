@@ -116,17 +116,17 @@ export default class AuthService {
       }
     }
 
-    const created = await this.userService.insert({
+    const {statusCode: status, data} = await this.userService.insert({
       ...user,
       user_group_id: 4, // default to customer
       user_status_id: 3, // default to pending verification
     })
 
-    if (created) {
-      return created
+    if (status === 200 && typeof data === 'object') {
+      delete data.password
+      delete data.password_salt
     }
-
-    return {statusCode: 500, data: Errors.System}
+    return {statusCode: status, data}
   }
 
   // eslint-disable-next-line class-methods-use-this
