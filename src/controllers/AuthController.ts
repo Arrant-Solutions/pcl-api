@@ -1,24 +1,24 @@
 /* eslint-disable class-methods-use-this */
-import {JsonController, Body, Post, Req, Res} from 'routing-controllers'
+import {JsonController, Body, Post, Req, Res, Get, Param} from 'routing-controllers'
 import {Response} from 'express'
 import {PCLRequest} from '../types'
-import {authService} from '../loaders/services'
-import {ICreateUser, ICredential} from '../models/User'
+import {authService, userService} from '../loaders/services'
+import {ICreateUser} from '../models/User'
 
 @JsonController()
 export default class AuthController {
-  @Post('/auth/login')
-  async login(
-    @Body() credential: ICredential,
+  @Get('/auth/fetchUser')
+  async fetchUser(
+    @Param('email') email: string,
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
-    const {statusCode, data} = await authService.login(credential)
+    const {statusCode, data} = await userService.findOne({email})
 
     return response.status(statusCode).json({statusCode, data})
   }
 
-  @Post('/auth/verifyPassword')
+  @Post('/auth/register')
   async register(
     @Body() user: ICreateUser,
     @Req() request: PCLRequest,

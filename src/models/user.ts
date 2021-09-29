@@ -28,7 +28,7 @@ export interface IUserView extends IModel {
   branch_name: string
   user_status_id: number
   user_status_name: string
-  password: string
+  // password: string
   created_at: Date
   updated_at: Date
 }
@@ -54,8 +54,8 @@ export interface IUser extends IModel {
   last_name: string
   email: string
   phone: string
-  password?: string
-  password_salt?: string
+  // password?: string
+  // password_salt?: string
   date_of_birth: string
   user_group: IUserGroup
   country: ICountry
@@ -70,8 +70,8 @@ export class User extends Model implements IUser {
   last_name: string
   email: string
   phone: string
-  password?: string
-  password_salt?: string
+  // password?: string
+  // password_salt?: string
   date_of_birth: string
 
   @Type(() => UserGroup)
@@ -98,8 +98,8 @@ export class User extends Model implements IUser {
       this.last_name = param.last_name
       this.email = param.email
       this.phone = param.phone
-      this.password = param.password
-      this.password_salt = param.password_salt
+      // this.password = param.password
+      // this.password_salt = param.password_salt
       this.user_group = {
         user_group_id: param.user_group_id,
         user_group_name: param.user_group_name,
