@@ -46,10 +46,7 @@ export type ICreateUser = Optional<
   | 'country_abbr'
   | 'branch_name'
   | 'user_status_name'
-> & {
-  password: string
-  password_salt: string
-}
+>
 
 export interface IUser extends IModel {
   user_id?: number

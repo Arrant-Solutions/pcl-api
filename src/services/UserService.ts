@@ -1,6 +1,6 @@
-import * as argon2 from 'argon2'
-import * as Bluebird from 'bluebird'
-import {randomBytes} from 'crypto'
+// import * as argon2 from 'argon2'
+// import * as Bluebird from 'bluebird'
+// import {randomBytes} from 'crypto'
 import {ICreateUser, IUser} from '../models/User'
 import {IResponse} from '../types'
 import BaseService from './BaseService'
@@ -11,17 +11,10 @@ export default class UserService extends BaseService<IUser, ICreateUser> {
     withID?: boolean,
   ): Promise<IResponse<ICreateUser | false>> {
     try {
-      const salt = randomBytes(32)
-      const password = await argon2.hash(model.password, {salt})
+      // const salt = randomBytes(32)
+      // const password = await argon2.hash(model.password, {salt})
 
-      const result = await this.repository.insert<ICreateUser>(
-        {
-          ...model,
-          password,
-          password_salt: salt.toString('hex'),
-        },
-        withID,
-      )
+      const result = await this.repository.insert<ICreateUser>(model, withID)
 
       if (typeof result === 'boolean') {
         return {statusCode: 500, data: 'Failed to upload'}
@@ -38,19 +31,19 @@ export default class UserService extends BaseService<IUser, ICreateUser> {
     withID?: boolean,
   ): Promise<IResponse<boolean>> {
     try {
-      const users = await Bluebird.map(models, async item => {
-        const salt = randomBytes(32)
-        const password = await argon2.hash(item.password, {salt})
+      // const users = await Bluebird.map(models, async item => {
+      //   const salt = randomBytes(32)
+      //   const password = await argon2.hash(item.password, {salt})
 
-        return {
-          ...item,
-          password,
-          password_salt: salt.toString('hex'),
-        }
-      })
+      //   return {
+      //     ...item,
+      //     password,
+      //     password_salt: salt.toString('hex'),
+      //   }
+      // })
 
       const result = await this.repository.insertMany<ICreateUser & IUser>(
-        users as any,
+        models as any,
         withID,
       )
 

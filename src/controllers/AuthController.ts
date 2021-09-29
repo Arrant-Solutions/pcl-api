@@ -18,7 +18,7 @@ export default class AuthController {
     return response.status(statusCode).json({statusCode, data})
   }
 
-  @Post('/auth/register')
+  @Post('/auth/verifyPassword')
   async register(
     @Body() user: ICreateUser,
     @Req() request: PCLRequest,
