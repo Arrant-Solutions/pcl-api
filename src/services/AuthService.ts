@@ -14,7 +14,11 @@ export default class AuthService {
   }
 
   public async fetchUser(email: string) {
-    const {statusCode, data} = await this.userService.findOne({email}, false, true)
+    const {statusCode, data} = await this.userService.findOne(
+      {email},
+      false,
+      true,
+    )
 
     if (typeof data === 'string') {
       return {
@@ -129,7 +133,7 @@ export default class AuthService {
     if (statusCode === 200) {
       return {
         statusCode: 409,
-        data: `Duplicate phone: ${user.phone} or email: ${user.email}`,
+        data: `Duplicate email: ${user.email}`,
       }
     }
 

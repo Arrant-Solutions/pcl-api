@@ -22,6 +22,7 @@ export default class UserService extends BaseService<ICreateUserT> {
 
       return {statusCode: 200, data: result}
     } catch (error) {
+      console.log(error)
       return {statusCode: 500, data: error.message as string}
     }
   }

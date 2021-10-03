@@ -93,6 +93,8 @@ export abstract class BaseRepository<T extends IModel>
 
     const query = `INSERT INTO ${this.tableName} (${columns}) VALUES (${placeholders}) RETURNING *`
 
+    console.log(JSON.stringify({query, values}, null, 2))
+
     const {rowCount, rows} = await (client || this.pool).query<Q>(query, values)
 
     return rowCount ? rows[0] : false
