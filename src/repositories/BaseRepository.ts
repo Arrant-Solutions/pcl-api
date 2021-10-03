@@ -28,9 +28,17 @@ export interface IBaseRepository<T extends IModel> {
 
   deleteById(id: number): Promise<T | false>
 
-  find<Q extends T>(filter: Partial<Q>, or?: boolean): Promise<T[]>
+  find<Q extends T>(
+    filter: Partial<Q>,
+    or?: boolean,
+    ignoreCase?: boolean,
+  ): Promise<T[]>
 
-  findOne<Q extends T>(filter: Partial<Q>, or?: boolean): Promise<Q | null>
+  findOne<Q extends T>(
+    filter: Partial<Q>,
+    or?: boolean,
+    ignoreCase?: boolean,
+  ): Promise<Q | null>
 
   upsert<Q extends T>(model: Q, filter?: Partial<Q>): Promise<Q | false>
 
@@ -169,7 +177,6 @@ export abstract class BaseRepository<T extends IModel>
 
   // eslint-disable-next-line class-methods-use-this
   private getLimitOffset(limit?: number, offset?: number): string {
-
     if (limit && typeof offset === 'number') {
       return `LIMIT ${limit} OFFSET ${offset}`
     }
@@ -205,13 +212,18 @@ export abstract class BaseRepository<T extends IModel>
     return rowCount ? rows[0] : false
   }
 
-  public async find<Q = T>(filter: Partial<Q>, or?: boolean): Promise<Q[]> {
+  public async find<Q = T>(
+    filter: Partial<Q>,
+    or?: boolean,
+    ignoreCase?: boolean,
+  ): Promise<Q[]> {
     const columns = this.getColumns()
 
     const {query, values} = BaseRepository.generateSearchQueryParts<Q>(
       filter,
       false,
       or,
+      ignoreCase,
     )
 
     const {rows} = await this.pool.query<Q>(
@@ -225,8 +237,9 @@ export abstract class BaseRepository<T extends IModel>
   public async findOne<Q = T>(
     filter: Partial<Q>,
     or?: boolean,
+    ignoreCase?: boolean,
   ): Promise<Q | null> {
-    const rows = await this.find(filter, or)
+    const rows = await this.find(filter, or, ignoreCase)
 
     return rows.length ? rows[0] : null
   }
@@ -322,21 +335,23 @@ export abstract class BaseRepository<T extends IModel>
     model: Partial<T>,
     wildcard?: boolean,
     or?: boolean,
+    ignoreCase?: boolean,
   ) {
     return Object.keys(model).reduce(
       (acc, col, index, arr) => {
         const param = index + 1
         const operator = wildcard ? 'LIKE' : '='
         const glue = or ? 'OR' : 'AND'
+        const column = ignoreCase ? `LOWER(${col})` : col
         // eslint-disable-next-line no-param-reassign
         acc.query +=
           index === arr.length - 1
-            ? `${col} ${operator} $${param}`
-            : `${col} ${operator} $${param} ${glue} `
+            ? `${column} ${operator} $${param}`
+            : `${column} ${operator} $${param} ${glue} `
 
         const value = wildcard ? `%${model[col]}%` : model[col]
         // eslint-disable-next-line no-param-reassign
-        acc.values.push(value)
+        acc.values.push(ignoreCase ? String(value).toLowerCase() : value)
 
         return acc
       },

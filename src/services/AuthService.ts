@@ -14,7 +14,7 @@ export default class AuthService {
   }
 
   public async fetchUser(email: string) {
-    const {statusCode, data} = await this.userService.findOne({email})
+    const {statusCode, data} = await this.userService.findOne({email}, false, true)
 
     if (typeof data === 'string') {
       return {

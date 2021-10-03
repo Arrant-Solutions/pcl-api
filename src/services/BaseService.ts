@@ -86,9 +86,10 @@ abstract class BaseService<T extends IModel> {
   public async findOne(
     filter: Partial<T>,
     or?: boolean,
+    ignoreCase?: boolean,
   ): Promise<IResponse<T | null>> {
     try {
-      const result = await this.repository.findOne(filter, or)
+      const result = await this.repository.findOne(filter, or, ignoreCase)
 
       if (typeof result === 'boolean') {
         return {statusCode: 500, data: 'Failed to fetch content'}
@@ -116,9 +117,13 @@ abstract class BaseService<T extends IModel> {
       return {statusCode: 500, data: error.message}
     }
   }
-  public async find(filter: Partial<T>, or?: boolean): Promise<IResponse<T[]>> {
+  public async find(
+    filter: Partial<T>,
+    or?: boolean,
+    ignoreCase?: boolean,
+  ): Promise<IResponse<T[]>> {
     try {
-      const result = await this.repository.find(filter, or)
+      const result = await this.repository.find(filter, or, ignoreCase)
 
       if (typeof result === 'boolean') {
         return {statusCode: 500, data: 'Failed to fetch items'}
