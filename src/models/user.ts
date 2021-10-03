@@ -48,7 +48,22 @@ export type ICreateUser = Optional<
   | 'user_status_name'
 >
 
+export type ICreateUserT = Optional<
+  IUser & ICreateUser,
+  | 'user_group'
+  | 'gender'
+  | 'country'
+  | 'branch'
+  | 'user_status'
+  | 'user_group_id'
+  | 'gender_id'
+  | 'country_id'
+  | 'branch_id'
+  | 'user_status_id'
+>
+
 export interface IUser extends IModel {
+  avatar?: string
   user_id?: number
   first_name: string
   last_name: string
@@ -65,6 +80,7 @@ export interface IUser extends IModel {
 }
 
 export class User extends Model implements IUser {
+  avatar?: string
   user_id?: number
   first_name: string
   last_name: string
@@ -93,6 +109,7 @@ export class User extends Model implements IUser {
     super()
 
     if (User.isUserView(param)) {
+      this.avatar = param.avatar
       this.user_id = param.user_id
       this.first_name = param.first_name
       this.last_name = param.last_name

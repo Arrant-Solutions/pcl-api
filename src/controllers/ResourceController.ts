@@ -13,7 +13,7 @@ import {
 import {Response} from 'express'
 import {PCLRequest} from '../types'
 import {resourceService} from '../loaders/services'
-import {IResource, IResourceCreate} from '../models/Resource'
+import {ResourceCreateT, IResourceCreate} from '../models/Resource'
 
 @JsonController()
 export default class ResourceController {
@@ -46,7 +46,7 @@ export default class ResourceController {
   @Put('/resources/:id')
   async put(
     @Param('id') id: number,
-    @Body() resource: IResource,
+    @Body() resource: ResourceCreateT,
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {

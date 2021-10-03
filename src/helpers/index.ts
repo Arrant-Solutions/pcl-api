@@ -2,6 +2,7 @@ import moment = require('moment')
 
 export const getAgeYears = (date: string, format = 'YYYY-MM-DD'): number => {
   const result = moment(date, format).fromNow()
+  console.log(date)
 
   if (!/year/i.test(result)) return 0
 

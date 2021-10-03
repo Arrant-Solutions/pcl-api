@@ -93,6 +93,7 @@ export const userService = new UserService(
   new UserRepository({
     tableName: 'users',
     columns: [
+      'avatar',
       'first_name',
       'last_name',
       'email',

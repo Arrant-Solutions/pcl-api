@@ -2,20 +2,21 @@ import {IModel} from '../models/IModel'
 import {IBaseRepository} from '../repositories/BaseRepository'
 import {IResponse} from '../types'
 
-abstract class BaseService<T extends IModel, R = unknown> {
+// the R thing doesnt make sense
+abstract class BaseService<T extends IModel> {
   protected readonly repository: IBaseRepository<T>
 
   constructor(repository: IBaseRepository<T>) {
     this.repository = repository
   }
 
-  public async insert<Q = T>(
-    model: Q & R,
+  public async insert<Q extends T>(
+    model: Q,
     withID?: boolean,
-  ): Promise<IResponse<R | false>> {
+  ): Promise<IResponse<Q | false>> {
     console.log('base service: ', model)
     try {
-      const result = await this.repository.insert<R>(model, withID)
+      const result = await this.repository.insert<Q>(model, withID)
 
       if (typeof result === 'boolean') {
         return {statusCode: 500, data: 'Failed to upload'}
@@ -40,11 +41,11 @@ abstract class BaseService<T extends IModel, R = unknown> {
     }
   }
   public async insertMany<Q extends T>(
-    models: (Q & R)[], // Optional<T, 'created_at' | 'updated_at'>[],
+    models: Q[], // Optional<T, 'created_at' | 'updated_at'>[],
     withID?: boolean,
   ): Promise<IResponse<boolean>> {
     try {
-      const result = await this.repository.insertMany<R & Q>(models, withID)
+      const result = await this.repository.insertMany<Q>(models, withID)
 
       if (!result) {
         return {statusCode: 500, data: 'Failed to upload'}

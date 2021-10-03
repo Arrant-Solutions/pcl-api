@@ -6,14 +6,14 @@ import {
   Get,
   Post,
   Put,
-  Delete,
+  // Delete,
   Req,
   Res,
 } from 'routing-controllers'
 import {Response} from 'express'
 import {PCLRequest} from '../types'
 import {userService} from '../loaders/services'
-import {ICreateUser, IUser} from '../models/User'
+import {ICreateUser, ICreateUserT} from '../models/User'
 
 @JsonController()
 export default class userController {
@@ -46,7 +46,7 @@ export default class userController {
   @Put('/users/:id')
   async put(
     @Param('id') id: number,
-    @Body() user: IUser,
+    @Body() user: ICreateUserT,
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
@@ -54,13 +54,13 @@ export default class userController {
     return response.status(statusCode).json({statusCode, data})
   }
 
-  @Delete('/users/:id')
-  async remove(
-    @Param('id') id: number,
-    @Req() request: PCLRequest,
-    @Res() response: Response,
-  ) {
-    const {statusCode, data} = await userService.deleteById(id)
-    return response.status(statusCode).json({statusCode, data})
-  }
+  // @Delete('/users/:id')
+  // async remove(
+  //   @Param('id') id: number,
+  //   @Req() request: PCLRequest,
+  //   @Res() response: Response,
+  // ) {
+  //   const {statusCode, data} = await userService.deleteById(id)
+  //   return response.status(statusCode).json({statusCode, data})
+  // }
 }

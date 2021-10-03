@@ -37,6 +37,19 @@ export interface IResourceCreate {
   media_type_id: number
 }
 
+export type ResourceCreateT = Optional<
+  IResource & IResourceCreate,
+  | 'user'
+  | 'resource_category'
+  | 'resource_type'
+  | 'resource_availability'
+  | 'media_type'
+  | 'resource_category_id'
+  | 'resource_type_id'
+  | 'resource_availability_id'
+  | 'media_type_id'
+>
+
 export type IResourceView = IResource &
   IUserView &
   IMediaType &

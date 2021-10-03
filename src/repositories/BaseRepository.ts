@@ -12,25 +12,27 @@ interface IJoin<T> {
 }
 
 export interface IBaseRepository<T extends IModel> {
-  insert<Q = T>(
+  insert<Q extends T>(
     model: Q,
     withID?: boolean,
     client?: Pool | PoolClient,
   ): Promise<Q | false>
 
-  update(id: number, model: T): Promise<T | false>
+  update<Q extends T>(id: number, model: Q): Promise<T | false>
 
   insertMany<Q extends T>(models: Q[], withID?: boolean): Promise<boolean>
 
-  findById(id: number): Promise<T | null>
+  findById<Q extends T>(id: number): Promise<Q | null>
 
-  findAll(offset?: number): Promise<T[]>
+  findAll(limit?: number, offset?: number): Promise<T[]>
 
   deleteById(id: number): Promise<T | false>
 
-  find(filter: Partial<T>, or?: boolean): Promise<T[]>
+  find<Q extends T>(filter: Partial<Q>, or?: boolean): Promise<T[]>
 
-  findOne(filter: Partial<T>, or?: boolean): Promise<T | null>
+  findOne<Q extends T>(filter: Partial<Q>, or?: boolean): Promise<Q | null>
+
+  upsert<Q extends T>(model: Q, filter?: Partial<Q>): Promise<Q | false>
 
   findWildCard(
     filter: Record<string, string | number>,
@@ -71,7 +73,7 @@ export abstract class BaseRepository<T extends IModel>
     this.ignore = ignore || []
   }
 
-  public async insert<Q = T>(
+  public async insert<Q extends T>(
     model: Q,
     id?: boolean,
     client?: Pool | PoolClient,
@@ -82,16 +84,17 @@ export abstract class BaseRepository<T extends IModel>
     )
 
     const query = `INSERT INTO ${this.tableName} (${columns}) VALUES (${placeholders}) RETURNING *`
-    // console.log(columns)
-    // console.log(values)
 
     const {rowCount, rows} = await (client || this.pool).query<Q>(query, values)
 
     return rowCount ? rows[0] : false
   }
 
-  public async update(id: number, model: Partial<T>): Promise<T | false> {
-    const item = await this.findById(id)
+  public async update<Q extends T>(
+    id: number,
+    model: Partial<Q>,
+  ): Promise<Q | false> {
+    const item = await this.findById<Q>(id)
 
     if (item) {
       const {columns, values} = this.generateUpdateQueryParts(model)
@@ -99,12 +102,29 @@ export abstract class BaseRepository<T extends IModel>
         this.idColumn
       } = $${values.length + 1} RETURNING *`
 
-      const {rowCount, rows} = await this.pool.query<T>(query, [...values, id])
+      const {rowCount, rows} = await this.pool.query<Q>(query, [...values, id])
 
       if (rowCount) return rows[0]
     }
 
     return false
+  }
+
+  public async upsert<Q extends T>(
+    model: Q,
+    filter?: Partial<Q>,
+  ): Promise<Q | false> {
+    const item = filter
+      ? await this.findOne(filter)
+      : await this.findById(model[this.idColumn])
+
+    if (item) {
+      const update = await this.update<Q>(model[this.idColumn], model)
+      return update
+    }
+
+    const insert = await this.insert(model)
+    return insert
   }
 
   // insertMany<Q = T>(models: Q[], withID?: boolean): Promise<boolean>
@@ -135,9 +155,9 @@ export abstract class BaseRepository<T extends IModel>
     }
   }
 
-  public async findById(id: number): Promise<T | null> {
+  public async findById<Q extends T>(id: number): Promise<Q | null> {
     const columns = this.getColumns()
-    const {rowCount, rows} = await this.pool.query<T>(
+    const {rowCount, rows} = await this.pool.query<Q>(
       `SELECT ${columns} FROM ${this.tableName} WHERE ${this.idColumn} = $1`,
       [id],
     )
@@ -147,13 +167,30 @@ export abstract class BaseRepository<T extends IModel>
     return null
   }
 
-  public async findAll(offset?: number): Promise<T[]> {
+  // eslint-disable-next-line class-methods-use-this
+  private getLimitOffset(limit?: number, offset?: number): string {
+
+    if (limit && typeof offset === 'number') {
+      return `LIMIT ${limit} OFFSET ${offset}`
+    }
+
+    if (limit) {
+      return `LIMIT ${limit} OFFSET 0`
+    }
+
+    if (offset) {
+      return `LIMIT 100 OFFSET ${offset}`
+    }
+
+    return ''
+  }
+
+  public async findAll(limit?: number, offset?: number): Promise<T[]> {
     const columns = this.getColumns()
+    const limitOffset = this.getLimitOffset(limit, offset)
 
     const {rows} = await this.pool.query<T>(
-      `SELECT ${columns} FROM ${this.tableName} ORDER BY ${
-        this.idColumn
-      } LIMIT 100 OFFSET ${offset || 0}`,
+      `SELECT ${columns} FROM ${this.tableName} ORDER BY ${this.idColumn} ${limitOffset}`,
     )
 
     return rows
@@ -168,16 +205,16 @@ export abstract class BaseRepository<T extends IModel>
     return rowCount ? rows[0] : false
   }
 
-  public async find(filter: Partial<T>, or?: boolean): Promise<T[]> {
+  public async find<Q = T>(filter: Partial<Q>, or?: boolean): Promise<Q[]> {
     const columns = this.getColumns()
 
-    const {query, values} = BaseRepository.generateSearchQueryParts<T>(
+    const {query, values} = BaseRepository.generateSearchQueryParts<Q>(
       filter,
       false,
       or,
     )
 
-    const {rows} = await this.pool.query<T>(
+    const {rows} = await this.pool.query<Q>(
       `SELECT ${columns} FROM ${this.tableName} WHERE ${query}`,
       values,
     )
@@ -185,7 +222,10 @@ export abstract class BaseRepository<T extends IModel>
     return rows
   }
 
-  public async findOne(filter: Partial<T>, or?: boolean): Promise<T | null> {
+  public async findOne<Q = T>(
+    filter: Partial<Q>,
+    or?: boolean,
+  ): Promise<Q | null> {
     const rows = await this.find(filter, or)
 
     return rows.length ? rows[0] : null
@@ -305,7 +345,7 @@ export abstract class BaseRepository<T extends IModel>
   }
 
   private getColumns(): string {
-    const columns = this.columns
+    const columns = [this.idColumn, ...this.columns]
       // eslint-disable-next-line no-bitwise
       .filter(col => !~this.ignore.indexOf(col))
     return columns.reduce((acc, col, index) => {

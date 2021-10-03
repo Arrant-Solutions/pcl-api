@@ -1,20 +1,14 @@
-import {IResource, IResourceCreate} from '../models/Resource'
+import {IResource, IResourceCreate, ResourceCreateT} from '../models/Resource'
 import {IResponse} from '../types'
 import BaseService from './BaseService'
 
-export default class ResourceService extends BaseService<
-  IResource,
-  IResourceCreate
-> {
-  public async insert<Q = Partial<IResource>>(
-    model: Q & IResourceCreate,
+export default class ResourceService extends BaseService<ResourceCreateT> {
+  public async insert<Q extends ResourceCreateT>(
+    model: Q,
     withID?: boolean,
-  ): Promise<IResponse<IResourceCreate | false>> {
+  ): Promise<IResponse<Q | false>> {
     try {
-      const result = await this.repository.insert<IResourceCreate>(
-        model,
-        withID,
-      )
+      const result = await this.repository.insert<Q>(model, withID)
 
       if (typeof result === 'boolean') {
         return {statusCode: 500, data: 'Failed to upload'}

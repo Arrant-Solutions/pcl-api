@@ -6,11 +6,11 @@ import {IMediaType} from '../models/MediaType'
 import {IResourceAvailability} from '../models/ResourceAvailability'
 import {IResourceCategory} from '../models/resource_category'
 import {IResourceType} from '../models/ResourceType'
-import {IUser} from '../models/User'
+import {ICreateUserT} from '../models/User'
 import {IUserGroup} from '../models/UserGroup'
 import {BaseRepository} from './BaseRepository'
 import {IUserStatus} from '../models/UserStatus'
-import { IResource } from '../models/Resource'
+import {ResourceCreateT} from '../models/Resource'
 
 export class BranchRepository extends BaseRepository<IBranch> {}
 
@@ -26,10 +26,10 @@ export class ResourceAvailabilityRepository extends BaseRepository<IResourceAvai
 
 export class ResourceTypeRepository extends BaseRepository<IResourceType> {}
 
-export class ResourceCategoryRepository extends BaseRepository<IResourceCategory> { }
+export class ResourceCategoryRepository extends BaseRepository<IResourceCategory> {}
 
-export class ResourceRepository extends BaseRepository<IResource> {}
+export class ResourceRepository extends BaseRepository<ResourceCreateT> {}
 
-export class UserRepository extends BaseRepository<IUser> {}
+export class UserRepository extends BaseRepository<ICreateUserT> {}
 
 export class UserStatusRepository extends BaseRepository<IUserStatus> {}

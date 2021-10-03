@@ -1,20 +1,20 @@
 // import * as argon2 from 'argon2'
 // import * as Bluebird from 'bluebird'
 // import {randomBytes} from 'crypto'
-import {ICreateUser, IUser} from '../models/User'
+import {ICreateUser, ICreateUserT, IUser} from '../models/User'
 import {IResponse} from '../types'
 import BaseService from './BaseService'
 
-export default class UserService extends BaseService<IUser, ICreateUser> {
-  public async insert<Q = Partial<IUser>>(
-    model: Q & ICreateUser,
+export default class UserService extends BaseService<ICreateUserT> {
+  public async insert<T extends ICreateUserT>(
+    model: T,
     withID?: boolean,
-  ): Promise<IResponse<ICreateUser | false>> {
+  ): Promise<IResponse<T>> {
     try {
       // const salt = randomBytes(32)
       // const password = await argon2.hash(model.password, {salt})
 
-      const result = await this.repository.insert<ICreateUser>(model, withID)
+      const result = await this.repository.insert<T>(model, withID)
 
       if (typeof result === 'boolean') {
         return {statusCode: 500, data: 'Failed to upload'}
@@ -22,7 +22,7 @@ export default class UserService extends BaseService<IUser, ICreateUser> {
 
       return {statusCode: 200, data: result}
     } catch (error) {
-      return {statusCode: 500, data: error.message}
+      return {statusCode: 500, data: error.message as string}
     }
   }
 
