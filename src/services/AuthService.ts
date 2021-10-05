@@ -1,9 +1,9 @@
 // import * as argon2 from 'argon2'
 import * as jwt from 'jsonwebtoken'
-import {emailRegex, jwtExpiry, jwtSecret} from '../config'
+import {emailRegex, jwtExpiry, jwtSecret, publicKey} from '../config'
 import {isUnderAge} from '../helpers'
 // import {auth} from '../loaders/firebase'
-import {ICreateUserT} from '../models/User'
+import {ICreateUserT, IUser} from '../models/User'
 import {IResponse} from '../types'
 import UserService from './UserService'
 
@@ -27,6 +27,13 @@ export default class AuthService {
       }
     }
 
+    console.log(JSON.stringify(data, null, 2))
+    // const token = this.generateJWT(result)
+
+    // const decoded = this.decodeJWT(token)
+
+    // console.log(decoded)
+
     if (/^(Blocked|Disabled)$/i.test(data.user_status_name)) {
       return {
         statusCode: 401,
@@ -35,6 +42,8 @@ export default class AuthService {
     }
 
     const token = this.generateJWT(data)
+
+    console.log('token', token)
 
     return {statusCode: 200, data: {user: data, token}}
   }
@@ -115,9 +124,34 @@ export default class AuthService {
       phone: user.phone,
       email: user.email,
     }
-    const signature = jwtSecret
+    const passphrase = jwtSecret
     const expiration = jwtExpiry
 
-    return jwt.sign({data}, signature, {expiresIn: expiration})
+    return jwt.sign(
+      {data},
+      {key: publicKey, passphrase},
+      {
+        expiresIn: expiration,
+        algorithm: 'RS256',
+      },
+    )
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  decodeJWT(
+    token: string,
+  ):
+    | Pick<IUser, 'user_id' | 'phone' | 'email'>
+    | jwt.TokenExpiredError
+    | jwt.JsonWebTokenError {
+    try {
+      console.log(jwtSecret, token)
+      const decoded = jwt.verify(token, jwtSecret)
+      console.log(decoded)
+      return decoded as ICreateUserT
+    } catch (error) {
+      console.log(error)
+      return error as jwt.TokenExpiredError | jwt.JsonWebTokenError
+    }
   }
 }

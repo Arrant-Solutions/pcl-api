@@ -1,6 +1,6 @@
 import {Request} from 'express'
 import * as jwt from 'express-jwt'
-import {jwtSecret} from '../config'
+import {publicKey} from '../config'
 
 const getTokenFromHeader = (req: Request) => {
   if (
@@ -16,7 +16,7 @@ const getTokenFromHeader = (req: Request) => {
 const path = `^/api/${process.env.API_VERSION}/(assets|auth)(/)?(.*)`
 
 export default jwt({
-  secret: jwtSecret,
+  secret: publicKey,
   userProperty: 'token',
   getToken: getTokenFromHeader,
   algorithms: ['RS256'],

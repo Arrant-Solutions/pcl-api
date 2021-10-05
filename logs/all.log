@@ -422,3 +422,142 @@
 2021-10-05 19:11:02:112 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 560 - 373.886 ms[39m
 [35m[39m
 2021-10-05 19:13:43:1343 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 19:23:13:2313 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 560 - 2906.948 ms[39m
+[35m[39m
+2021-10-05 19:31:58:3158 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/milimore0000@gmail.com 404 46 - 2124.598 ms[39m
+[35m[39m
+2021-10-05 19:32:00:320 [35mhttp[39m: [35mGET /api/v1.0/assets 304 - - 2479.058 ms[39m
+[35m[39m
+2021-10-05 19:32:59:3259 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/milimore0000@gmail.com 404 46 - 2154.965 ms[39m
+[35m[39m
+2021-10-05 19:33:01:331 [35mhttp[39m: [35mGET /api/v1.0/assets 304 - - 1818.538 ms[39m
+[35m[39m
+2021-10-05 19:34:31:3431 [35mhttp[39m: [35mGET /api/v1.0/assets 304 - - 4330.535 ms[39m
+[35m[39m
+2021-10-05 19:34:33:3433 [35mhttp[39m: [35mGET /api/v1.0/assets 304 - - 3961.802 ms[39m
+[35m[39m
+2021-10-05 19:34:35:3435 [35mhttp[39m: [35mGET /api/v1.0/assets 304 - - 4213.954 ms[39m
+[35m[39m
+2021-10-05 19:50:36:5036 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/milimore0000@gmail.com 404 46 - 2668.334 ms[39m
+[35m[39m
+2021-10-05 19:51:06:516 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/milimore0000@gmail.com 404 46 - 2604.939 ms[39m
+[35m[39m
+2021-10-05 19:52:38:5238 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/milimore0000@gmail.com 404 46 - 2708.952 ms[39m
+[35m[39m
+2021-10-05 19:54:07:547 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/milimore0000@gmail.com 404 46 - 2632.430 ms[39m
+[35m[39m
+2021-10-05 19:55:15:5515 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/milimore0000@gmail.com 404 46 - 2479.192 ms[39m
+[35m[39m
+2021-10-05 19:59:31:5931 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/milimore0000@gmail.com 404 46 - 2725.304 ms[39m
+[35m[39m
+2021-10-05 19:59:34:5934 [35mhttp[39m: [35mGET /api/v1.0/assets 304 - - 2345.134 ms[39m
+[35m[39m
+2021-10-05 20:10:56:1056 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 20:11:15:1115 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 20:11:31:1131 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 20:28:58:2858 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 20:29:15:2915 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 20:29:39:2939 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 - - 2766.982 ms[39m
+[35m[39m
+2021-10-05 20:29:39:2939 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 - - 421.878 ms[39m
+[35m[39m
+2021-10-05 20:29:40:2940 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 - - 354.055 ms[39m
+[35m[39m
+2021-10-05 20:31:00:310 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 20:31:38:3138 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 20:31:45:3145 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 - - 2409.679 ms[39m
+[35m[39m
+2021-10-05 20:31:45:3145 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 - - 343.363 ms[39m
+[35m[39m
+2021-10-05 20:31:46:3146 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 - - 364.703 ms[39m
+[35m[39m
+2021-10-05 20:32:34:3234 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 20:32:41:3241 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 - - 2644.191 ms[39m
+[35m[39m
+2021-10-05 20:32:42:3242 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 - - 348.129 ms[39m
+[35m[39m
+2021-10-05 20:32:42:3242 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 - - 388.349 ms[39m
+[35m[39m
+2021-10-05 20:33:59:3359 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 20:34:25:3425 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 20:34:31:3431 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 - - 2657.467 ms[39m
+[35m[39m
+2021-10-05 20:34:31:3431 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 - - 335.283 ms[39m
+[35m[39m
+2021-10-05 20:34:31:3431 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 - - 378.629 ms[39m
+[35m[39m
+2021-10-05 20:36:04:364 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 20:36:18:3618 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 - - 2716.539 ms[39m
+[35m[39m
+2021-10-05 20:36:19:3619 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 - - 339.062 ms[39m
+[35m[39m
+2021-10-05 20:36:19:3619 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 - - 389.067 ms[39m
+[35m[39m
+2021-10-05 20:38:04:384 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 20:40:11:4011 [35mhttp[39m: [35mPOST /api/v1.0/auth/login 404 159 - 31.120 ms[39m
+[35m[39m
+2021-10-05 20:41:18:4118 [35mhttp[39m: [35mPOST /api/v1.0/auth/fetchUser/wmoonga@gmail.com 404 181 - 1.739 ms[39m
+[35m[39m
+2021-10-05 20:41:28:4128 [35mhttp[39m: [35mPOST /api/v1.0/auth/fetchUser/wmoonga@gmail.com 404 181 - 0.613 ms[39m
+[35m[39m
+2021-10-05 20:42:17:4217 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 1237 - 2746.360 ms[39m
+[35m[39m
+2021-10-05 20:42:38:4238 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 1237 - 2635.093 ms[39m
+[35m[39m
+2021-10-05 21:02:01:21 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:02:55:255 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:03:57:357 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:04:02:42 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 1237 - 2880.544 ms[39m
+[35m[39m
+2021-10-05 21:06:50:650 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:07:05:75 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:07:10:710 [35mhttp[39m: [35mGET /api/v1.0/assets 200 43851 - 4500.490 ms[39m
+[35m[39m
+2021-10-05 21:09:11:911 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:09:16:916 [35mhttp[39m: [35mGET /api/v1.0/assets 200 43851 - 4761.356 ms[39m
+[35m[39m
+2021-10-05 21:09:48:948 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 1237 - 2883.127 ms[39m
+[35m[39m
+2021-10-05 21:10:06:106 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 1237 - 2292.546 ms[39m
+[35m[39m
+2021-10-05 21:12:00:120 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:12:43:1243 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 1237 - 2888.901 ms[39m
+[35m[39m
+2021-10-05 21:15:53:1553 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:16:02:162 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 1143 - 2778.663 ms[39m
+[35m[39m
+2021-10-05 21:18:15:1815 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:18:56:1856 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:19:21:1921 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:20:26:2026 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:20:54:2054 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:21:14:2114 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:21:54:2154 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:22:04:224 [35mhttp[39m: [35mGET /api/v1.0/assets 200 43851 - 4118.151 ms[39m
+[35m[39m
+2021-10-05 21:22:13:2213 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 1245 - 359.641 ms[39m
+[35m[39m
+2021-10-05 21:23:55:2355 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:23:59:2359 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 1245 - 2632.408 ms[39m
+[35m[39m
+2021-10-05 21:24:12:2412 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:24:57:2457 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:25:03:253 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 1054 - 2600.633 ms[39m
+[35m[39m
+2021-10-05 21:25:54:2554 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:26:03:263 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:26:06:266 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 1143 - 2783.158 ms[39m
+[35m[39m
+2021-10-05 21:29:43:2943 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 500 1143 - 2663.664 ms[39m
+[35m[39m
+2021-10-05 21:30:19:3019 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:31:56:3156 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:32:00:320 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 859 - 2248.754 ms[39m
+[35m[39m
+2021-10-05 21:32:24:3224 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:32:55:3255 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:32:59:3259 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 859 - 2581.190 ms[39m
+[35m[39m
+2021-10-05 21:33:20:3320 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:34:14:3414 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 859 - 2666.628 ms[39m
+[35m[39m
