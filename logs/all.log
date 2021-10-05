@@ -378,3 +378,47 @@
 [35m[39m
 2021-10-04 04:58:11:5811 [35mhttp[39m: [35mPOST /api/v1.0/auth/register 200 560 - 3855.676 ms[39m
 [35m[39m
+2021-10-05 18:43:36:4336 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 18:51:23:5123 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 18:52:41:5241 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 18:52:45:5245 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 401 - - 16.303 ms[39m
+[35m[39m
+2021-10-05 18:53:28:5328 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 18:53:44:5344 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 401 - - 21.113 ms[39m
+[35m[39m
+2021-10-05 18:56:23:5623 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 18:57:04:574 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 18:59:15:5915 [35mhttp[39m: [35mGET /api/v1.0/assets 401 1372 - 17.599 ms[39m
+[35m[39m
+2021-10-05 19:00:57:057 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 19:02:51:251 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 19:02:57:257 [35mhttp[39m: [35mGET /api/v1.0/assets 200 43851 - 4464.188 ms[39m
+[35m[39m
+2021-10-05 19:03:13:313 [35mhttp[39m: [35mGET /api/v1.0/assets 200 43851 - 4042.342 ms[39m
+[35m[39m
+2021-10-05 19:03:28:328 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 19:03:30:330 [35mhttp[39m: [35mGET /api/v1.0/assets 401 1372 - 9.663 ms[39m
+[35m[39m
+2021-10-05 19:03:33:333 [35mhttp[39m: [35mGET /api/v1.0/assets 401 1372 - 1.296 ms[39m
+[35m[39m
+2021-10-05 19:05:26:526 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 19:05:32:532 [35mhttp[39m: [35mGET /api/v1.0/assets 200 43851 - 4801.335 ms[39m
+[35m[39m
+2021-10-05 19:05:57:557 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 19:06:02:62 [35mhttp[39m: [35mGET /api/v1.0/assets 200 43851 - 4045.679 ms[39m
+[35m[39m
+2021-10-05 19:06:27:627 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 19:06:32:632 [35mhttp[39m: [35mGET /api/v1.0/assets 200 43851 - 3689.920 ms[39m
+[35m[39m
+2021-10-05 19:08:21:821 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 19:08:57:857 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 19:09:25:925 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 19:09:50:950 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 19:10:03:103 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 19:10:17:1017 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 19:10:37:1037 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 19:10:52:1052 [35mhttp[39m: [35mGET /api/v1.0/assets 200 43851 - 4588.504 ms[39m
+[35m[39m
+2021-10-05 19:11:02:112 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 560 - 373.886 ms[39m
+[35m[39m
+2021-10-05 19:13:43:1343 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m

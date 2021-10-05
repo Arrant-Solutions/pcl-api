@@ -8,6 +8,7 @@ import * as express from 'express'
 import * as compression from 'compression'
 import Logger from './config/logger'
 import morgan from './middleware/morgan'
+import isAuth from './middleware/isAuth'
 
 const app = express()
 
@@ -26,10 +27,11 @@ app.get('/logger', (_, res) => {
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(compression())
+app.use(isAuth)
 
 useExpressServer(app, {
   cors: true,
-  routePrefix: '/api/v1.0',
+  routePrefix: `/api/${process.env.API_VERSION}`,
   controllers: [`${__dirname}/controllers/*.ts`],
 })
 

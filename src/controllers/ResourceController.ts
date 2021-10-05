@@ -9,16 +9,30 @@ import {
   Param,
   Put,
   Delete,
+  UseBefore,
 } from 'routing-controllers'
 import {Response} from 'express'
 import {PCLRequest} from '../types'
 import {resourceService} from '../loaders/services'
 import {ResourceCreateT, IResourceCreate} from '../models/Resource'
+import roleBasedAuth from '../middleware/roleBasedAuth'
 
 @JsonController()
+@UseBefore(
+  roleBasedAuth(['Customer', 'Content Manager', 'Management', 'Super User']),
+)
 export default class ResourceController {
   @Get('/resources')
   async getAll(@Req() request: PCLRequest, @Res() response: Response) {
+    const {statusCode, data} = await resourceService.findAll()
+    return response.status(statusCode).json({statusCode, data})
+  }
+
+  @Get('/resources/home')
+  async getHomeResources(
+    @Req() request: PCLRequest,
+    @Res() response: Response,
+  ) {
     const {statusCode, data} = await resourceService.findAll()
     return response.status(statusCode).json({statusCode, data})
   }

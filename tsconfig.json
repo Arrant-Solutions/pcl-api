@@ -1,13 +1,24 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "outDir": "bin"
   },
   "emitDecoratorMetadata": true,
   "experimentalDecorators": true,
+  "moduleResolution": "node",
+  "allowJs": true,
   "baseUrl": "src",
   "watch": ["src", ".env"],
   "ext": "js,ts,json",
   "ignore": ["src/**/*.spec.ts"],
-  "exec": "ts-node  --transpile-only ./src/index.ts"
+  "exec": "ts-node  --transpile-only ./src/index.ts",
+  "files.exclude": {
+    "**/*.js": {
+      "when": "$(basename).ts"
+    },
+    "**/*.js.map": {
+      "when": "$(basename)"
+    }
+  }
 }

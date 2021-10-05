@@ -13,10 +13,11 @@ const getTokenFromHeader = (req: Request) => {
   return ''
 }
 
+const path = `^/api/${process.env.API_VERSION}/(assets|auth)(/)?(.*)`
+
 export default jwt({
   secret: jwtSecret,
   userProperty: 'token',
   getToken: getTokenFromHeader,
-})
-
-
+  algorithms: ['RS256'],
+}).unless({path: new RegExp(path)})
