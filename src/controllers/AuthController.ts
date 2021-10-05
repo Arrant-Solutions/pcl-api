@@ -29,7 +29,7 @@ export default class AuthController {
 
   @Post('/auth/register')
   async register(
-    @Body() user: ICreateUser,
+    @Body({required: true}) user: ICreateUser,
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {

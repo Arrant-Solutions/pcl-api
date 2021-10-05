@@ -18,3 +18,5 @@ export default jwt({
   userProperty: 'token',
   getToken: getTokenFromHeader,
 })
+
+

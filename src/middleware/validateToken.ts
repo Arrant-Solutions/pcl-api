@@ -12,5 +12,6 @@ export default async (req: PCLRequest, res: Response, next: NextFunction) => {
   if (!data) {
     return res.status(401).json({statusCode: 401, data: 'User not found'})
   }
+
   return next()
 }

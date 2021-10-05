@@ -11,16 +11,40 @@ export default class UserService extends BaseService<ICreateUserT> {
     withID?: boolean,
   ): Promise<IResponse<T>> {
     try {
-      // const salt = randomBytes(32)
-      // const password = await argon2.hash(model.password, {salt})
+      const client = await this.repository.createTransactionClient()
 
-      const result = await this.repository.insert<T>(model, withID)
+      if (client) {
+        this.repository.setPool(client)
+        try {
+          await client.query('BEGIN')
+          const result = await this.repository.insert<T>(model, withID)
 
-      if (typeof result === 'boolean') {
-        return {statusCode: 500, data: 'Failed to upload'}
+          if (typeof result === 'boolean') {
+            return {statusCode: 500, data: 'Failed to upload'}
+          }
+
+          if (model.branch_id) {
+            await this.repository.executeRawQuery(
+              'INSERT INTO user_branch_pivot (user_id, branch_id) VALUES ($1, $2)',
+              [result.user_id, model.branch_id],
+            )
+          }
+
+          await client.query('COMMIT')
+
+          return {statusCode: 200, data: result}
+        } catch (error) {
+          await client.query('ROLLBACK')
+          throw error
+        } finally {
+          client.release()
+        }
       }
 
-      return {statusCode: 200, data: result}
+      return {
+        statusCode: 200,
+        data: 'An error occurred. Failed to create user.',
+      }
     } catch (error) {
       console.log(error)
       return {statusCode: 500, data: error.message as string}

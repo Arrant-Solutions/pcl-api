@@ -18,6 +18,10 @@ export interface IBaseRepository<T extends IModel> {
     client?: Pool | PoolClient,
   ): Promise<Q | false>
 
+  setPool(client: PoolClient)
+
+  createTransactionClient(): Promise<PoolClient | void>
+
   update<Q extends T>(id: number, model: Q): Promise<T | false>
 
   insertMany<Q extends T>(models: Q[], withID?: boolean): Promise<boolean>
@@ -53,7 +57,7 @@ export interface IBaseRepository<T extends IModel> {
 export abstract class BaseRepository<T extends IModel>
   implements IBaseRepository<T>
 {
-  protected pool: Pool
+  protected pool: Pool | PoolClient
   protected tableName: string
   protected columns: string[]
   protected ignore: string[]
@@ -79,6 +83,16 @@ export abstract class BaseRepository<T extends IModel>
     this.tableName = tableName
     this.hasA = hasA || []
     this.ignore = ignore || []
+  }
+
+  setPool(client: PoolClient) {
+    this.pool = client
+  }
+
+  async createTransactionClient(): Promise<PoolClient | void> {
+    const client = await this.pool.connect()
+
+    return client
   }
 
   public async insert<Q extends T>(

@@ -1,4 +1,5 @@
 import {Optional} from '../types'
+import {IAuthor} from './Author'
 import {IModel, Model} from './IModel'
 import {IMediaType, MediaType} from './MediaType'
 import {
@@ -13,7 +14,7 @@ export interface IResource extends IModel {
   resource_id: number
   title: string
   description: string
-  author: string
+  author: IAuthor
   resource_url: string
   thumbnail_url: string
   user: IUser
@@ -27,7 +28,7 @@ export interface IResourceCreate {
   resource_id: number
   title: string
   description: string
-  author: string
+  author: IAuthor
   resource_url: string
   thumbnail_url: string
   user_id: number
@@ -55,13 +56,13 @@ export type IResourceView = IResource &
   IMediaType &
   IResourceAvailability &
   IResourceType &
-  IResourceCategory
+  IResourceCategory &
+  IAuthor
 
 export class Resource extends Model implements IResource {
   resource_id: number
   title: string
   description: string
-  author: string
   resource_url: string
   thumbnail_url: string
   user: IUser
@@ -69,6 +70,7 @@ export class Resource extends Model implements IResource {
   resource_type: ResourceType
   resource_availability: ResourceAvailability
   media_type: MediaType
+  author: IAuthor
 
   constructor(
     arg: Optional<
@@ -85,7 +87,13 @@ export class Resource extends Model implements IResource {
           IResourceAvailability &
           IResourceType &
           IResourceCategory
-      >,
+      > & {
+        author_id: number
+        author_title: string
+        author_first_name: string
+        author_last_name: string
+        author_suffix: string
+      },
   ) {
     super()
     if (arg.resource_category_name && arg.resource_type_name) {
@@ -140,6 +148,13 @@ export class Resource extends Model implements IResource {
       this.media_type = {
         media_type_id: arg.media_type_id,
         media_type_name: arg.media_type_name,
+      }
+      this.author = {
+        author_id: arg.author_id,
+        title: arg.author_title,
+        first_name: arg.author_first_name,
+        last_name: arg.author_last_name,
+        suffix: arg.author_suffix,
       }
     }
   }

@@ -27,13 +27,6 @@ export default class AuthService {
       }
     }
 
-    // if (data.user_status_name === 'Pending Verification') {
-    //   return {
-    //     statusCode: 401,
-    //     data: 'Please verify your account and try again',
-    //   }
-    // }
-
     if (/^(Blocked|Disabled)$/i.test(data.user_status_name)) {
       return {
         statusCode: 401,
@@ -45,49 +38,6 @@ export default class AuthService {
 
     return {statusCode: 200, data: {user: data, token}}
   }
-
-  // public async login({
-  //   email,
-  // }: // password,
-  // ICredential): Promise<
-  //   IResponse<{user: Omit<IUser, 'password' | 'password_salt'>; token: string}>
-  // > {
-  //   const {statusCode, data} =
-  //     await this.userService.executeRawQuery<IUserView>(
-  //       'SELECT * FROM user_view WHERE lower(email) = lower($1)',
-  //       [email],
-  //     )
-
-  //   if (typeof data === 'string' || data === null || data.length === 0) {
-  //     return {statusCode, data: 'Unable to find user with specified email'}
-  //   }
-
-  //   const found = data[0]
-
-  //   if (found.user_status_name === 'Pending Verification') {
-  //     return {statusCode: 401, data: 'Please verify your account and try again'}
-  //   }
-
-  //   if (/^(Blocked|Disabled)$/i.test(found.user_status_name)) {
-  //     return {
-  //       statusCode: 401,
-  //       data: `Your account was ${found.user_status_name}. Please contact support.`,
-  //     }
-  //   }
-
-  //   // const correctPassword = await argon2.verify(found.password, password)
-  //   // if (!correctPassword) {
-  //   //   return {statusCode: 403, data: 'Invalid email/password combination'}
-  //   // }
-
-  //   const user = new User(found)
-  //   // delete user.password
-
-  //   return {
-  //     statusCode: 200,
-  //     data: user,
-  //   }
-  // }
 
   public async register(user: ICreateUserT): Promise<
     IResponse<
@@ -137,10 +87,6 @@ export default class AuthService {
       }
     }
 
-    // if (typeof data === 'string') {
-    //   return {statusCode, data}
-    // }
-
     const {statusCode: status, data: result} = await this.userService.insert({
       ...user,
       user_group_id: 4, // default to customer
@@ -159,10 +105,6 @@ export default class AuthService {
       }
     }
 
-    // if (status === 200 && typeof data === 'object') {
-    //   delete data.password
-    //   delete data.password_salt
-    // }
     return {statusCode: status, data: result}
   }
 

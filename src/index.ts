@@ -5,6 +5,7 @@ config()
 import 'reflect-metadata'
 import {useExpressServer} from 'routing-controllers'
 import * as express from 'express'
+import * as compression from 'compression'
 import Logger from './config/logger'
 import morgan from './middleware/morgan'
 
@@ -24,12 +25,14 @@ app.get('/logger', (_, res) => {
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(compression())
 
 useExpressServer(app, {
   cors: true,
   routePrefix: '/api/v1.0',
   controllers: [`${__dirname}/controllers/*.ts`],
 })
+
 app.listen(process.env.PORT, () =>
   Logger.debug(`Server running on: http://localhost:${process.env.PORT}`),
 )

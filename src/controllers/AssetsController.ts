@@ -13,26 +13,11 @@ import {
 export default class AssetsController {
   @Get('/assets')
   async getAll(@Req() request: Request, @Res() response: Response) {
-    console.log('started')
     const branches = await branchService.findAll()
     const genders = await genderService.findAll()
     const countries = await countryService.findAll()
     const userStatuses = await userStatusService.findAll()
     const userGroups = await userGroupService.findAll()
-
-    console.log(
-      JSON.stringify(
-        {
-          branches: branches.data,
-          genders: genders.data,
-          countries: countries.data,
-          userGroups: userGroups.data,
-          userStatuses: userStatuses.data,
-        },
-        null,
-        2,
-      ),
-    )
 
     if (
       branches.statusCode !== 200 ||

@@ -1,5 +1,5 @@
 import {Request} from 'express'
-import {IUser} from '../models/User'
+import {ICreateUserT, IUser} from '../models/User'
 
 export function StaticImplements<T>(t: T) {
   return t
@@ -7,7 +7,7 @@ export function StaticImplements<T>(t: T) {
 
 export interface PCLRequest extends Request {
   tokenData: Pick<IUser, 'email' | 'phone' | 'user_id'>
-  user: IUser
+  user: ICreateUserT
 }
 
 export interface IResponse<T = unknown> {
