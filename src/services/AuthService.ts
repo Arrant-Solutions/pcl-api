@@ -27,13 +27,6 @@ export default class AuthService {
       }
     }
 
-    console.log(JSON.stringify(data, null, 2))
-    // const token = this.generateJWT(result)
-
-    // const decoded = this.decodeJWT(token)
-
-    // console.log(decoded)
-
     if (/^(Blocked|Disabled)$/i.test(data.user_status_name)) {
       return {
         statusCode: 401,
@@ -42,8 +35,9 @@ export default class AuthService {
     }
 
     const token = this.generateJWT(data)
+    const decoded = this.decodeJWT(token)
 
-    console.log('token', token)
+    console.log('token', decoded)
 
     return {statusCode: 200, data: {user: data, token}}
   }
