@@ -1,10 +1,6 @@
 import {Request} from 'express'
 import {ICreateUserT, IUser} from '../models/User'
 
-export function StaticImplements<T>(t: T) {
-  return t
-}
-
 export interface PCLRequest extends Request {
   tokenData: Pick<IUser, 'email' | 'phone' | 'user_id'>
   user: ICreateUserT

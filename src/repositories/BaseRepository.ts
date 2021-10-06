@@ -63,9 +63,11 @@ export abstract class BaseRepository<T extends IModel>
   protected ignore: string[]
   protected idColumn: string
   protected hasA: IJoin<T>[]
+  protected viewName: string
 
   constructor({
     tableName,
+    viewName,
     columns,
     idColumn,
     hasA,
@@ -73,6 +75,7 @@ export abstract class BaseRepository<T extends IModel>
   }: {
     idColumn?: string
     tableName: string
+    viewName?: string
     columns: string[]
     hasA?: IJoin<T>[]
     ignore?: string[]
@@ -83,6 +86,7 @@ export abstract class BaseRepository<T extends IModel>
     this.tableName = tableName
     this.hasA = hasA || []
     this.ignore = ignore || []
+    this.viewName = viewName
   }
 
   setPool(client: PoolClient) {
@@ -107,7 +111,7 @@ export abstract class BaseRepository<T extends IModel>
 
     const query = `INSERT INTO ${this.tableName} (${columns}) VALUES (${placeholders}) RETURNING *`
 
-    console.log(JSON.stringify({query, values}, null, 2))
+    // console.log(JSON.stringify({query, values}, null, 2))
 
     const {rowCount, rows} = await (client || this.pool).query<Q>(query, values)
 
@@ -171,7 +175,7 @@ export abstract class BaseRepository<T extends IModel>
       await client.query('COMMIT')
       return true
     } catch (e) {
-      console.log(e)
+      // console.log(e)
       await client.query('ROLLBACK')
       return false
     } finally {
@@ -213,7 +217,9 @@ export abstract class BaseRepository<T extends IModel>
     const limitOffset = this.getLimitOffset(limit, offset)
 
     const {rows} = await this.pool.query<T>(
-      `SELECT ${columns} FROM ${this.tableName} ORDER BY ${this.idColumn} ${limitOffset}`,
+      `SELECT ${columns} FROM ${this.viewName || this.tableName} ORDER BY ${
+        this.idColumn
+      } ${limitOffset}`,
     )
 
     return rows
@@ -243,7 +249,9 @@ export abstract class BaseRepository<T extends IModel>
     )
 
     const {rows} = await this.pool.query<Q>(
-      `SELECT ${columns} FROM ${this.tableName} WHERE ${query}`,
+      `SELECT ${columns} FROM ${
+        this.viewName || this.tableName
+      } WHERE ${query}`,
       values,
     )
 
@@ -282,7 +290,9 @@ export abstract class BaseRepository<T extends IModel>
     )
 
     const {rows} = await this.pool.query<T>(
-      `SELECT ${columns} FROM ${this.tableName} WHERE ${query}`,
+      `SELECT ${columns} FROM ${
+        this.viewName || this.tableName
+      } WHERE ${query}`,
       values,
     )
 
@@ -358,7 +368,9 @@ export abstract class BaseRepository<T extends IModel>
         const param = index + 1
         const operator = wildcard ? 'LIKE' : '='
         const glue = or ? 'OR' : 'AND'
-        const column = ignoreCase ? `LOWER(${col})` : col
+        const column =
+          ignoreCase && typeof model[col] !== 'number' ? `LOWER(${col})` : col
+        // console.log(model[col], col, typeof model[col])
         // eslint-disable-next-line no-param-reassign
         acc.query +=
           index === arr.length - 1
@@ -378,13 +390,13 @@ export abstract class BaseRepository<T extends IModel>
   private getColumns(): string {
     const columns = [this.idColumn, ...this.columns]
       // eslint-disable-next-line no-bitwise
-      .filter(col => !~this.ignore.indexOf(col))
+      .filter(col => !!this.viewName || !~this.ignore.indexOf(col))
     return columns.reduce((acc, col, index) => {
       // eslint-disable-next-line no-param-reassign
       acc +=
         index === columns.length - 1
-          ? `${this.tableName}.${col}`
-          : `${this.tableName}.${col}, `
+          ? `${this.viewName || this.tableName}.${col}`
+          : `${this.viewName || this.tableName}.${col}, `
 
       return acc
     }, '')

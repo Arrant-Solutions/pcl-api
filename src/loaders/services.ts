@@ -92,6 +92,7 @@ export const userStatusService = new UserStatusService(
 export const userService = new UserService(
   new UserRepository({
     tableName: 'users',
+    viewName: 'user_view',
     columns: [
       'avatar',
       'first_name',
@@ -109,6 +110,7 @@ export const userService = new UserService(
       'gender_name',
       'gender_id',
       'user_status_id',
+      'user_status_name',
     ],
     ignore: [
       'user_group_name',
@@ -126,6 +128,7 @@ export const resourceService = new ResourceService(
   new ResourceRepository({
     idColumn: 'resource_id',
     tableName: 'resources',
+    viewName: 'resource_view',
     columns: [
       'resource_id',
       'title',
@@ -155,6 +158,7 @@ export const resourceService = new ResourceService(
       'gender_name',
       'gender_id',
       'user_status_id',
+      'user_status_name',
 
       'resource_category_id',
       'resource_category_name',

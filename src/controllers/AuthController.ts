@@ -18,11 +18,13 @@ import {ICreateUser} from '../models/User'
 export default class AuthController {
   @Post('/auth/refreshToken')
   async refreshToken(
-    @HeaderParam('authorization') token: string,
+    @HeaderParam('token') token: string,
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
-    console.log(request, response, token)
+    const {statusCode, data} = await authService.refreshToken(token)
+
+    return response.status(statusCode).json({statusCode, data})
   }
 
   @Get('/auth/fetchUser/:email')
@@ -32,7 +34,7 @@ export default class AuthController {
     @Res() response: Response,
   ) {
     console.log(email)
-    const {statusCode, data} = await authService.fetchUser(email)
+    const {statusCode, data} = await authService.fetchUser({email})
 
     return response.status(statusCode).json({statusCode, data})
   }

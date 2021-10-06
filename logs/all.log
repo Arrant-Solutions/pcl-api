@@ -563,3 +563,358 @@
 [35m[39m
 2021-10-05 21:35:15:3515 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
 2021-10-05 21:36:21:3621 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:36:35:3635 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 859 - 2899.541 ms[39m
+[35m[39m
+2021-10-05 21:37:28:3728 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:37:32:3732 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 859 - 2765.093 ms[39m
+[35m[39m
+2021-10-05 21:42:21:4221 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:42:25:4225 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 859 - 2656.860 ms[39m
+[35m[39m
+2021-10-05 21:43:29:4329 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:43:34:4334 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 859 - 2831.881 ms[39m
+[35m[39m
+2021-10-05 21:44:13:4413 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:44:20:4420 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:44:38:4438 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:44:42:4442 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 859 - 2904.162 ms[39m
+[35m[39m
+2021-10-05 21:46:29:4629 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:47:13:4713 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:47:19:4719 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 859 - 2550.838 ms[39m
+[35m[39m
+2021-10-05 21:47:50:4750 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:47:56:4756 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 859 - 2458.591 ms[39m
+[35m[39m
+2021-10-05 21:48:15:4815 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:48:20:4820 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 859 - 2764.180 ms[39m
+[35m[39m
+2021-10-05 21:50:20:5020 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:50:23:5023 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 859 - 2690.751 ms[39m
+[35m[39m
+2021-10-05 21:50:58:5058 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:51:02:512 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 859 - 4153.129 ms[39m
+[35m[39m
+2021-10-05 21:53:49:5349 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:54:16:5416 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:54:19:5419 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 859 - 2847.529 ms[39m
+[35m[39m
+2021-10-05 21:55:09:559 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 21:55:59:5559 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 859 - 48176.346 ms[39m
+[35m[39m
+2021-10-05 21:55:59:5559 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com - - - - ms[39m
+[35m[39m
+2021-10-05 21:59:57:5957 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:01:06:16 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:01:10:110 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 688 - 2294.104 ms[39m
+[35m[39m
+2021-10-05 22:01:57:157 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:02:29:229 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:02:51:251 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:02:58:258 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:03:28:328 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:03:43:343 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:03:56:356 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:04:20:420 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:04:36:436 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:04:52:452 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:05:16:516 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:06:48:648 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:28:23:2823 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:29:00:290 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:29:47:2947 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:30:20:3020 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:31:15:3115 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:31:45:3145 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:44:08:448 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:45:16:4516 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 688 - 2325.437 ms[39m
+[35m[39m
+2021-10-05 22:53:12:5312 [35mhttp[39m: [35mPOST /api/v1.0/refreshToken 401 - - 16.143 ms[39m
+[35m[39m
+2021-10-05 22:53:27:5327 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 404 560 - 59.399 ms[39m
+[35m[39m
+2021-10-05 22:54:29:5429 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:54:32:5432 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 404 560 - 73.097 ms[39m
+[35m[39m
+2021-10-05 22:54:50:5450 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 404 560 - 24.389 ms[39m
+[35m[39m
+2021-10-05 22:55:00:550 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 404 560 - 19.649 ms[39m
+[35m[39m
+2021-10-05 22:55:41:5541 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:56:11:5611 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:56:33:5633 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 500 66 - 2372.631 ms[39m
+[35m[39m
+2021-10-05 22:58:56:5856 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:58:59:5859 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 500 66 - 2360.076 ms[39m
+[35m[39m
+2021-10-05 22:59:44:5944 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 22:59:49:5949 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 404 46 - 2571.916 ms[39m
+[35m[39m
+2021-10-05 23:01:24:124 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 23:01:26:126 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 404 46 - 2288.392 ms[39m
+[35m[39m
+2021-10-05 23:01:48:148 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 23:01:51:151 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 404 46 - 2822.130 ms[39m
+[35m[39m
+2021-10-05 23:02:25:225 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 23:02:39:239 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 404 46 - 2671.210 ms[39m
+[35m[39m
+2021-10-05 23:03:08:38 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 23:03:11:311 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 404 46 - 2482.789 ms[39m
+[35m[39m
+2021-10-05 23:04:32:432 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 23:04:37:437 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 500 56 - 2762.135 ms[39m
+[35m[39m
+2021-10-05 23:06:29:629 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 23:06:49:649 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 404 46 - 2706.314 ms[39m
+[35m[39m
+2021-10-05 23:07:51:751 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-05 23:07:58:758 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 9.999 ms[39m
+[35m[39m
+2021-10-05 23:08:09:89 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 41 - 4.389 ms[39m
+[35m[39m
+2021-10-05 23:08:17:817 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 200 688 - 2869.000 ms[39m
+[35m[39m
+2021-10-05 23:08:30:830 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 41 - 0.786 ms[39m
+[35m[39m
+2021-10-05 23:09:04:94 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 200 688 - 3618.432 ms[39m
+[35m[39m
+2021-10-05 23:09:17:917 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 200 688 - 3007.440 ms[39m
+[35m[39m
+2021-10-06 00:42:16:4216 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 00:42:22:4222 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 33.461 ms[39m
+[35m[39m
+2021-10-06 00:43:01:431 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 4.720 ms[39m
+[35m[39m
+2021-10-06 00:43:49:4349 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 1.410 ms[39m
+[35m[39m
+2021-10-06 00:43:53:4353 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 29.599 ms[39m
+[35m[39m
+2021-10-06 00:43:55:4355 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 3.632 ms[39m
+[35m[39m
+2021-10-06 00:43:57:4357 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 2.463 ms[39m
+[35m[39m
+2021-10-06 00:44:01:441 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 1.519 ms[39m
+[35m[39m
+2021-10-06 00:44:05:445 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 1.503 ms[39m
+[35m[39m
+2021-10-06 00:44:07:447 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 11.333 ms[39m
+[35m[39m
+2021-10-06 00:44:18:4418 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 2.619 ms[39m
+[35m[39m
+2021-10-06 00:44:20:4420 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 4.925 ms[39m
+[35m[39m
+2021-10-06 00:44:24:4424 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 1.851 ms[39m
+[35m[39m
+2021-10-06 00:45:20:4520 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 1.621 ms[39m
+[35m[39m
+2021-10-06 00:45:23:4523 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 2.175 ms[39m
+[35m[39m
+2021-10-06 00:45:24:4524 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 2.241 ms[39m
+[35m[39m
+2021-10-06 00:45:26:4526 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 1.732 ms[39m
+[35m[39m
+2021-10-06 00:45:33:4533 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 2.772 ms[39m
+[35m[39m
+2021-10-06 00:45:37:4537 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 14.304 ms[39m
+[35m[39m
+2021-10-06 00:45:42:4542 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 1.665 ms[39m
+[35m[39m
+2021-10-06 00:45:47:4547 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 6.375 ms[39m
+[35m[39m
+2021-10-06 00:45:55:4555 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 5.591 ms[39m
+[35m[39m
+2021-10-06 00:45:58:4558 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 2.171 ms[39m
+[35m[39m
+2021-10-06 00:46:00:460 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 6.693 ms[39m
+[35m[39m
+2021-10-06 00:46:15:4615 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 5.641 ms[39m
+[35m[39m
+2021-10-06 00:46:20:4620 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 2.368 ms[39m
+[35m[39m
+2021-10-06 00:46:27:4627 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 1.077 ms[39m
+[35m[39m
+2021-10-06 00:46:46:4646 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 1.525 ms[39m
+[35m[39m
+2021-10-06 00:46:49:4649 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 0.921 ms[39m
+[35m[39m
+2021-10-06 00:47:28:4728 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 2.037 ms[39m
+[35m[39m
+2021-10-06 00:50:57:5057 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 12.899 ms[39m
+[35m[39m
+2021-10-06 00:51:10:5110 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 3.049 ms[39m
+[35m[39m
+2021-10-06 00:51:51:5151 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 3.173 ms[39m
+[35m[39m
+2021-10-06 00:51:58:5158 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 1.146 ms[39m
+[35m[39m
+2021-10-06 00:52:00:520 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 2.408 ms[39m
+[35m[39m
+2021-10-06 00:52:05:525 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 1.444 ms[39m
+[35m[39m
+2021-10-06 00:59:19:5919 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 401 48 - 6.671 ms[39m
+[35m[39m
+2021-10-06 01:00:01:01 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 688 - 2905.027 ms[39m
+[35m[39m
+2021-10-06 01:00:18:018 [35mhttp[39m: [35mPOST /api/v1.0/auth/refreshToken 200 688 - 2710.547 ms[39m
+[35m[39m
+2021-10-06 01:09:14:914 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:09:28:928 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:11:07:117 [35mhttp[39m: [35mGET /api/v1.0/resources/home 401 1372 - 25.053 ms[39m
+[35m[39m
+2021-10-06 01:12:25:1225 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 1334 - 24.539 ms[39m
+[35m[39m
+2021-10-06 01:13:42:1342 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:13:45:1345 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 1334 - 42.785 ms[39m
+[35m[39m
+2021-10-06 01:13:52:1352 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 1334 - 2.678 ms[39m
+[35m[39m
+2021-10-06 01:14:00:140 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 1334 - 1.802 ms[39m
+[35m[39m
+2021-10-06 01:18:41:1841 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:18:59:1859 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:19:03:193 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 1334 - 41.400 ms[39m
+[35m[39m
+2021-10-06 01:19:59:1959 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:21:52:2152 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:22:13:2213 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:31:58:3158 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:32:02:322 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 1334 - 36.375 ms[39m
+[35m[39m
+2021-10-06 01:36:57:3657 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:36:58:3658 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 1334 - 40.048 ms[39m
+[35m[39m
+2021-10-06 01:38:32:3832 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:38:42:3842 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:38:44:3844 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 1334 - 49.126 ms[39m
+[35m[39m
+2021-10-06 01:39:08:398 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:41:32:4132 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:42:03:423 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:42:03:423 [35mhttp[39m: [35mGET /api/v1.0/resources/home 401 1347 - 21.493 ms[39m
+[35m[39m
+2021-10-06 01:42:14:4214 [35mhttp[39m: [35mGET /api/v1.0/resources/home 401 1347 - 2.954 ms[39m
+[35m[39m
+2021-10-06 01:42:21:4221 [35mhttp[39m: [35mGET /api/v1.0/resources/home 401 1347 - 1.886 ms[39m
+[35m[39m
+2021-10-06 01:42:37:4237 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:42:38:4238 [35mhttp[39m: [35mGET /api/v1.0/resources/home 401 1347 - 21.698 ms[39m
+[35m[39m
+2021-10-06 01:43:03:433 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:43:04:434 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 1334 - 43.408 ms[39m
+[35m[39m
+2021-10-06 01:43:21:4321 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:43:22:4322 [35mhttp[39m: [35mGET /api/v1.0/resources/home 401 1347 - 19.567 ms[39m
+[35m[39m
+2021-10-06 01:46:43:4643 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:48:38:4838 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:48:41:4841 [35mhttp[39m: [35mGET /api/v1.0/resources/home 401 1347 - 20.026 ms[39m
+[35m[39m
+2021-10-06 01:48:54:4854 [35mhttp[39m: [35mGET /api/v1.0/resources/home 401 1347 - 2.836 ms[39m
+[35m[39m
+2021-10-06 01:50:15:5015 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:51:29:5129 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:51:32:5132 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 1334 - 2339.649 ms[39m
+[35m[39m
+2021-10-06 01:52:51:5251 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:52:55:5255 [35mhttp[39m: [35mGET /api/v1.0/resources/home 401 1347 - 21.306 ms[39m
+[35m[39m
+2021-10-06 01:53:08:538 [35mhttp[39m: [35mGET /api/v1.0/resources/home 401 1347 - 2.861 ms[39m
+[35m[39m
+2021-10-06 01:53:54:5354 [35mhttp[39m: [35mPOST /api/v1.0//login 401 - - 7.189 ms[39m
+[35m[39m
+2021-10-06 01:54:38:5438 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:54:57:5457 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:55:39:5539 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:55:57:5557 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:56:24:5624 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:56:52:5652 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:56:55:5655 [35mhttp[39m: [35mPOST /api/v1.0//login 404 155 - 6.156 ms[39m
+[35m[39m
+2021-10-06 01:56:57:5657 [35mhttp[39m: [35mPOST /api/v1.0//login 404 155 - 1.451 ms[39m
+[35m[39m
+2021-10-06 01:57:05:575 [35mhttp[39m: [35mPOST /api/v1.0//auht/login 404 160 - 0.704 ms[39m
+[35m[39m
+2021-10-06 01:57:14:5714 [35mhttp[39m: [35mPOST /api/v1.0//auth/login 404 160 - 1.216 ms[39m
+[35m[39m
+2021-10-06 01:57:25:5725 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 1334 - 38.191 ms[39m
+[35m[39m
+2021-10-06 01:57:32:5732 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 1334 - 2.395 ms[39m
+[35m[39m
+2021-10-06 01:59:35:5935 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 01:59:38:5938 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 1334 - 48.426 ms[39m
+[35m[39m
+2021-10-06 01:59:56:5956 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 02:00:50:050 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 02:01:14:114 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 02:01:24:124 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 28 - 11.484 ms[39m
+[35m[39m
+2021-10-06 02:01:43:143 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 02:01:43:143 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 74 - 12.532 ms[39m
+[35m[39m
+2021-10-06 02:04:59:459 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 02:05:47:547 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 02:05:55:555 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 02:10:22:1022 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 02:10:28:1028 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 79 - 2627.706 ms[39m
+[35m[39m
+2021-10-06 02:11:08:118 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 02:11:12:1112 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 79 - 2695.805 ms[39m
+[35m[39m
+2021-10-06 04:24:48:2448 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 04:28:30:2830 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 04:28:47:2847 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 04:29:38:2938 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 04:29:59:2959 [35mhttp[39m: [35mGET /api/v1.0/resources/home 401 40 - 24.321 ms[39m
+[35m[39m
+2021-10-06 04:30:12:3012 [35mhttp[39m: [35mGET /api/v1.0/resources/home 401 40 - 4.557 ms[39m
+[35m[39m
+2021-10-06 04:32:48:3248 [35mhttp[39m: [35mGET /api/v1.0/resources/home 401 40 - 4.053 ms[39m
+[35m[39m
+2021-10-06 04:33:58:3358 [35mhttp[39m: [35mGET /api/v1.0/resources/home 401 40 - 3.190 ms[39m
+[35m[39m
+2021-10-06 04:34:07:347 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 79 - 2254.925 ms[39m
+[35m[39m
+2021-10-06 04:34:49:3449 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 04:34:54:3454 [35mhttp[39m: [35mGET /api/v1.0/resources/home 401 40 - 2420.044 ms[39m
+[35m[39m
+2021-10-06 04:42:53:4253 [35mhttp[39m: [35mGET /api/v1.0/resources/home 401 40 - 2180.211 ms[39m
+[35m[39m
+2021-10-06 04:44:36:4436 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 79 - 2423.865 ms[39m
+[35m[39m
+2021-10-06 04:45:10:4510 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 79 - 2208.011 ms[39m
+[35m[39m
+2021-10-06 04:49:13:4913 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 04:49:29:4929 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 04:51:01:511 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 04:51:12:5112 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 79 - 2447.838 ms[39m
+[35m[39m
+2021-10-06 04:52:13:5213 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 04:52:16:5216 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 79 - 2193.048 ms[39m
+[35m[39m
+2021-10-06 04:55:44:5544 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 04:55:53:5553 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 79 - 2532.811 ms[39m
+[35m[39m
+2021-10-06 04:57:55:5755 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 04:57:58:5758 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 79 - 2428.407 ms[39m
+[35m[39m
+2021-10-06 04:59:03:593 [35mhttp[39m: [35mGET /api/v1.0/auth/fetchUser/wmoonga@gmail.com 200 821 - 2782.187 ms[39m
+[35m[39m
+2021-10-06 05:00:11:011 [35mhttp[39m: [35mGET /api/v1.0/assets 200 43851 - 4900.661 ms[39m
+[35m[39m
+2021-10-06 05:00:46:046 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 79 - 2285.389 ms[39m
+[35m[39m
+2021-10-06 05:01:14:114 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 05:01:49:149 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 05:01:53:153 [35mhttp[39m: [35mGET /api/v1.0/resources/home 500 74 - 3164.755 ms[39m
+[35m[39m
+2021-10-06 05:02:56:256 [35mhttp[39m: [35mGET /api/v1.0/resources/home 200 1328 - 3267.753 ms[39m
+[35m[39m
+2021-10-06 05:11:44:1144 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 05:11:58:1158 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 05:12:10:1210 [35mhttp[39m: [35mGET /api/v1.0/resources/home 200 1370 - 2934.913 ms[39m
+[35m[39m
+2021-10-06 05:30:21:3021 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 05:31:36:3136 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 05:33:23:3323 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m
+2021-10-06 05:33:35:3335 [37mdebug[39m: [37mServer running on: http://localhost:9000[39m

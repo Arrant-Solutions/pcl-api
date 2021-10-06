@@ -1,9 +1,9 @@
 // import * as argon2 from 'argon2'
 import * as jwt from 'jsonwebtoken'
-import {emailRegex, jwtExpiry, jwtSecret, publicKey} from '../config'
+import {emailRegex, jwtExpiry, privateKey} from '../config'
 import {isUnderAge} from '../helpers'
 // import {auth} from '../loaders/firebase'
-import {ICreateUserT, IUser} from '../models/User'
+import {ICreateUserT} from '../models/User'
 import {IResponse} from '../types'
 import UserService from './UserService'
 
@@ -13,9 +13,20 @@ export default class AuthService {
     this.userService = userService
   }
 
-  public async fetchUser(email: string) {
+  public async fetchUser(
+    {
+      email,
+      user_id,
+    }: // phone,
+    {
+      email: string
+      user_id?: number
+      phone?: string
+    },
+    andFilter?: boolean,
+  ) {
     const {statusCode, data} = await this.userService.findOne(
-      {email},
+      andFilter ? {email, user_id} : {email},
       false,
       true,
     )
@@ -35,9 +46,6 @@ export default class AuthService {
     }
 
     const token = this.generateJWT(data)
-    const decoded = this.decodeJWT(token)
-
-    console.log('token', decoded)
 
     return {statusCode: 200, data: {user: data, token}}
   }
@@ -111,6 +119,18 @@ export default class AuthService {
     return {statusCode: status, data: result}
   }
 
+  public async refreshToken(token: string) {
+    const decoded = this.decodeJWT(token)
+
+    if (typeof decoded === 'string') {
+      return {statusCode: 401, data: decoded}
+    }
+
+    const response = await this.fetchUser(decoded, true)
+
+    return response
+  }
+
   // eslint-disable-next-line class-methods-use-this
   generateJWT(user: ICreateUserT): string {
     const data = {
@@ -118,34 +138,27 @@ export default class AuthService {
       phone: user.phone,
       email: user.email,
     }
-    const passphrase = jwtSecret
+
     const expiration = jwtExpiry
 
-    return jwt.sign(
-      {data},
-      {key: publicKey, passphrase},
-      {
-        expiresIn: expiration,
-        algorithm: 'RS256',
-      },
-    )
+    return jwt.sign({data}, privateKey, {
+      expiresIn: expiration,
+      algorithm: 'RS256',
+    })
   }
 
   // eslint-disable-next-line class-methods-use-this
-  decodeJWT(
+  public decodeJWT(
     token: string,
-  ):
-    | Pick<IUser, 'user_id' | 'phone' | 'email'>
-    | jwt.TokenExpiredError
-    | jwt.JsonWebTokenError {
+  ): Pick<ICreateUserT, 'user_id' | 'phone' | 'email'> | string {
     try {
-      console.log(jwtSecret, token)
-      const decoded = jwt.verify(token, jwtSecret)
-      console.log(decoded)
-      return decoded as ICreateUserT
+      const decoded = jwt.verify(token, privateKey, {
+        algorithms: 'RS256',
+      })
+
+      return decoded.data as Pick<ICreateUserT, 'user_id' | 'phone' | 'email'>
     } catch (error) {
-      console.log(error)
-      return error as jwt.TokenExpiredError | jwt.JsonWebTokenError
+      return error.message as string
     }
   }
 }
