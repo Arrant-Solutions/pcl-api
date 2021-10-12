@@ -22,7 +22,11 @@ export interface IBaseRepository<T extends IModel> {
 
   createTransactionClient(): Promise<PoolClient | void>
 
-  update<Q extends T>(id: number, model: Q): Promise<T | false>
+  update<Q extends T>(
+    id: number,
+    model: Q,
+    user_id?: number,
+  ): Promise<T | false>
 
   insertMany<Q extends T>(models: Q[], withID?: boolean): Promise<boolean>
 
@@ -31,6 +35,12 @@ export interface IBaseRepository<T extends IModel> {
   findAll(limit?: number, offset?: number): Promise<T[]>
 
   deleteById(id: number): Promise<T | false>
+
+  delete<Q extends T>(
+    filter: Partial<Q>,
+    or?: boolean,
+    ignoreCase?: boolean,
+  ): Promise<Q | false>
 
   find<Q extends T>(
     filter: Partial<Q>,
@@ -121,8 +131,12 @@ export abstract class BaseRepository<T extends IModel>
   public async update<Q extends T>(
     id: number,
     model: Partial<Q>,
+    user_id?: number,
   ): Promise<Q | false> {
-    const item = await this.findById<Q>(id)
+    const arg = {[this.idColumn as keyof Q]: id, user_id}
+    const item = await (user_id
+      ? this.findOne<Q>(arg as any)
+      : this.findById(id))
 
     if (item) {
       const {columns, values} = this.generateUpdateQueryParts(model)
@@ -229,6 +243,26 @@ export abstract class BaseRepository<T extends IModel>
     const {rowCount, rows} = await this.pool.query<T>(
       `DELETE FROM ${this.tableName} WHERE $1 RETURNING *`,
       [id],
+    )
+
+    return rowCount ? rows[0] : false
+  }
+
+  public async delete<Q = T>(
+    filter: Partial<Q>,
+    or?: boolean,
+    ignoreCase?: boolean,
+  ): Promise<Q | false> {
+    const {query, values} = BaseRepository.generateSearchQueryParts<Q>(
+      filter,
+      false,
+      or,
+      ignoreCase,
+    )
+
+    const {rowCount, rows} = await this.pool.query<Q>(
+      `DELETE FROM ${this.tableName} WHERE ${query} RETURNING *`,
+      values,
     )
 
     return rowCount ? rows[0] : false

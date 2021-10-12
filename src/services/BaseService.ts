@@ -42,9 +42,13 @@ abstract class BaseService<T extends IModel> {
       return {statusCode: 500, data: error.message}
     }
   }
-  public async update(id: number, model: T): Promise<IResponse<T | false>> {
+  public async update(
+    id: number,
+    model: T,
+    user_id?: number,
+  ): Promise<IResponse<T | false>> {
     try {
-      const result = await this.repository.update(id, model)
+      const result = await this.repository.update(id, model, user_id)
 
       if (typeof result === 'boolean') {
         return {statusCode: 500, data: 'Failed to upload'}
@@ -132,6 +136,25 @@ abstract class BaseService<T extends IModel> {
       return {statusCode: 500, data: error.message}
     }
   }
+
+  public async delete(
+    filter: Partial<T>,
+    or?: boolean,
+    ignoreCase?: boolean,
+  ): Promise<IResponse<T | false>> {
+    try {
+      const result = await this.repository.delete(filter, or, ignoreCase)
+
+      if (typeof result === 'boolean') {
+        return {statusCode: 500, data: 'Failed to delete'}
+      }
+
+      return {statusCode: 200, data: result}
+    } catch (error) {
+      return {statusCode: 500, data: error.message}
+    }
+  }
+
   public async find(
     filter: Partial<T>,
     or?: boolean,

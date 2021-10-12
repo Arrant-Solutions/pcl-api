@@ -1,6 +1,7 @@
 import {
   BranchRepository,
   CountryRepository,
+  FavoriteRepository,
   GenderRepository,
   MediaTypeRepository,
   ResourceAvailabilityRepository,
@@ -14,6 +15,7 @@ import {
 import AuthService from '../services/AuthService'
 import BranchService from '../services/BranchService'
 import CountryService from '../services/CountryService'
+import FavoritesService from '../services/FavoritesService'
 import GenderService from '../services/GenderService'
 import MediaTypeService from '../services/MediaTypeService'
 import ResourceAvailabilityService from '../services/ResourceAvailabilityService'
@@ -195,6 +197,85 @@ export const resourceService = new ResourceService(
       'author_first_name',
       'author_last_name',
       'author_suffix',
+    ],
+  }),
+)
+
+export const favoriteService = new FavoritesService(
+  new FavoriteRepository({
+    idColumn: 'favorite_id',
+    tableName: 'favorites',
+    viewName: 'favorites_view',
+    columns: [
+      'favorite_id',
+      'resource_id',
+      'user_id',
+
+      'author_id',
+      'author_title',
+      'author_first_name',
+      'author_last_name',
+      'author_suffix',
+
+      'first_name',
+      'last_name',
+      'email',
+      'phone',
+      'date_of_birth',
+      'user_group_name',
+      'user_group_id',
+      'branch_name',
+      'branch_id',
+      'country_name',
+      'country_id',
+      'country_abbr',
+      'gender_name',
+      'gender_id',
+      'user_status_id',
+      'user_status_name',
+
+      'resource_category_id',
+      'resource_category_name',
+
+      'resource_type_id',
+      'resource_type_name',
+
+      'resource_availability_id',
+      'resource_availability_name',
+
+      'media_type_id',
+      'media_type_name',
+    ],
+    ignore: [
+      'author_id',
+      'author_title',
+      'author_first_name',
+      'author_last_name',
+      'author_suffix',
+      'first_name',
+      'last_name',
+      'email',
+      'phone',
+      'date_of_birth',
+      'user_group_name',
+      'user_group_id',
+      'branch_name',
+      'branch_id',
+      'country_name',
+      'country_id',
+      'country_abbr',
+      'gender_name',
+      'gender_id',
+      'user_status_id',
+      'user_status_name',
+      'resource_category_id',
+      'resource_category_name',
+      'resource_type_id',
+      'resource_type_name',
+      'resource_availability_id',
+      'resource_availability_name',
+      'media_type_id',
+      'media_type_name',
     ],
   }),
 )

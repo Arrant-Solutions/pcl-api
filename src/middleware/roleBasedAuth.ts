@@ -13,13 +13,15 @@ export default (authorizedRoles: string[]) =>
         email: req.tokenData.email,
         user_id: req.tokenData.user_id,
       })
-      console.log(JSON.stringify(data, null, 5))
+      // console.log(JSON.stringify(data, null, 5))
       if (
         typeof data === 'string' ||
         !authorizedRoles.find(item => item === data.user_group_name)
       ) {
         return res.status(401).json({statusCode: 401, data: 'Unauthorized'})
       }
+      // eslint-disable-next-line no-param-reassign
+      req.user = data
     } catch (error) {
       return res.status(500).json({statusCode: 500, data: error.message})
     }

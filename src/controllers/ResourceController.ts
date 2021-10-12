@@ -13,7 +13,7 @@ import {
 } from 'routing-controllers'
 import {Response} from 'express'
 import {PCLRequest} from '../types'
-import {resourceService} from '../loaders/services'
+import {favoriteService, resourceService} from '../loaders/services'
 import {ResourceCreateT, IResourceCreate} from '../models/Resource'
 import roleBasedAuth from '../middleware/roleBasedAuth'
 
@@ -25,7 +25,17 @@ export default class ResourceController {
   @Get('/resources')
   async getAll(@Req() request: PCLRequest, @Res() response: Response) {
     const {statusCode, data} = await resourceService.findAll()
-    return response.status(statusCode).json({statusCode, data})
+    const result = await favoriteService.find({
+      user_id: request.tokenData.user_id,
+    })
+
+    return response.status(statusCode).json({
+      statusCode,
+      data: {
+        media: data,
+        favorites: Array.isArray(result.data) ? result.data : [],
+      },
+    })
   }
 
   @Get('/resources/home')
@@ -34,7 +44,17 @@ export default class ResourceController {
     @Res() response: Response,
   ) {
     const {statusCode, data} = await resourceService.findAll()
-    return response.status(statusCode).json({statusCode, data})
+    const result = await favoriteService.find({
+      user_id: request.tokenData.user_id,
+    })
+
+    return response.status(statusCode).json({
+      statusCode,
+      data: {
+        media: data,
+        favorites: Array.isArray(result.data) ? result.data : [],
+      },
+    })
   }
 
   @Get('/resources/:id')

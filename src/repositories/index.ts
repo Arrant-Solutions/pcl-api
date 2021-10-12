@@ -11,6 +11,7 @@ import {IUserGroup} from '../models/UserGroup'
 import {BaseRepository} from './BaseRepository'
 import {IUserStatus} from '../models/UserStatus'
 import {ResourceCreateT} from '../models/Resource'
+import {CreateFavoriteT} from '../models/Favorite'
 
 export class BranchRepository extends BaseRepository<IBranch> {}
 
@@ -29,6 +30,8 @@ export class ResourceTypeRepository extends BaseRepository<IResourceType> {}
 export class ResourceCategoryRepository extends BaseRepository<IResourceCategory> {}
 
 export class ResourceRepository extends BaseRepository<ResourceCreateT> {}
+
+export class FavoriteRepository extends BaseRepository<CreateFavoriteT> {}
 
 export class UserRepository extends BaseRepository<ICreateUserT> {}
 
