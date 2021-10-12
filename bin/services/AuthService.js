@@ -55,14 +55,15 @@ var AuthService = /** @class */ (function () {
     function AuthService(userService) {
         this.userService = userService;
     }
-    AuthService.prototype.fetchUser = function (email) {
+    AuthService.prototype.fetchUser = function (_a, andFilter) {
+        var email = _a.email, user_id = _a.user_id;
         return __awaiter(this, void 0, void 0, function () {
-            var _a, statusCode, data, token;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, this.userService.findOne({ email: email }, false, true)];
+            var _b, statusCode, data, token;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, this.userService.findOne(andFilter ? { email: email, user_id: user_id } : { email: email }, false, true)];
                     case 1:
-                        _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
+                        _b = _c.sent(), statusCode = _b.statusCode, data = _b.data;
                         if (typeof data === 'string') {
                             return [2 /*return*/, {
                                     statusCode: statusCode,
@@ -135,6 +136,24 @@ var AuthService = /** @class */ (function () {
             });
         });
     };
+    AuthService.prototype.refreshToken = function (token) {
+        return __awaiter(this, void 0, void 0, function () {
+            var decoded, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        decoded = this.decodeJWT(token);
+                        if (typeof decoded === 'string') {
+                            return [2 /*return*/, { statusCode: 401, data: decoded }];
+                        }
+                        return [4 /*yield*/, this.fetchUser(decoded, true)];
+                    case 1:
+                        response = _a.sent();
+                        return [2 /*return*/, response];
+                }
+            });
+        });
+    };
     // eslint-disable-next-line class-methods-use-this
     AuthService.prototype.generateJWT = function (user) {
         var data = {
@@ -142,9 +161,23 @@ var AuthService = /** @class */ (function () {
             phone: user.phone,
             email: user.email,
         };
-        var signature = config_1.jwtSecret;
         var expiration = config_1.jwtExpiry;
-        return jwt.sign({ data: data }, signature, { expiresIn: expiration });
+        return jwt.sign({ data: data }, config_1.privateKey, {
+            expiresIn: expiration,
+            algorithm: 'RS256',
+        });
+    };
+    // eslint-disable-next-line class-methods-use-this
+    AuthService.prototype.decodeJWT = function (token) {
+        try {
+            var decoded = jwt.verify(token, config_1.privateKey, {
+                algorithms: 'RS256',
+            });
+            return decoded.data;
+        }
+        catch (error) {
+            return error.message;
+        }
     };
     return AuthService;
 }());

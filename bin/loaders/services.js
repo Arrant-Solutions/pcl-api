@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authService = exports.resourceService = exports.userService = exports.userStatusService = exports.resourceTypeService = exports.resourceCategoryService = exports.resourceAvailabilityService = exports.mediaTypeService = exports.userGroupService = exports.genderService = exports.countryService = exports.branchService = void 0;
+exports.authService = exports.favoriteService = exports.resourceService = exports.userService = exports.userStatusService = exports.resourceTypeService = exports.resourceCategoryService = exports.resourceAvailabilityService = exports.mediaTypeService = exports.userGroupService = exports.genderService = exports.countryService = exports.branchService = void 0;
 var repositories_1 = require("../repositories");
 var AuthService_1 = require("../services/AuthService");
 var BranchService_1 = require("../services/BranchService");
 var CountryService_1 = require("../services/CountryService");
+var FavoritesService_1 = require("../services/FavoritesService");
 var GenderService_1 = require("../services/GenderService");
 var MediaTypeService_1 = require("../services/MediaTypeService");
 var ResourceAvailabilityService_1 = require("../services/ResourceAvailabilityService");
@@ -59,6 +60,7 @@ exports.userStatusService = new UserStatusService_1.default(new repositories_1.U
 }));
 exports.userService = new UserService_1.default(new repositories_1.UserRepository({
     tableName: 'users',
+    viewName: 'user_view',
     columns: [
         'avatar',
         'first_name',
@@ -76,6 +78,7 @@ exports.userService = new UserService_1.default(new repositories_1.UserRepositor
         'gender_name',
         'gender_id',
         'user_status_id',
+        'user_status_name',
     ],
     ignore: [
         'user_group_name',
@@ -90,6 +93,7 @@ exports.userService = new UserService_1.default(new repositories_1.UserRepositor
 exports.resourceService = new ResourceService_1.default(new repositories_1.ResourceRepository({
     idColumn: 'resource_id',
     tableName: 'resources',
+    viewName: 'resource_view',
     columns: [
         'resource_id',
         'title',
@@ -117,6 +121,7 @@ exports.resourceService = new ResourceService_1.default(new repositories_1.Resou
         'gender_name',
         'gender_id',
         'user_status_id',
+        'user_status_name',
         'resource_category_id',
         'resource_category_name',
         'resource_type_id',
@@ -149,6 +154,76 @@ exports.resourceService = new ResourceService_1.default(new repositories_1.Resou
         'author_first_name',
         'author_last_name',
         'author_suffix',
+    ],
+}));
+exports.favoriteService = new FavoritesService_1.default(new repositories_1.FavoriteRepository({
+    idColumn: 'favorite_id',
+    tableName: 'favorites',
+    viewName: 'favorites_view',
+    columns: [
+        'favorite_id',
+        'resource_id',
+        'user_id',
+        'author_id',
+        'author_title',
+        'author_first_name',
+        'author_last_name',
+        'author_suffix',
+        'first_name',
+        'last_name',
+        'email',
+        'phone',
+        'date_of_birth',
+        'user_group_name',
+        'user_group_id',
+        'branch_name',
+        'branch_id',
+        'country_name',
+        'country_id',
+        'country_abbr',
+        'gender_name',
+        'gender_id',
+        'user_status_id',
+        'user_status_name',
+        'resource_category_id',
+        'resource_category_name',
+        'resource_type_id',
+        'resource_type_name',
+        'resource_availability_id',
+        'resource_availability_name',
+        'media_type_id',
+        'media_type_name',
+    ],
+    ignore: [
+        'author_id',
+        'author_title',
+        'author_first_name',
+        'author_last_name',
+        'author_suffix',
+        'first_name',
+        'last_name',
+        'email',
+        'phone',
+        'date_of_birth',
+        'user_group_name',
+        'user_group_id',
+        'branch_name',
+        'branch_id',
+        'country_name',
+        'country_id',
+        'country_abbr',
+        'gender_name',
+        'gender_id',
+        'user_status_id',
+        'user_status_name',
+        'resource_category_id',
+        'resource_category_name',
+        'resource_type_id',
+        'resource_type_name',
+        'resource_availability_id',
+        'resource_availability_name',
+        'media_type_id',
+        'media_type_name',
     ],
 }));
 exports.authService = new AuthService_1.default(exports.userService);

@@ -58,13 +58,14 @@ exports.BaseRepository = void 0;
 var database_1 = require("../loaders/database");
 var BaseRepository = /** @class */ (function () {
     function BaseRepository(_a) {
-        var tableName = _a.tableName, columns = _a.columns, idColumn = _a.idColumn, hasA = _a.hasA, ignore = _a.ignore;
+        var tableName = _a.tableName, viewName = _a.viewName, columns = _a.columns, idColumn = _a.idColumn, hasA = _a.hasA, ignore = _a.ignore;
         this.pool = database_1.pool;
         this.idColumn = idColumn || tableName.replace(/(es|s)$/, '_id');
         this.columns = __spreadArray(__spreadArray([], columns, true), ['created_at', 'updated_at'], false);
         this.tableName = tableName;
         this.hasA = hasA || [];
         this.ignore = ignore || [];
+        this.viewName = viewName;
     }
     BaseRepository.prototype.setPool = function (client) {
         this.pool = client;
@@ -90,7 +91,6 @@ var BaseRepository = /** @class */ (function () {
                     case 0:
                         _a = this.generateInsertQueryParts(model, id), columns = _a.columns, placeholders = _a.placeholders, values = _a.values;
                         query = "INSERT INTO " + this.tableName + " (" + columns + ") VALUES (" + placeholders + ") RETURNING *";
-                        console.log(JSON.stringify({ query: query, values: values }, null, 2));
                         return [4 /*yield*/, (client || this.pool).query(query, values)];
                     case 1:
                         _b = _c.sent(), rowCount = _b.rowCount, rows = _b.rows;
@@ -99,23 +99,28 @@ var BaseRepository = /** @class */ (function () {
             });
         });
     };
-    BaseRepository.prototype.update = function (id, model) {
+    BaseRepository.prototype.update = function (id, model, user_id) {
         return __awaiter(this, void 0, void 0, function () {
-            var item, _a, columns, values, query, _b, rowCount, rows;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0: return [4 /*yield*/, this.findById(id)];
+            var arg, item, _a, columns, values, query, _b, rowCount, rows;
+            var _c;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0:
+                        arg = (_c = {}, _c[this.idColumn] = id, _c.user_id = user_id, _c);
+                        return [4 /*yield*/, (user_id
+                                ? this.findOne(arg)
+                                : this.findById(id))];
                     case 1:
-                        item = _c.sent();
+                        item = _d.sent();
                         if (!item) return [3 /*break*/, 3];
                         _a = this.generateUpdateQueryParts(model), columns = _a.columns, values = _a.values;
                         query = "UPDATE " + this.tableName + " SET (" + columns + ") WHERE " + this.idColumn + " = $" + (values.length + 1) + " RETURNING *";
                         return [4 /*yield*/, this.pool.query(query, __spreadArray(__spreadArray([], values, true), [id], false))];
                     case 2:
-                        _b = _c.sent(), rowCount = _b.rowCount, rows = _b.rows;
+                        _b = _d.sent(), rowCount = _b.rowCount, rows = _b.rows;
                         if (rowCount)
                             return [2 /*return*/, rows[0]];
-                        _c.label = 3;
+                        _d.label = 3;
                     case 3: return [2 /*return*/, false];
                 }
             });
@@ -205,9 +210,10 @@ var BaseRepository = /** @class */ (function () {
                         return [2 /*return*/, true];
                     case 17:
                         e_2 = _b.sent();
-                        console.log(e_2);
+                        // console.log(e)
                         return [4 /*yield*/, client.query('ROLLBACK')];
                     case 18:
+                        // console.log(e)
                         _b.sent();
                         return [2 /*return*/, false];
                     case 19:
@@ -256,7 +262,7 @@ var BaseRepository = /** @class */ (function () {
                     case 0:
                         columns = this.getColumns();
                         limitOffset = this.getLimitOffset(limit, offset);
-                        return [4 /*yield*/, this.pool.query("SELECT " + columns + " FROM " + this.tableName + " ORDER BY " + this.idColumn + " " + limitOffset)];
+                        return [4 /*yield*/, this.pool.query("SELECT " + columns + " FROM " + (this.viewName || this.tableName) + " ORDER BY " + this.idColumn + " " + limitOffset)];
                     case 1:
                         rows = (_a.sent()).rows;
                         return [2 /*return*/, rows];
@@ -277,6 +283,21 @@ var BaseRepository = /** @class */ (function () {
             });
         });
     };
+    BaseRepository.prototype.delete = function (filter, or, ignoreCase) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, query, values, _b, rowCount, rows;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _a = BaseRepository.generateSearchQueryParts(filter, false, or, ignoreCase), query = _a.query, values = _a.values;
+                        return [4 /*yield*/, this.pool.query("DELETE FROM " + this.tableName + " WHERE " + query + " RETURNING *", values)];
+                    case 1:
+                        _b = _c.sent(), rowCount = _b.rowCount, rows = _b.rows;
+                        return [2 /*return*/, rowCount ? rows[0] : false];
+                }
+            });
+        });
+    };
     BaseRepository.prototype.find = function (filter, or, ignoreCase) {
         return __awaiter(this, void 0, void 0, function () {
             var columns, _a, query, values, rows;
@@ -285,7 +306,7 @@ var BaseRepository = /** @class */ (function () {
                     case 0:
                         columns = this.getColumns();
                         _a = BaseRepository.generateSearchQueryParts(filter, false, or, ignoreCase), query = _a.query, values = _a.values;
-                        return [4 /*yield*/, this.pool.query("SELECT " + columns + " FROM " + this.tableName + " WHERE " + query, values)];
+                        return [4 /*yield*/, this.pool.query("SELECT " + columns + " FROM " + (this.viewName || this.tableName) + " WHERE " + query, values)];
                     case 1:
                         rows = (_b.sent()).rows;
                         return [2 /*return*/, rows];
@@ -327,7 +348,7 @@ var BaseRepository = /** @class */ (function () {
                     case 0:
                         columns = this.getColumns();
                         _a = BaseRepository.generateSearchQueryParts(filter, true, or), query = _a.query, values = _a.values;
-                        return [4 /*yield*/, this.pool.query("SELECT " + columns + " FROM " + this.tableName + " WHERE " + query, values)];
+                        return [4 /*yield*/, this.pool.query("SELECT " + columns + " FROM " + (this.viewName || this.tableName) + " WHERE " + query, values)];
                     case 1:
                         rows = (_b.sent()).rows;
                         return [2 /*return*/, rows];
@@ -380,7 +401,8 @@ var BaseRepository = /** @class */ (function () {
             var param = index + 1;
             var operator = wildcard ? 'LIKE' : '=';
             var glue = or ? 'OR' : 'AND';
-            var column = ignoreCase ? "LOWER(" + col + ")" : col;
+            var column = ignoreCase && typeof model[col] !== 'number' ? "LOWER(" + col + ")" : col;
+            // console.log(model[col], col, typeof model[col])
             // eslint-disable-next-line no-param-reassign
             acc.query +=
                 index === arr.length - 1
@@ -394,13 +416,13 @@ var BaseRepository = /** @class */ (function () {
     };
     BaseRepository.prototype.getColumns = function () {
         var _this = this;
-        var columns = __spreadArray([this.idColumn], this.columns, true).filter(function (col) { return !~_this.ignore.indexOf(col); });
+        var columns = __spreadArray([this.idColumn], this.columns, true).filter(function (col) { return !!_this.viewName || !~_this.ignore.indexOf(col); });
         return columns.reduce(function (acc, col, index) {
             // eslint-disable-next-line no-param-reassign
             acc +=
                 index === columns.length - 1
-                    ? _this.tableName + "." + col
-                    : _this.tableName + "." + col + ", ";
+                    ? (_this.viewName || _this.tableName) + "." + col
+                    : (_this.viewName || _this.tableName) + "." + col + ", ";
             return acc;
         }, '');
     };

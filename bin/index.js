@@ -27,7 +27,7 @@ app.use(compression());
 app.use(isAuth_1.default);
 (0, routing_controllers_1.useExpressServer)(app, {
     cors: true,
-    routePrefix: '/api/v1.0',
+    routePrefix: "/api/" + process.env.API_VERSION,
     controllers: [__dirname + "/controllers/*.ts"],
 });
 app.listen(process.env.PORT, function () {

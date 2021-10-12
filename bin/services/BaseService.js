@@ -85,14 +85,14 @@ var BaseService = /** @class */ (function () {
             });
         });
     };
-    BaseService.prototype.update = function (id, model) {
+    BaseService.prototype.update = function (id, model, user_id) {
         return __awaiter(this, void 0, void 0, function () {
             var result, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.repository.update(id, model)];
+                        return [4 /*yield*/, this.repository.update(id, model, user_id)];
                     case 1:
                         result = _a.sent();
                         if (typeof result === 'boolean') {
@@ -222,9 +222,31 @@ var BaseService = /** @class */ (function () {
             });
         });
     };
-    BaseService.prototype.find = function (filter, or, ignoreCase) {
+    BaseService.prototype.delete = function (filter, or, ignoreCase) {
         return __awaiter(this, void 0, void 0, function () {
             var result, error_8;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.repository.delete(filter, or, ignoreCase)];
+                    case 1:
+                        result = _a.sent();
+                        if (typeof result === 'boolean') {
+                            return [2 /*return*/, { statusCode: 500, data: 'Failed to delete' }];
+                        }
+                        return [2 /*return*/, { statusCode: 200, data: result }];
+                    case 2:
+                        error_8 = _a.sent();
+                        return [2 /*return*/, { statusCode: 500, data: error_8.message }];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    BaseService.prototype.find = function (filter, or, ignoreCase) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, error_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -237,8 +259,8 @@ var BaseService = /** @class */ (function () {
                         }
                         return [2 /*return*/, { statusCode: 200, data: result }];
                     case 2:
-                        error_8 = _a.sent();
-                        return [2 /*return*/, { statusCode: 500, data: error_8.message }];
+                        error_9 = _a.sent();
+                        return [2 /*return*/, { statusCode: 500, data: error_9.message }];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -246,7 +268,7 @@ var BaseService = /** @class */ (function () {
     };
     BaseService.prototype.findWildCard = function (filter, or) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, error_9;
+            var result, error_10;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -259,8 +281,8 @@ var BaseService = /** @class */ (function () {
                         }
                         return [2 /*return*/, { statusCode: 200, data: result }];
                     case 2:
-                        error_9 = _a.sent();
-                        return [2 /*return*/, { statusCode: 500, data: error_9.message }];
+                        error_10 = _a.sent();
+                        return [2 /*return*/, { statusCode: 500, data: error_10.message }];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -268,7 +290,7 @@ var BaseService = /** @class */ (function () {
     };
     BaseService.prototype.executeRawQuery = function (query, params) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, error_10;
+            var result, error_11;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -281,8 +303,8 @@ var BaseService = /** @class */ (function () {
                         }
                         throw new Error('Unexpected response');
                     case 2:
-                        error_10 = _a.sent();
-                        return [2 /*return*/, { statusCode: 500, data: error_10.message }];
+                        error_11 = _a.sent();
+                        return [2 /*return*/, { statusCode: 500, data: error_11.message }];
                     case 3: return [2 /*return*/];
                 }
             });

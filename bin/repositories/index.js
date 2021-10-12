@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserStatusRepository = exports.UserRepository = exports.ResourceRepository = exports.ResourceCategoryRepository = exports.ResourceTypeRepository = exports.ResourceAvailabilityRepository = exports.MediaTypeRepository = exports.UserGroupRepository = exports.GenderRepository = exports.CountryRepository = exports.BranchRepository = void 0;
+exports.UserStatusRepository = exports.UserRepository = exports.FavoriteRepository = exports.ResourceRepository = exports.ResourceCategoryRepository = exports.ResourceTypeRepository = exports.ResourceAvailabilityRepository = exports.MediaTypeRepository = exports.UserGroupRepository = exports.GenderRepository = exports.CountryRepository = exports.BranchRepository = void 0;
 var BaseRepository_1 = require("./BaseRepository");
 var BranchRepository = /** @class */ (function (_super) {
     __extends(BranchRepository, _super);
@@ -89,6 +89,14 @@ var ResourceRepository = /** @class */ (function (_super) {
     return ResourceRepository;
 }(BaseRepository_1.BaseRepository));
 exports.ResourceRepository = ResourceRepository;
+var FavoriteRepository = /** @class */ (function (_super) {
+    __extends(FavoriteRepository, _super);
+    function FavoriteRepository() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return FavoriteRepository;
+}(BaseRepository_1.BaseRepository));
+exports.FavoriteRepository = FavoriteRepository;
 var UserRepository = /** @class */ (function (_super) {
     __extends(UserRepository, _super);
     function UserRepository() {

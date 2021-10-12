@@ -47,16 +47,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable class-methods-use-this */
 var routing_controllers_1 = require("routing-controllers");
+var roleBasedAuth_1 = require("../middleware/roleBasedAuth");
 var services_1 = require("../loaders/services");
-var AuthController = /** @class */ (function () {
-    function AuthController() {
+var FavoritesController = /** @class */ (function () {
+    function FavoritesController() {
     }
-    AuthController.prototype.refreshToken = function (token, request, response) {
+    FavoritesController.prototype.getAll = function (request, response) {
         return __awaiter(this, void 0, void 0, function () {
             var _a, statusCode, data;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, services_1.authService.refreshToken(token)];
+                    case 0: return [4 /*yield*/, services_1.favoriteService.find({
+                            user_id: request.user.user_id,
+                        })];
                     case 1:
                         _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
                         return [2 /*return*/, response.status(statusCode).json({ statusCode: statusCode, data: data })];
@@ -64,14 +67,15 @@ var AuthController = /** @class */ (function () {
             });
         });
     };
-    AuthController.prototype.fetchUser = function (email, request, response) {
+    FavoritesController.prototype.getOne = function (id, request, response) {
         return __awaiter(this, void 0, void 0, function () {
             var _a, statusCode, data;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0:
-                        console.log(email);
-                        return [4 /*yield*/, services_1.authService.fetchUser({ email: email })];
+                    case 0: return [4 /*yield*/, services_1.favoriteService.findOne({
+                            favorite_id: id,
+                            user_id: request.user.user_id,
+                        })];
                     case 1:
                         _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
                         return [2 /*return*/, response.status(statusCode).json({ statusCode: statusCode, data: data })];
@@ -79,14 +83,41 @@ var AuthController = /** @class */ (function () {
             });
         });
     };
-    AuthController.prototype.register = function (user, request, response) {
+    FavoritesController.prototype.post = function (Favorites, request, response) {
         return __awaiter(this, void 0, void 0, function () {
             var _a, statusCode, data;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0:
-                        console.log(user);
-                        return [4 /*yield*/, services_1.authService.register(user)];
+                    case 0: return [4 /*yield*/, services_1.favoriteService.insert(Favorites)];
+                    case 1:
+                        _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
+                        return [2 /*return*/, response.status(statusCode).json({ statusCode: statusCode, data: data })];
+                }
+            });
+        });
+    };
+    FavoritesController.prototype.put = function (id, favorite, request, response) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, statusCode, data;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, services_1.favoriteService.update(id, favorite, request.user.user_id)];
+                    case 1:
+                        _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
+                        return [2 /*return*/, response.status(statusCode).json({ statusCode: statusCode, data: data })];
+                }
+            });
+        });
+    };
+    FavoritesController.prototype.remove = function (id, request, response) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, statusCode, data;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, services_1.favoriteService.delete({
+                            user_id: request.user.user_id,
+                            favorite_id: id,
+                        })];
                     case 1:
                         _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
                         return [2 /*return*/, response.status(statusCode).json({ statusCode: statusCode, data: data })];
@@ -95,26 +126,39 @@ var AuthController = /** @class */ (function () {
         });
     };
     __decorate([
-        (0, routing_controllers_1.Post)('/auth/refreshToken'),
-        __param(0, (0, routing_controllers_1.HeaderParam)('token')),
-        __param(1, (0, routing_controllers_1.Req)()),
-        __param(2, (0, routing_controllers_1.Res)())
-    ], AuthController.prototype, "refreshToken", null);
+        (0, routing_controllers_1.Get)('/favorites'),
+        __param(0, (0, routing_controllers_1.Req)()),
+        __param(1, (0, routing_controllers_1.Res)())
+    ], FavoritesController.prototype, "getAll", null);
     __decorate([
-        (0, routing_controllers_1.Get)('/auth/fetchUser/:email'),
-        __param(0, (0, routing_controllers_1.Param)('email')),
+        (0, routing_controllers_1.Get)('/favorites/:id'),
+        __param(0, (0, routing_controllers_1.Param)('id')),
         __param(1, (0, routing_controllers_1.Req)()),
         __param(2, (0, routing_controllers_1.Res)())
-    ], AuthController.prototype, "fetchUser", null);
+    ], FavoritesController.prototype, "getOne", null);
     __decorate([
-        (0, routing_controllers_1.Post)('/auth/register'),
-        __param(0, (0, routing_controllers_1.Body)({ required: true })),
+        (0, routing_controllers_1.Post)('/favorites'),
+        __param(0, (0, routing_controllers_1.Body)()),
         __param(1, (0, routing_controllers_1.Req)()),
         __param(2, (0, routing_controllers_1.Res)())
-    ], AuthController.prototype, "register", null);
-    AuthController = __decorate([
-        (0, routing_controllers_1.JsonController)()
-    ], AuthController);
-    return AuthController;
+    ], FavoritesController.prototype, "post", null);
+    __decorate([
+        (0, routing_controllers_1.Put)('/favorites/:id'),
+        __param(0, (0, routing_controllers_1.Param)('id')),
+        __param(1, (0, routing_controllers_1.Body)()),
+        __param(2, (0, routing_controllers_1.Req)()),
+        __param(3, (0, routing_controllers_1.Res)())
+    ], FavoritesController.prototype, "put", null);
+    __decorate([
+        (0, routing_controllers_1.Delete)('/favorites/:id'),
+        __param(0, (0, routing_controllers_1.Param)('id')),
+        __param(1, (0, routing_controllers_1.Req)()),
+        __param(2, (0, routing_controllers_1.Res)())
+    ], FavoritesController.prototype, "remove", null);
+    FavoritesController = __decorate([
+        (0, routing_controllers_1.JsonController)(),
+        (0, routing_controllers_1.UseBefore)((0, roleBasedAuth_1.default)(['Customer', 'Content Manager', 'Management', 'Super User']))
+    ], FavoritesController);
+    return FavoritesController;
 }());
-exports.default = AuthController;
+exports.default = FavoritesController;

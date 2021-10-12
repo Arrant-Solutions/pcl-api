@@ -54,26 +54,48 @@ var ResourceController = /** @class */ (function () {
     }
     ResourceController.prototype.getAll = function (request, response) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, statusCode, data;
+            var _a, statusCode, data, result;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, services_1.resourceService.findAll()];
                     case 1:
                         _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
-                        return [2 /*return*/, response.status(statusCode).json({ statusCode: statusCode, data: data })];
+                        return [4 /*yield*/, services_1.favoriteService.find({
+                                user_id: request.tokenData.user_id,
+                            })];
+                    case 2:
+                        result = _b.sent();
+                        return [2 /*return*/, response.status(statusCode).json({
+                                statusCode: statusCode,
+                                data: {
+                                    media: data,
+                                    favorites: Array.isArray(result.data) ? result.data : [],
+                                },
+                            })];
                 }
             });
         });
     };
     ResourceController.prototype.getHomeResources = function (request, response) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, statusCode, data;
+            var _a, statusCode, data, result;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, services_1.resourceService.findAll()];
                     case 1:
                         _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
-                        return [2 /*return*/, response.status(statusCode).json({ statusCode: statusCode, data: data })];
+                        return [4 /*yield*/, services_1.favoriteService.find({
+                                user_id: request.tokenData.user_id,
+                            })];
+                    case 2:
+                        result = _b.sent();
+                        return [2 /*return*/, response.status(statusCode).json({
+                                statusCode: statusCode,
+                                data: {
+                                    media: data,
+                                    favorites: Array.isArray(result.data) ? result.data : [],
+                                },
+                            })];
                 }
             });
         });
