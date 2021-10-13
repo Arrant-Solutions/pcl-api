@@ -39,6 +39,10 @@ app.use(function (req, res) {
         code: config_1.API_VERSION,
     });
 });
+// eslint-disable-next-line no-underscore-dangle
+app._router.stack // registered routes
+    .filter(function (r) { return r.route; }) // take out all the middleware
+    .map(function (r) { return console.debug(r.route.path); }); // get all the paths
 app.listen(config_1.PORT, function () {
     console.debug('starting server.......');
     logger_1.default.debug("Server running on: http://localhost:" + config_1.PORT);
