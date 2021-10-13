@@ -35,8 +35,8 @@ useExpressServer(app, {
   controllers: [`${__dirname}/controllers/*.ts`],
 })
 
-app.use('/', (req: express.Request, res: express.Response) => {
-  console.log(req.body)
+app.use((req: express.Request, res: express.Response) => {
+  console.log('terminating not found the route')
 
   return res.status(404).json({statusCode: 404, data: 'Request not found'})
 })
