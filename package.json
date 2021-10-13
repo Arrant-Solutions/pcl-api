@@ -6,7 +6,6 @@
   "scripts": {
     "build": "tsc",
     "preinstall": "npm i -g pm2 && pm2 install pm2-logrotate",
-    "heroku-postbuild": "npm run build",
     "dev": "nodemon ./src/index.ts",
     "seed": "ENV=dev ts-node ./src/seeders/index.ts",
     "seed-prod": "ENV=production ts-node ./src/seeders/index.ts",
