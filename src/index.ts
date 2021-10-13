@@ -49,7 +49,10 @@ app.use((req: express.Request, res: express.Response) => {
 // eslint-disable-next-line no-underscore-dangle
 app._router.stack // registered routes
   .filter(r => r.route) // take out all the middleware
-  .map(r => console.debug(r.route.path)) // get all the paths
+  .map(r => {
+    console.debug(r.route.path)
+    return r.route.path
+  }) // get all the paths
 
 app.listen(PORT, () => {
   console.debug('starting server.......')
