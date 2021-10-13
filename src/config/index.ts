@@ -36,3 +36,5 @@ export const emailRegex =
   '^(([^<>()[].,;:s@"]+(.[^<>()[].,;:s@"]+)*)|(".+"))@(([^<>()[].,;:s@"]+.)+[^<>()[].,;:s@"]{2,})$'
 
 export const API_VERSION = process.env.API_VERSION || 'v1.0'
+
+export const ENV = process.env.ENV || 'production'

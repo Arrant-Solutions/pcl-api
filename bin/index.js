@@ -29,7 +29,9 @@ app.use(isAuth_1.default);
 (0, routing_controllers_1.useExpressServer)(app, {
     cors: true,
     routePrefix: "/api/" + config_1.API_VERSION,
-    controllers: [__dirname + "/controllers/*.ts"],
+    controllers: [
+        __dirname + "/controllers/*." + (config_1.ENV === 'production' ? '.js' : '.ts'),
+    ],
 });
 app.use(function (req, res) {
     console.log('terminating not found the route');
@@ -40,16 +42,5 @@ app.use(function (req, res) {
     });
 });
 app.listen(config_1.PORT, function () {
-    console.debug('starting server.......');
     logger_1.default.debug("Server running on: http://localhost:" + config_1.PORT);
-    console.debug("/api/" + config_1.API_VERSION);
-    // eslint-disable-next-line no-underscore-dangle
-    console.log('length ==> ', app._router.stack.length);
-    // eslint-disable-next-line no-underscore-dangle
-    app._router.stack // registered routes
-        .filter(function (r) { return r.route; }) // take out all the middleware
-        .map(function (r) {
-        console.debug(r.route.path);
-        return r.route.path;
-    }); // get all the paths
 });

@@ -7,6 +7,9 @@ export user=nctdoqvbfwdsfo
 export password=ce79098213f552d87731f23befe05e26867a519c1cad671b849f81f7723c996d
 export port=5432
 export API_VERSION=v1.0
+export ENV=production
+export env=production
+export environment=production
 
 export PORT=9000
 
@@ -17,3 +20,5 @@ export emailRegex='^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))
 
 
 export GOOGLE_APPLICATION_CREDENTIALS=/Users/willymilimo/Workspace/pcl-api/keys/pcl-service.json
+
+echo "done running ash"

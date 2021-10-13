@@ -9,7 +9,7 @@ import * as compression from 'compression'
 import Logger from './config/logger'
 import morgan from './middleware/morgan'
 import isAuth from './middleware/isAuth'
-import {API_VERSION, PORT} from './config'
+import {API_VERSION, ENV, PORT} from './config'
 
 const app = express()
 
@@ -33,31 +33,28 @@ app.use(isAuth)
 useExpressServer(app, {
   cors: true,
   routePrefix: `/api/${API_VERSION}`,
-  controllers: [`${__dirname}/controllers/*.ts`],
+  controllers: [
+    `${__dirname}/controllers/*.${ENV === 'production' ? 'js' : 'ts'}`,
+  ],
+  middlewares: [
+    `${__dirname}/handlers/*.${ENV === 'production' ? 'js' : 'ts'}`,
+  ],
 })
 
-app.use((req: express.Request, res: express.Response) => {
-  console.log('terminating not found the route')
+// app.use('*', (req: express.Request, res: express.Response) => {
+//   console.log('terminating not found the route *****')
 
-  return res.status(404).json({
-    statusCode: 404,
-    data: 'Request not found',
-    code: API_VERSION,
-  })
-})
+//   return res.status(404).json({
+//     statusCode: 404,
+//     data: 'Request not found',
+//     code: API_VERSION,
+//   })
+// })
 
 app.listen(PORT, () => {
-  console.debug('starting server.......')
+  Logger.debug(
+    `/api/${API_VERSION}`,
+    `${__dirname}/controllers/*.${ENV === 'production' ? 'js' : 'ts'}`,
+  )
   Logger.debug(`Server running on: http://localhost:${PORT}`)
-  console.debug(`/api/${API_VERSION}`)
-
-  // eslint-disable-next-line no-underscore-dangle
-  console.log('length ==> ', app._router.stack.length)
-  // eslint-disable-next-line no-underscore-dangle
-  app._router.stack // registered routes
-    .filter(r => r.route) // take out all the middleware
-    .map(r => {
-      console.debug(r.route.path)
-      return r.route.path
-    }) // get all the paths
 })

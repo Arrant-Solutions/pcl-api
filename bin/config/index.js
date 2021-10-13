@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.API_VERSION = exports.emailRegex = exports.Errors = exports.jwtExpiry = exports.jwtSecret = exports.publicKey = exports.privateKey = exports.PORT = exports.database = void 0;
+exports.ENV = exports.API_VERSION = exports.emailRegex = exports.Errors = exports.jwtExpiry = exports.jwtSecret = exports.publicKey = exports.privateKey = exports.PORT = exports.database = void 0;
 var fs_1 = require("fs");
 exports.database = {
     port: 9000,
@@ -22,3 +22,4 @@ var Errors;
 exports.emailRegex = process.env.emailRegex ||
     '^(([^<>()[].,;:s@"]+(.[^<>()[].,;:s@"]+)*)|(".+"))@(([^<>()[].,;:s@"]+.)+[^<>()[].,;:s@"]{2,})$';
 exports.API_VERSION = process.env.API_VERSION || 'v1.0';
+exports.ENV = process.env.ENV || 'production';
