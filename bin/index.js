@@ -44,7 +44,7 @@ app.listen(config_1.PORT, function () {
     logger_1.default.debug("Server running on: http://localhost:" + config_1.PORT);
     console.debug("/api/" + config_1.API_VERSION);
     // eslint-disable-next-line no-underscore-dangle
-    console.log(app._router.stack);
+    console.log('length ==> ', app._router.stack.length);
     // eslint-disable-next-line no-underscore-dangle
     app._router.stack // registered routes
         .filter(function (r) { return r.route; }) // take out all the middleware

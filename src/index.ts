@@ -52,7 +52,7 @@ app.listen(PORT, () => {
   console.debug(`/api/${API_VERSION}`)
 
   // eslint-disable-next-line no-underscore-dangle
-  console.log(app._router.stack)
+  console.log('length ==> ', app._router.stack.length)
   // eslint-disable-next-line no-underscore-dangle
   app._router.stack // registered routes
     .filter(r => r.route) // take out all the middleware
