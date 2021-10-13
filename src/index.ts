@@ -19,7 +19,7 @@ app.get('/logger', (_, res) => {
   Logger.warn('This is a warn log')
   Logger.info('This is a info log')
   Logger.http('This is a http log')
-  Logger.debug('This is a debug log')
+  Logger.debug(`/api/${process.env.API_VERSION}`)
 
   res.send('Hello world')
 })
