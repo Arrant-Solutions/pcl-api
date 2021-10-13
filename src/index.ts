@@ -35,6 +35,12 @@ useExpressServer(app, {
   controllers: [`${__dirname}/controllers/*.ts`],
 })
 
+app.use('/', (req: express.Request, res: express.Response) => {
+  console.log(req.body)
+
+  return res.status(404).json({statusCode: 404, data: 'Request not found'})
+})
+
 app.listen(process.env.PORT, () => {
   console.debug('starting server.......')
   Logger.debug(`Server running on: http://localhost:${process.env.PORT}`)
