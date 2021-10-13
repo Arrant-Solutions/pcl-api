@@ -35,7 +35,7 @@ useExpressServer(app, {
   controllers: [`${__dirname}/controllers/*.ts`],
 })
 
-app.use('*', (req: express.Request, res: express.Response) => {
+app.use('/test', (req: express.Request, res: express.Response) => {
   console.log(req.body)
 
   return res.status(404).json({statusCode: 404, data: 'Request not found'})
