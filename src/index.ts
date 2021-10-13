@@ -44,5 +44,5 @@ app.use('/', (req: express.Request, res: express.Response) => {
 app.listen(process.env.PORT, () => {
   console.debug('starting server.......')
   Logger.debug(`Server running on: http://localhost:${process.env.PORT}`)
-  console.debug('started server.......')
+  console.debug(`/api/${process.env.API_VERSION}`)
 })
