@@ -31,5 +31,7 @@ app.use(isAuth_1.default);
     controllers: [__dirname + "/controllers/*.ts"],
 });
 app.listen(process.env.PORT, function () {
-    return logger_1.default.debug("Server running on: http://localhost:" + process.env.PORT);
+    console.debug('starting server.......');
+    logger_1.default.debug("Server running on: http://localhost:" + process.env.PORT);
+    console.debug('started server.......');
 });
