@@ -15,7 +15,7 @@ var getTokenFromHeader = function (req) {
     }
     return '';
 };
-var path = "^/api/" + process.env.API_VERSION + "/(assets|auth)(/)?(.*)";
+var path = "^/api/" + config_1.API_VERSION + "/(assets|auth)(/)?(.*)";
 exports.default = jwt({
     secret: config_1.privateKey,
     userProperty: 'token',

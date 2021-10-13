@@ -11,6 +11,7 @@ var compression = require("compression");
 var logger_1 = require("./config/logger");
 var morgan_1 = require("./middleware/morgan");
 var isAuth_1 = require("./middleware/isAuth");
+var config_1 = require("./config");
 var app = express();
 app.use(morgan_1.default);
 app.get('/logger', function (_, res) {
@@ -18,7 +19,7 @@ app.get('/logger', function (_, res) {
     logger_1.default.warn('This is a warn log');
     logger_1.default.info('This is a info log');
     logger_1.default.http('This is a http log');
-    logger_1.default.debug("/api/" + process.env.API_VERSION);
+    logger_1.default.debug("/api/" + config_1.API_VERSION);
     res.send('Hello world');
 });
 app.use(express.json());
@@ -27,21 +28,19 @@ app.use(compression());
 app.use(isAuth_1.default);
 (0, routing_controllers_1.useExpressServer)(app, {
     cors: true,
-    routePrefix: "/api/" + process.env.API_VERSION,
+    routePrefix: "/api/" + config_1.API_VERSION,
     controllers: [__dirname + "/controllers/*.ts"],
 });
 app.use(function (req, res) {
     console.log('terminating not found the route');
-    return res
-        .status(404)
-        .json({
+    return res.status(404).json({
         statusCode: 404,
         data: 'Request not found',
-        code: process.env.API_VERSION,
+        code: config_1.API_VERSION,
     });
 });
-app.listen(process.env.PORT, function () {
+app.listen(config_1.PORT, function () {
     console.debug('starting server.......');
-    logger_1.default.debug("Server running on: http://localhost:" + process.env.PORT);
-    console.debug("/api/" + process.env.API_VERSION);
+    logger_1.default.debug("Server running on: http://localhost:" + config_1.PORT);
+    console.debug("/api/" + config_1.API_VERSION);
 });
