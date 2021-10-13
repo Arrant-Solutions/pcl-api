@@ -7,12 +7,12 @@ export const database = {
 }
 
 export const privateKey = readFileSync(
-  `${__dirname}/../../keys/private-key.pem`,
+  `${__dirname}/../keys/private-key.pem`,
   'utf8',
 )
 
 export const publicKey = readFileSync(
-  `${__dirname}/../../keys/public-key.pem`,
+  `${__dirname}/../keys/public-key.pem`,
   'utf8',
 )
 

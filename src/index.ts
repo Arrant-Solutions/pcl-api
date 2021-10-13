@@ -35,6 +35,8 @@ useExpressServer(app, {
   controllers: [`${__dirname}/controllers/*.ts`],
 })
 
-app.listen(process.env.PORT, () =>
-  Logger.debug(`Server running on: http://localhost:${process.env.PORT}`),
-)
+app.listen(process.env.PORT, () => {
+  console.debug('starting server.......')
+  Logger.debug(`Server running on: http://localhost:${process.env.PORT}`)
+  console.debug('started server.......')
+})

@@ -1,8 +1,8 @@
 module.exports = {
   apps: [
     {
-      name: 'app',
-      script: './bin/index.js',
+      name: 'pcl',
+      script: 'bin/index.js',
       instances: 'max',
       env: {
         NODE_ENV: 'development',
@@ -11,5 +11,23 @@ module.exports = {
         NODE_ENV: 'production',
       },
     },
+    // {
+    //   script: './service-worker/',
+    //   watch: ['./service-worker'],
+    // },
   ],
+
+  // deploy: {
+  //   production: {
+  //     user: 'SSH_USERNAME',
+  //     host: 'SSH_HOSTMACHINE',
+  //     ref: 'origin/main',
+  //     repo: 'git@github.com:Arrant-Solutions/pcl-api.git',
+  //     path: 'DESTINATION_PATH',
+  //     'pre-deploy-local': '',
+  //     'post-deploy':
+  //       'npm install && pm2 reload ecosystem.config.js --env production',
+  //     'pre-setup': '',
+  //   },
+  // },
 }
