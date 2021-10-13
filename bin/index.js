@@ -18,7 +18,7 @@ app.get('/logger', function (_, res) {
     logger_1.default.warn('This is a warn log');
     logger_1.default.info('This is a info log');
     logger_1.default.http('This is a http log');
-    logger_1.default.debug('This is a debug log');
+    logger_1.default.debug("/api/" + process.env.API_VERSION);
     res.send('Hello world');
 });
 app.use(express.json());
@@ -30,8 +30,12 @@ app.use(isAuth_1.default);
     routePrefix: "/api/" + process.env.API_VERSION,
     controllers: [__dirname + "/controllers/*.ts"],
 });
+app.use(function (req, res) {
+    console.log('terminating not found the route');
+    return res.status(404).json({ statusCode: 404, data: 'Request not found' });
+});
 app.listen(process.env.PORT, function () {
     console.debug('starting server.......');
     logger_1.default.debug("Server running on: http://localhost:" + process.env.PORT);
-    console.debug('started server.......');
+    console.debug("/api/" + process.env.API_VERSION);
 });
