@@ -32,7 +32,13 @@ app.use(isAuth_1.default);
 });
 app.use(function (req, res) {
     console.log('terminating not found the route');
-    return res.status(404).json({ statusCode: 404, data: 'Request not found' });
+    return res
+        .status(404)
+        .json({
+        statusCode: 404,
+        data: 'Request not found',
+        code: process.env.API_VERSION,
+    });
 });
 app.listen(process.env.PORT, function () {
     console.debug('starting server.......');
