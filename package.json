@@ -4,7 +4,6 @@
   "description": "a nodejs api for the PCL app and dashboard",
   "main": "index.ts",
   "scripts": {
-    "build": "tsc",
     "preinstall": "npm i -g pm2 && pm2 install pm2-logrotate",
     "dev": "nodemon ./src/index.ts",
     "seed": "ENV=dev ts-node ./src/seeders/index.ts",
