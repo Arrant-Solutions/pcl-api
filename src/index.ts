@@ -38,7 +38,13 @@ useExpressServer(app, {
 app.use((req: express.Request, res: express.Response) => {
   console.log('terminating not found the route')
 
-  return res.status(404).json({statusCode: 404, data: 'Request not found'})
+  return res
+    .status(404)
+    .json({
+      statusCode: 404,
+      data: 'Request not found',
+      code: process.env.API_VERSION,
+    })
 })
 
 app.listen(process.env.PORT, () => {
