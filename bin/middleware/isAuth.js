@@ -17,7 +17,7 @@ var getTokenFromHeader = function (req) {
 };
 var path = "^/api/" + config_1.API_VERSION + "/(assets|auth)(/)?(.*)";
 exports.default = jwt({
-    secret: config_1.privateKey,
+    secret: config_1.PUBLIC_KEY,
     userProperty: 'token',
     getToken: getTokenFromHeader,
     credentialsRequired: false,

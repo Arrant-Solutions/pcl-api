@@ -161,8 +161,8 @@ var AuthService = /** @class */ (function () {
             phone: user.phone,
             email: user.email,
         };
-        var expiration = config_1.jwtExpiry;
-        return jwt.sign({ data: data }, config_1.privateKey, {
+        var expiration = config_1.JWT_EXPIRY;
+        return jwt.sign({ data: data }, config_1.PRIVATE_KEY, {
             expiresIn: expiration,
             algorithm: 'RS256',
         });
@@ -170,7 +170,7 @@ var AuthService = /** @class */ (function () {
     // eslint-disable-next-line class-methods-use-this
     AuthService.prototype.decodeJWT = function (token) {
         try {
-            var decoded = jwt.verify(token, config_1.privateKey, {
+            var decoded = jwt.verify(token, config_1.PRIVATE_KEY, {
                 algorithms: 'RS256',
             });
             return decoded.data;
