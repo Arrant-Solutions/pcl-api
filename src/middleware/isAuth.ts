@@ -1,5 +1,5 @@
 import * as jwt from 'express-jwt'
-import {API_VERSION, privateKey} from '../config'
+import {API_VERSION, PUBLIC_KEY} from '../config'
 import {authService} from '../loaders/services'
 import {PCLRequest} from '../types'
 
@@ -24,7 +24,7 @@ const getTokenFromHeader = (req: PCLRequest) => {
 const path = `^/api/${API_VERSION}/(assets|auth)(/)?(.*)`
 
 export default jwt({
-  secret: privateKey,
+  secret: PUBLIC_KEY,
   userProperty: 'token',
   getToken: getTokenFromHeader,
   credentialsRequired: false,

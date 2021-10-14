@@ -1,4 +1,4 @@
-// import {readFileSync} from 'fs'
+import {readFileSync} from 'fs'
 
 export const database = {
   port: 9000,
@@ -13,12 +13,12 @@ export const PORT = process.env.PORT || 9000
 //   'utf8',
 // )
 
-// export const publicKey = readFileSync(
-//   `${__dirname}/../keys/public-key.pem`,
-//   'utf8',
-// )
+const publicKey = readFileSync(`${__dirname}/../../keys/public-key.pem`, 'utf8')
 
-export const {PRIVATE_KEY, PUBLIC_KEY, JWT_SECRET, JWT_EXPIRY} = process.env
+export const {PRIVATE_KEY, JWT_SECRET, JWT_EXPIRY} = process.env
+
+export const PUBLIC_KEY =
+  process.env.NODE_ENV === 'development' ? publicKey : process.env.PUBLIC_KEY
 
 // export const jwtSecret = process.env.passphrase
 
