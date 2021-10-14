@@ -9,11 +9,13 @@ exports.database = {
     name: process.env.DATABASE_NAME,
 };
 exports.PORT = process.env.PORT || 9000;
-var privateKey = (0, fs_1.readFileSync)(__dirname + "/../../keys/private-key.pem", 'utf8');
-var publicKey = (0, fs_1.readFileSync)(__dirname + "/../../keys/public-key.pem", 'utf8');
 exports.JWT_SECRET = (_a = process.env, _a.JWT_SECRET), exports.JWT_EXPIRY = _a.JWT_EXPIRY;
-exports.PUBLIC_KEY = process.env.NODE_ENV === 'development' ? publicKey : process.env.PUBLIC_KEY;
-exports.PRIVATE_KEY = process.env.NODE_ENV === 'development' ? privateKey : process.env.PRIVATE_KEY;
+exports.PUBLIC_KEY = process.env.NODE_ENV === 'development'
+    ? (0, fs_1.readFileSync)(__dirname + "/../../keys/public-key.pem", 'utf8')
+    : process.env.PUBLIC_KEY;
+exports.PRIVATE_KEY = process.env.NODE_ENV === 'development'
+    ? (0, fs_1.readFileSync)(__dirname + "/../../keys/private-key.pem", 'utf8')
+    : process.env.PRIVATE_KEY;
 // export const jwtSecret = process.env.passphrase
 // export const jwtExpiry = process.env.jwtExpiry || '90d'
 var Errors;
