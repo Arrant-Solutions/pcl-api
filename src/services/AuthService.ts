@@ -1,6 +1,6 @@
 // import * as argon2 from 'argon2'
 import * as jwt from 'jsonwebtoken'
-import {emailRegex, jwtExpiry, privateKey} from '../config'
+import {emailRegex, JWT_EXPIRY, PRIVATE_KEY} from '../config'
 import {isUnderAge} from '../helpers'
 // import {auth} from '../loaders/firebase'
 import {ICreateUserT} from '../models/User'
@@ -139,9 +139,9 @@ export default class AuthService {
       email: user.email,
     }
 
-    const expiration = jwtExpiry
+    const expiration = JWT_EXPIRY
 
-    return jwt.sign({data}, privateKey, {
+    return jwt.sign({data}, PRIVATE_KEY, {
       expiresIn: expiration,
       algorithm: 'RS256',
     })
@@ -152,7 +152,7 @@ export default class AuthService {
     token: string,
   ): Pick<ICreateUserT, 'user_id' | 'phone' | 'email'> | string {
     try {
-      const decoded = jwt.verify(token, privateKey, {
+      const decoded = jwt.verify(token, PRIVATE_KEY, {
         algorithms: 'RS256',
       })
 

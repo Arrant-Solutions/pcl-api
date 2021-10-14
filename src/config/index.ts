@@ -8,17 +8,17 @@ export const database = {
 
 export const PORT = process.env.PORT || 9000
 
-// export const privateKey = readFileSync(
-//   `${__dirname}/../keys/private-key.pem`,
-//   'utf8',
-// )
+const privateKey = readFileSync(`${__dirname}/../../keys/private-key.pem`, 'utf8')
 
 const publicKey = readFileSync(`${__dirname}/../../keys/public-key.pem`, 'utf8')
 
-export const {PRIVATE_KEY, JWT_SECRET, JWT_EXPIRY} = process.env
+export const {JWT_SECRET, JWT_EXPIRY} = process.env
 
 export const PUBLIC_KEY =
   process.env.NODE_ENV === 'development' ? publicKey : process.env.PUBLIC_KEY
+
+export const PRIVATE_KEY =
+  process.env.NODE_ENV === 'development' ? privateKey : process.env.PRIVATE_KEY
 
 // export const jwtSecret = process.env.passphrase
 

@@ -18,4 +18,6 @@ heroku config:set JWT_EXPIRY='90d'
 
 heroku config:set PUBLIC_KEY=`cat keys/public-key.pem` 
 
+heroku config:set PRIVATE_KEY=`cat keys/private-key.pem` 
+
 heroku config:set GOOGLE_APPLICATION_CREDENTIALS=/Users/willymilimo/Workspace/pcl-api/keys/pcl-service.json
