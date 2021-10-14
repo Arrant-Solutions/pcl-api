@@ -12,6 +12,7 @@
     "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "bash variables.sh && pm2-runtime start ecosystem.config.js --env production",
+    "prod-test": "ENV=production && bash variables.sh && nodemon ./bin/index.js",
     "copy-keys": "copyfiles keys/*.pem bin",
     "clean": "rimraf ./bin/"
   },

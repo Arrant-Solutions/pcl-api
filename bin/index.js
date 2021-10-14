@@ -30,17 +30,21 @@ app.use(isAuth_1.default);
     cors: true,
     routePrefix: "/api/" + config_1.API_VERSION,
     controllers: [
-        __dirname + "/controllers/*." + (config_1.ENV === 'production' ? '.js' : '.ts'),
+        __dirname + "/controllers/*." + (config_1.ENV === 'production' ? 'js' : 'ts'),
+    ],
+    middlewares: [
+        __dirname + "/handlers/*." + (config_1.ENV === 'production' ? 'js' : 'ts'),
     ],
 });
-app.use(function (req, res) {
-    console.log('terminating not found the route');
-    return res.status(404).json({
-        statusCode: 404,
-        data: 'Request not found',
-        code: config_1.API_VERSION,
-    });
-});
+// app.use('*', (req: express.Request, res: express.Response) => {
+//   console.log('terminating not found the route *****')
+//   return res.status(404).json({
+//     statusCode: 404,
+//     data: 'Request not found',
+//     code: API_VERSION,
+//   })
+// })
 app.listen(config_1.PORT, function () {
+    logger_1.default.debug("API Version: /api/" + config_1.API_VERSION + "\n\n    " + __dirname + "/controllers/*." + (config_1.ENV === 'production' ? 'js' : 'ts'));
     logger_1.default.debug("Server running on: http://localhost:" + config_1.PORT);
 });

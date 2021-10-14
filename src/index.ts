@@ -53,8 +53,8 @@ useExpressServer(app, {
 
 app.listen(PORT, () => {
   Logger.debug(
-    `/api/${API_VERSION}`,
-    `${__dirname}/controllers/*.${ENV === 'production' ? 'js' : 'ts'}`,
+    `API Version: /api/${API_VERSION}\n
+    ${__dirname}/controllers/*.${ENV === 'production' ? 'js' : 'ts'}`,
   )
   Logger.debug(`Server running on: http://localhost:${PORT}`)
 })
