@@ -82,6 +82,7 @@ var AuthService = /** @class */ (function () {
                             return [2 /*return*/, { statusCode: 200, data: { user: data, token: token } }];
                         }
                         catch (error) {
+                            console.log(error);
                             return [2 /*return*/, { statusCode: 500, data: error.message }];
                         }
                         return [2 /*return*/];

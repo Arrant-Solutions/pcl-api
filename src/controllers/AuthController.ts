@@ -34,11 +34,14 @@ export default class AuthController {
     @Res() response: Response,
   ) {
     console.log(email)
-    const {statusCode, data} = await authService.fetchUser({email})
+    try {
+      const {statusCode, data} = await authService.fetchUser({email})
 
-    console.log(JSON.stringify(statusCode, data))
-
-    return response.status(statusCode).json({statusCode, data})
+      return response.status(statusCode).json({statusCode, data})
+    } catch (error) {
+      console.log(error)
+      return response.status(500).json({statusCode: 500, data: error})
+    }
   }
 
   @Post('/auth/register')
