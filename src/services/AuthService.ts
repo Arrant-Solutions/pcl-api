@@ -51,6 +51,7 @@ export default class AuthService {
 
       return {statusCode: 200, data: {user: data, token}}
     } catch (error) {
+      console.log(error)
       return {statusCode: 500, data: error.message}
     }
   }

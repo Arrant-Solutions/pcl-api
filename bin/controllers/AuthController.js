@@ -74,6 +74,7 @@ var AuthController = /** @class */ (function () {
                         return [4 /*yield*/, services_1.authService.fetchUser({ email: email })];
                     case 1:
                         _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
+                        console.log(JSON.stringify(statusCode, data));
                         return [2 /*return*/, response.status(statusCode).json({ statusCode: statusCode, data: data })];
                 }
             });
