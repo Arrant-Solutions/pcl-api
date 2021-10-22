@@ -46,9 +46,13 @@ export default class AuthService {
       }
     }
 
-    const token = this.generateJWT(data)
+    try {
+      const token = this.generateJWT(data)
 
-    return {statusCode: 200, data: {user: data, token}}
+      return {statusCode: 200, data: {user: data, token}}
+    } catch (error) {
+      return {statusCode: 500, data: error.message}
+    }
   }
 
   public async register(user: ICreateUserT): Promise<
