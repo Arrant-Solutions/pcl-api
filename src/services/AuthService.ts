@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 // import * as argon2 from 'argon2'
 import * as jwt from 'jsonwebtoken'
 import {emailRegex, JWT_EXPIRY, PRIVATE_KEY} from '../config'
@@ -79,7 +80,12 @@ export default class AuthService {
       return {statusCode: 422, data: 'Please select a valid country'}
     }
 
-    if (!new RegExp(emailRegex, 'i').test(user.email)) {
+    if (
+      // eslint-disable-next-line max-len
+      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(
+        user.email,
+      )
+    ) {
       return {statusCode: 422, data: 'Please input a valid email address'}
     }
 
