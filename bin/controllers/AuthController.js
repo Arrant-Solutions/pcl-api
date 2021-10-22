@@ -85,7 +85,7 @@ var AuthController = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        console.log(user);
+                        console.log(JSON.stringify(user));
                         return [4 /*yield*/, services_1.authService.register(user)];
                     case 1:
                         _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;

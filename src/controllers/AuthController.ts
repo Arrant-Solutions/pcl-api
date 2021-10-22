@@ -45,7 +45,7 @@ export default class AuthController {
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
-    console.log(user)
+    console.log(JSON.stringify(user))
     const {statusCode, data} = await authService.register(user)
 
     return response.status(statusCode).json({statusCode, data})

@@ -6,7 +6,7 @@
   "scripts": {
     "build-sucker": "tsc",
     "preinstall": "npm i -g pm2 && pm2 install pm2-logrotate",
-    "heroku-deploy": "bash variables.sh && git push heroku main",
+    "heroku-deploy": "tsc && git push heroku main",
     "heroku-push": "git push heroku main",
     "set-vars": "bash variables.sh",
     "dev": "nodemon ./src/index.ts",

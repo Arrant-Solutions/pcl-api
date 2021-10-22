@@ -8,6 +8,7 @@ require("reflect-metadata");
 var routing_controllers_1 = require("routing-controllers");
 var express = require("express");
 var compression = require("compression");
+// import listEndpoints from 'express-list-endpoints'
 var logger_1 = require("./config/logger");
 var morgan_1 = require("./middleware/morgan");
 var isAuth_1 = require("./middleware/isAuth");
@@ -41,5 +42,7 @@ app.use('/health', function (req, res) {
 });
 app.listen(config_1.PORT, function () {
     logger_1.default.debug("API Version: /api/" + config_1.API_VERSION + "\n\n    " + __dirname + "/controllers/*." + (config_1.ENV === 'production' ? 'js' : 'ts'));
-    logger_1.default.debug("Server running on: http://localhost:" + config_1.PORT);
+    // Logger.debug(listEndpoints(app))
+    logger_1.default.debug(config_1.ENV);
+    logger_1.default.debug("Server running on: http://localhost:" + config_1.PORT + "/api/" + config_1.API_VERSION);
 });
