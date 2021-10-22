@@ -47,6 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+/* eslint-disable no-useless-escape */
 // import * as argon2 from 'argon2'
 var jwt = require("jsonwebtoken");
 var config_1 = require("../config");
@@ -103,7 +104,9 @@ var AuthService = /** @class */ (function () {
                         if (!(user.country_id > 0 && user.country_id < 254)) {
                             return [2 /*return*/, { statusCode: 422, data: 'Please select a valid country' }];
                         }
-                        if (!new RegExp(config_1.emailRegex, 'i').test(user.email)) {
+                        if (
+                        // eslint-disable-next-line max-len
+                        /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(user.email)) {
                             return [2 /*return*/, { statusCode: 422, data: 'Please input a valid email address' }];
                         }
                         return [4 /*yield*/, this.userService.findOne({

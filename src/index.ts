@@ -41,15 +41,11 @@ useExpressServer(app, {
   ],
 })
 
-// app.use('*', (req: express.Request, res: express.Response) => {
-//   console.log('terminating not found the route *****')
-
-//   return res.status(404).json({
-//     statusCode: 404,
-//     data: 'Request not found',
-//     code: API_VERSION,
-//   })
-// })
+app.use('/health', (req: express.Request, res: express.Response) =>
+  res.send(
+    '<html><head></head><body><p style="color: green; font-size: 1.8rem; padding: 20px;">Healthy</p></body></html>',
+  ),
+)
 
 app.listen(PORT, () => {
   Logger.debug(

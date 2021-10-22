@@ -23,6 +23,6 @@ var Errors;
     // eslint-disable-next-line no-unused-vars
     Errors["System"] = "Error occured. Unable to process request.";
 })(Errors = exports.Errors || (exports.Errors = {}));
-exports.emailRegex = '^(([^<>()[].,;:s@"]+(.[^<>()[].,;:s@"]+)*)|(".+"))@(([^<>()[].,;:s@"]+.)+[^<>()[].,;:s@"]{2,})$';
+exports.emailRegex = /^(([^<>()[].,;:s@"]+(.[^<>()[].,;:s@"]+)*)|(".+"))@(([^<>()[].,;:s@"]+.)+[^<>()[].,;:s@"]{2,})$/gi;
 exports.API_VERSION = process.env.API_VERSION || 'v1.0';
 exports.ENV = process.env.ENV || 'production';

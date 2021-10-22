@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-escape */
 // import * as argon2 from 'argon2'
 import * as jwt from 'jsonwebtoken'
-import {emailRegex, JWT_EXPIRY, PRIVATE_KEY} from '../config'
+import {JWT_EXPIRY, PRIVATE_KEY} from '../config'
 import {isUnderAge} from '../helpers'
 // import {auth} from '../loaders/firebase'
 import {ICreateUserT} from '../models/User'
