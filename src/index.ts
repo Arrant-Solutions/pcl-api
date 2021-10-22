@@ -6,6 +6,7 @@ import 'reflect-metadata'
 import {useExpressServer} from 'routing-controllers'
 import * as express from 'express'
 import * as compression from 'compression'
+// import listEndpoints from 'express-list-endpoints'
 import Logger from './config/logger'
 import morgan from './middleware/morgan'
 import isAuth from './middleware/isAuth'
@@ -52,5 +53,7 @@ app.listen(PORT, () => {
     `API Version: /api/${API_VERSION}\n
     ${__dirname}/controllers/*.${ENV === 'production' ? 'js' : 'ts'}`,
   )
-  Logger.debug(`Server running on: http://localhost:${PORT}`)
+  // Logger.debug(listEndpoints(app))
+  Logger.debug(ENV)
+  Logger.debug(`Server running on: http://localhost:${PORT}/api/${API_VERSION}`)
 })
