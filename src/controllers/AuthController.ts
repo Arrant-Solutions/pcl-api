@@ -36,6 +36,8 @@ export default class AuthController {
     console.log(email)
     const {statusCode, data} = await authService.fetchUser({email})
 
+    console.log(JSON.stringify(statusCode, data))
+
     return response.status(statusCode).json({statusCode, data})
   }
 

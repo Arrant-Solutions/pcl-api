@@ -77,8 +77,14 @@ var AuthService = /** @class */ (function () {
                                     data: "Your account was " + data.user_status_name + ". Please contact support.",
                                 }];
                         }
-                        token = this.generateJWT(data);
-                        return [2 /*return*/, { statusCode: 200, data: { user: data, token: token } }];
+                        try {
+                            token = this.generateJWT(data);
+                            return [2 /*return*/, { statusCode: 200, data: { user: data, token: token } }];
+                        }
+                        catch (error) {
+                            return [2 /*return*/, { statusCode: 500, data: error.message }];
+                        }
+                        return [2 /*return*/];
                 }
             });
         });
