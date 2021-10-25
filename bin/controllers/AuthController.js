@@ -66,16 +66,23 @@ var AuthController = /** @class */ (function () {
     };
     AuthController.prototype.fetchUser = function (email, request, response) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, statusCode, data;
+            var _a, statusCode, data, error_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         console.log(email);
-                        return [4 /*yield*/, services_1.authService.fetchUser({ email: email })];
+                        _b.label = 1;
                     case 1:
+                        _b.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, services_1.authService.fetchUser({ email: email })];
+                    case 2:
                         _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
-                        console.log(JSON.stringify(statusCode, data));
                         return [2 /*return*/, response.status(statusCode).json({ statusCode: statusCode, data: data })];
+                    case 3:
+                        error_1 = _b.sent();
+                        console.log(error_1);
+                        return [2 /*return*/, response.status(500).json({ statusCode: 500, data: error_1 })];
+                    case 4: return [2 /*return*/];
                 }
             });
         });

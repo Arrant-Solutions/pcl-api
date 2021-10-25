@@ -2,6 +2,7 @@ import {
   BranchRepository,
   CountryRepository,
   FavoriteRepository,
+  FeedbackRepository,
   GenderRepository,
   MediaTypeRepository,
   ResourceAvailabilityRepository,
@@ -16,6 +17,7 @@ import AuthService from '../services/AuthService'
 import BranchService from '../services/BranchService'
 import CountryService from '../services/CountryService'
 import FavoritesService from '../services/FavoritesService'
+import FeedbackService from '../services/FeedbackService'
 import GenderService from '../services/GenderService'
 import MediaTypeService from '../services/MediaTypeService'
 import ResourceAvailabilityService from '../services/ResourceAvailabilityService'
@@ -197,6 +199,57 @@ export const resourceService = new ResourceService(
       'author_first_name',
       'author_last_name',
       'author_suffix',
+    ],
+  }),
+)
+
+export const feedbackService = new FeedbackService(
+  new FeedbackRepository({
+    idColumn: 'feedback_id',
+    tableName: 'feedbacks',
+    viewName: 'feedback_view',
+    columns: [
+      'feedback_id',
+      'rating',
+      'message',
+      'user_id',
+
+      'thumbnail_url',
+      'first_name',
+      'last_name',
+      'email',
+      'phone',
+      'date_of_birth',
+      'user_group_name',
+      'user_group_id',
+      'branch_name',
+      'branch_id',
+      'country_name',
+      'country_id',
+      'country_abbr',
+      'gender_name',
+      'gender_id',
+      'user_status_id',
+      'user_status_name',
+    ],
+    ignore: [
+      'thumbnail_url',
+      'first_name',
+      'last_name',
+      'email',
+      'phone',
+      'date_of_birth',
+      'user_group_name',
+      'user_group_id',
+      'branch_name',
+      'branch_id',
+      'country_name',
+      'country_id',
+      'country_abbr',
+      'gender_name',
+      'gender_id',
+      'user_status_id',
+      'user_status_name',
     ],
   }),
 )

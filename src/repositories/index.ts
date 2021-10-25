@@ -12,6 +12,7 @@ import {BaseRepository} from './BaseRepository'
 import {IUserStatus} from '../models/UserStatus'
 import {ResourceCreateT} from '../models/Resource'
 import {CreateFavoriteT} from '../models/Favorite'
+import {FeedbackCreateT} from '../models/Feedback'
 
 export class BranchRepository extends BaseRepository<IBranch> {}
 
@@ -33,6 +34,8 @@ export class ResourceRepository extends BaseRepository<ResourceCreateT> {}
 
 export class FavoriteRepository extends BaseRepository<CreateFavoriteT> {}
 
-export class UserRepository extends BaseRepository<ICreateUserT> {}
+export class UserRepository extends BaseRepository<ICreateUserT> { }
+
+export class FeedbackRepository extends BaseRepository<FeedbackCreateT> {}
 
 export class UserStatusRepository extends BaseRepository<IUserStatus> {}
