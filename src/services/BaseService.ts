@@ -5,9 +5,9 @@ import {IResponse} from '../types'
 
 // the R thing doesnt make sense
 abstract class BaseService<T extends IModel> {
-  protected readonly repository: IBaseRepository<T>
+  protected readonly repository: IBaseRepository<T, any>
 
-  constructor(repository: IBaseRepository<T>) {
+  constructor(repository: IBaseRepository<T, any>) {
     this.repository = repository
   }
 
@@ -28,13 +28,17 @@ abstract class BaseService<T extends IModel> {
   public async insert<Q extends T>(
     model: Q,
     withID?: boolean,
-  ): Promise<IResponse<Q | false>> {
+  ): Promise<IResponse<Q | false | string[]>> {
     console.log('base service: ', model)
     try {
       const result = await this.repository.insert<Q>(model, withID)
 
       if (typeof result === 'boolean') {
         return {statusCode: 500, data: 'Failed to upload'}
+      }
+
+      if (Array.isArray(result)) {
+        return {statusCode: 422, data: result}
       }
 
       return {statusCode: 200, data: result}
@@ -46,12 +50,16 @@ abstract class BaseService<T extends IModel> {
     id: number,
     model: T,
     user_id?: number,
-  ): Promise<IResponse<T | false>> {
+  ): Promise<IResponse<T | false | string[]>> {
     try {
       const result = await this.repository.update(id, model, user_id)
 
       if (typeof result === 'boolean') {
         return {statusCode: 500, data: 'Failed to upload'}
+      }
+
+      if (Array.isArray(result)) {
+        return {statusCode: 422, data: result}
       }
 
       return {statusCode: 200, data: result}

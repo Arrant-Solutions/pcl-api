@@ -9,7 +9,7 @@ export default class UserService extends BaseService<ICreateUserT> {
   public async insert<T extends ICreateUserT>(
     model: T,
     withID?: boolean,
-  ): Promise<IResponse<T>> {
+  ): Promise<IResponse<T | string[]>> {
     try {
       const client = await this.repository.createTransactionClient()
 
@@ -21,6 +21,10 @@ export default class UserService extends BaseService<ICreateUserT> {
 
           if (typeof result === 'boolean') {
             return {statusCode: 500, data: 'Failed to upload'}
+          }
+
+          if (Array.isArray(result)) {
+            return {statusCode: 422, data: result}
           }
 
           if (model.branch_id) {

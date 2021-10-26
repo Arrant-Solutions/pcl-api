@@ -1,5 +1,16 @@
+// eslint-disable-next-line max-classes-per-file
+import {
+  IsOptional,
+  IsInt,
+  IsNotEmpty,
+  IsPositive,
+  IsString,
+  Max,
+  MaxLength,
+  Min,
+} from 'class-validator'
 import {Optional} from '../types'
-import {IModel, Model} from './IModel'
+import {ICreate, IModel, Model} from './IModel'
 import {IUser, IUserView} from './User'
 
 export interface IFeedback extends IModel {
@@ -10,13 +21,41 @@ export interface IFeedback extends IModel {
 }
 
 export interface IFeedbackCreate {
-  Feedback_id: number
+  feedback_id: number
   rating: number
   message: string
   user_id: number
 }
 
 export type FeedbackCreateT = Optional<IFeedback & IFeedbackCreate, 'user'>
+
+export class FeedbackCreate implements FeedbackCreateT, ICreate<IFeedbackCreate> {
+  @IsOptional()
+  @IsPositive()
+  @IsInt()
+  feedback_id: number
+
+  @IsPositive()
+  @Max(5)
+  @Min(1)
+  rating: number
+
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(500, {message: 'Message should not be more than 500 characters'})
+  message: string
+
+  @IsPositive()
+  @IsInt()
+  user_id: number
+
+  set assign({feedback_id, rating, message, user_id}: IFeedbackCreate) {
+    this.feedback_id = feedback_id
+    this.rating = rating
+    this.message = message
+    this.user_id = user_id
+  }
+}
 
 export type IFeedbackView = IFeedback & IUserView
 

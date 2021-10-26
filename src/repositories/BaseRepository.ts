@@ -1,9 +1,10 @@
 /* eslint-disable indent */
 /* eslint-disable no-unused-vars */
 
+import {validate} from 'class-validator'
 import {PoolClient, Pool} from 'pg'
 import {pool} from '../loaders/database'
-import {IModel} from '../models/IModel'
+import {ICreate, IModel} from '../models/IModel'
 
 interface IJoin<T> {
   model: T
@@ -11,12 +12,12 @@ interface IJoin<T> {
   foreign: string
 }
 
-export interface IBaseRepository<T extends IModel> {
+export interface IBaseRepository<T extends IModel, C extends ICreate<unknown>> {
   insert<Q extends T>(
     model: Q,
     withID?: boolean,
     client?: Pool | PoolClient,
-  ): Promise<Q | false>
+  ): Promise<Q | false | string[]>
 
   setPool(client: PoolClient)
 
@@ -26,7 +27,7 @@ export interface IBaseRepository<T extends IModel> {
     id: number,
     model: Q,
     user_id?: number,
-  ): Promise<T | false>
+  ): Promise<T | false | string[]>
 
   insertMany<Q extends T>(models: Q[], withID?: boolean): Promise<boolean>
 
@@ -54,7 +55,10 @@ export interface IBaseRepository<T extends IModel> {
     ignoreCase?: boolean,
   ): Promise<Q | null>
 
-  upsert<Q extends T>(model: Q, filter?: Partial<Q>): Promise<Q | false>
+  upsert<Q extends T>(
+    model: Q,
+    filter?: Partial<Q>,
+  ): Promise<Q | false | string[]>
 
   findWildCard(
     filter: Record<string, string | number>,
@@ -64,8 +68,8 @@ export interface IBaseRepository<T extends IModel> {
   executeRawQuery<Q>(query: string, params?: (string | number)[]): Promise<Q[]>
 }
 
-export abstract class BaseRepository<T extends IModel>
-  implements IBaseRepository<T>
+export abstract class BaseRepository<T extends IModel, C extends ICreate<unknown>>
+  implements IBaseRepository<T, C>
 {
   protected pool: Pool | PoolClient
   protected tableName: string
@@ -74,6 +78,7 @@ export abstract class BaseRepository<T extends IModel>
   protected idColumn: string
   protected hasA: IJoin<T>[]
   protected viewName: string
+  protected model: C
 
   constructor({
     tableName,
@@ -113,7 +118,20 @@ export abstract class BaseRepository<T extends IModel>
     model: Q,
     id?: boolean,
     client?: Pool | PoolClient,
-  ): Promise<Q | false> {
+  ): Promise<Q | false | string[]> {
+    this.model.assign = model
+
+    const errors = await validate(this.model)
+
+    if (errors.length > 0) {
+      const errs = errors.reduce(
+        (result, error) => [...result, ...Object.values(error.constraints)],
+        [] as string[],
+      )
+
+      return errs
+    }
+
     const {columns, placeholders, values} = this.generateInsertQueryParts(
       model,
       id,
@@ -132,11 +150,24 @@ export abstract class BaseRepository<T extends IModel>
     id: number,
     model: Partial<Q>,
     user_id?: number,
-  ): Promise<Q | false> {
+  ): Promise<Q | false | string[]> {
     const arg = {[this.idColumn as keyof Q]: id, user_id}
     const item = await (user_id
       ? this.findOne<Q>(arg as any)
       : this.findById(id))
+
+    this.model.assign = {...item, ...model}
+
+    const errors = await validate(this.model)
+
+    if (errors.length > 0) {
+      const errs = errors.reduce(
+        (result, error) => [...result, ...Object.values(error.constraints)],
+        [] as string[],
+      )
+
+      return errs
+    }
 
     if (item) {
       const {columns, values} = this.generateUpdateQueryParts(model)
@@ -155,10 +186,23 @@ export abstract class BaseRepository<T extends IModel>
   public async upsert<Q extends T>(
     model: Q,
     filter?: Partial<Q>,
-  ): Promise<Q | false> {
+  ): Promise<Q | false | string[]> {
     const item = filter
       ? await this.findOne(filter)
       : await this.findById(model[this.idColumn])
+
+    this.model.assign = item ? {...item, ...model} : model
+
+    const errors = await validate(this.model)
+
+    if (errors.length > 0) {
+      const errs = errors.reduce(
+        (result, error) => [...result, ...Object.values(error.constraints)],
+        [] as string[],
+      )
+
+      return errs
+    }
 
     if (item) {
       const update = await this.update<Q>(model[this.idColumn], model)
@@ -182,7 +226,10 @@ export abstract class BaseRepository<T extends IModel>
       for await (const model of models) {
         const result = await this.insert(model, withID, client)
 
-        if (!result)
+        if (
+          !result ||
+          (typeof result === 'object' && Array.isArray((result as any).errors))
+        )
           throw new Error(`failed to insert: ${JSON.stringify(model)}`)
       }
 

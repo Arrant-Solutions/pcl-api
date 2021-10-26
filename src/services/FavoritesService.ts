@@ -6,12 +6,16 @@ export default class FavoriteService extends BaseService<CreateFavoriteT> {
   public async insert<Q extends CreateFavoriteT>(
     model: Q,
     withID?: boolean,
-  ): Promise<IResponse<Q | false>> {
+  ): Promise<IResponse<Q | false | string[]>> {
     try {
       const result = await this.repository.insert<Q>(model, withID)
 
       if (typeof result === 'boolean') {
         return {statusCode: 500, data: 'Failed to upload'}
+      }
+
+      if (Array.isArray(result)) {
+        return {statusCode: 422, data: result}
       }
 
       return {statusCode: 200, data: result}

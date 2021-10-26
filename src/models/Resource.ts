@@ -1,13 +1,10 @@
 import {Optional} from '../types'
 import {IAuthor} from './Author'
 import {IModel, Model} from './IModel'
-import {IMediaType, MediaType} from './MediaType'
-import {
-  IResourceAvailability,
-  ResourceAvailability,
-} from './ResourceAvailability'
-import {IResourceType, ResourceType} from './ResourceType'
-import {IResourceCategory, ResourceCategory} from './resource_category'
+import {IMediaType} from './MediaType'
+import {IResourceAvailability} from './ResourceAvailability'
+import {IResourceType} from './ResourceType'
+import {IResourceCategory} from './ResourceCategory'
 import {IUser, IUserView} from './User'
 
 export interface IResource extends IModel {
@@ -18,10 +15,10 @@ export interface IResource extends IModel {
   resource_url: string
   thumbnail_url: string
   user: IUser
-  resource_category: ResourceCategory
-  resource_type: ResourceType
-  resource_availability: ResourceAvailability
-  media_type: MediaType
+  resource_category: IResourceCategory
+  resource_type: IResourceType
+  resource_availability: IResourceAvailability
+  media_type: IMediaType
 }
 
 export interface IResourceCreate {
@@ -66,10 +63,10 @@ export class Resource extends Model implements IResource {
   resource_url: string
   thumbnail_url: string
   user: IUser
-  resource_category: ResourceCategory
-  resource_type: ResourceType
-  resource_availability: ResourceAvailability
-  media_type: MediaType
+  resource_category: IResourceCategory
+  resource_type: IResourceType
+  resource_availability: IResourceAvailability
+  media_type: IMediaType
   author: IAuthor
 
   constructor(

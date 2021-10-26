@@ -6,12 +6,16 @@ export default class ResourceService extends BaseService<ResourceCreateT> {
   public async insert<Q extends ResourceCreateT>(
     model: Q,
     withID?: boolean,
-  ): Promise<IResponse<Q | false>> {
+  ): Promise<IResponse<Q | false | string[]>> {
     try {
       const result = await this.repository.insert<Q>(model, withID)
 
       if (typeof result === 'boolean') {
         return {statusCode: 500, data: 'Failed to upload'}
+      }
+
+      if (Array.isArray(result)) {
+        return {statusCode: 422, data: result}
       }
 
       return {statusCode: 200, data: result}
