@@ -1,8 +1,20 @@
+// eslint-disable-next-line max-classes-per-file
 import {Type} from 'class-transformer'
+import * as moment from 'moment'
+import {
+  IsDateString,
+  IsEmail,
+  IsInt,
+  IsOptional,
+  IsPositive,
+  IsString,
+  MaxLength,
+  ValidationArguments,
+} from 'class-validator'
 import {Branch, IBranch} from './Branch'
 import {Country, ICountry} from './Country'
 import {Gender, IGender} from './Gender'
-import {IModel, Model} from './IModel'
+import {ICreate, IModel, Model} from './IModel'
 import {IUserGroup, UserGroup} from './UserGroup'
 import {IUserStatus, UserStatus} from './UserStatus'
 
@@ -11,6 +23,7 @@ type Optional<T, K extends keyof T> = Omit<T, K> & Partial<T>
 
 export interface IUserView extends IModel {
   user_id: number
+  avatar: string
   first_name: string
   last_name: string
   email: string
@@ -29,14 +42,25 @@ export interface IUserView extends IModel {
   user_status_id: number
   user_status_name: string
   // password: string
-  created_at: Date
-  updated_at: Date
+  // created_at: Date
+  // updated_at: Date
 }
 
 export interface ICredential {
   email: string
   password: string
 }
+
+export type IUserCreate = Omit<
+  IUserView,
+  | 'user_group_name'
+  | 'gender_name'
+  | 'country_name'
+  | 'country_abbr'
+  | 'country_code'
+  | 'branch_name'
+  | 'user_status_name'
+>
 
 export type ICreateUser = Optional<
   IUserView,
@@ -61,6 +85,110 @@ export type ICreateUserT = Optional<
   | 'branch_id'
   | 'user_status_id'
 >
+
+export class UserCreate implements IUserCreate, ICreate<IUserCreate> {
+  @IsOptional()
+  @IsInt()
+  @IsPositive()
+  user_id: number
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(255)
+  avatar: string
+
+  @IsString()
+  @MaxLength(50)
+  first_name: string
+
+  @IsString()
+  @MaxLength(50)
+  last_name: string
+
+  @IsString()
+  @MaxLength(190)
+  @IsEmail()
+  email: string
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(255)
+  phone: string
+
+  @IsDateString({
+    message: (args: ValidationArguments) => {
+      const lower = moment().subtract(150, 'years')
+      const upper = moment().subtract(1, 'years')
+
+      const dob = new Date(args.value)
+
+      if (Number.isNaN(dob.valueOf())) {
+        return 'Please input a valid date of birth'
+      }
+
+      if (dob.valueOf() <= lower.valueOf()) {
+        return 'You might be too old to use the app'
+      }
+
+      if (dob.valueOf() >= upper.valueOf()) {
+        return 'You might be too young to use the app'
+      }
+
+      return `${args.value} does not look like a valid date of birth`
+    },
+  })
+  @MaxLength(255)
+  date_of_birth: string
+
+  @IsInt()
+  @IsPositive()
+  user_group_id: number
+
+  @IsInt()
+  @IsPositive()
+  country_id: number
+
+  @IsInt()
+  @IsPositive()
+  gender_id: number
+
+  @IsInt()
+  @IsPositive()
+  user_status_id: number
+
+  @IsOptional()
+  @IsInt()
+  @IsPositive()
+  branch_id: number
+
+  set assign({
+    user_id,
+    avatar,
+    first_name,
+    last_name,
+    email,
+    phone,
+    date_of_birth,
+    user_group_id,
+    country_id,
+    gender_id,
+    branch_id,
+    user_status_id,
+  }: IUserCreate) {
+    this.user_id = user_id
+    this.avatar = avatar
+    this.first_name = first_name
+    this.last_name = last_name
+    this.email = email
+    this.phone = phone
+    this.date_of_birth = date_of_birth
+    this.user_group_id = user_group_id
+    this.country_id = country_id
+    this.gender_id = gender_id
+    this.branch_id = branch_id
+    this.user_status_id = user_status_id
+  }
+}
 
 export interface IUser extends IModel {
   avatar?: string

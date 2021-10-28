@@ -1,4 +1,10 @@
-import { IsOptional, IsInt, IsPositive, IsString, Max } from 'class-validator'
+import {
+  IsOptional,
+  IsInt,
+  IsPositive,
+  IsString,
+  MaxLength,
+} from 'class-validator'
 import {ICreate, IModel, Model} from './IModel'
 
 export interface IUserGroup extends IModel {
@@ -16,7 +22,7 @@ export class UserGroup
   user_group_id: number
 
   @IsString()
-  @Max(30)
+  @MaxLength(30)
   user_group_name: string
 
   set assign({user_group_id, user_group_name}) {

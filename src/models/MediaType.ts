@@ -1,4 +1,10 @@
-import {IsOptional, IsInt, IsPositive, IsString, Max} from 'class-validator'
+import {
+  IsOptional,
+  IsInt,
+  IsPositive,
+  IsString,
+  MaxLength,
+} from 'class-validator'
 import {ICreate, IModel, Model} from './IModel'
 
 export interface IMediaType extends IModel {
@@ -16,7 +22,7 @@ export class MediaType
   media_type_id: number
 
   @IsString()
-  @Max(10)
+  @MaxLength(10)
   media_type_name: string
 
   set assign({media_type_id, media_type_name}: IMediaType) {

@@ -1,4 +1,10 @@
-import {IsOptional, IsInt, IsPositive, IsString, Max} from 'class-validator'
+import {
+  IsOptional,
+  IsInt,
+  IsPositive,
+  IsString,
+  MaxLength,
+} from 'class-validator'
 import {ICreate, IModel, Model} from './IModel'
 
 export interface IResourceAvailability extends IModel {
@@ -16,7 +22,7 @@ export class ResourceAvailability
   resource_availability_id: number
 
   @IsString()
-  @Max(20)
+  @MaxLength(20)
   resource_availability_name: string
 
   set assign({

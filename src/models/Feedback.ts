@@ -29,7 +29,8 @@ export interface IFeedbackCreate {
 
 export type FeedbackCreateT = Optional<IFeedback & IFeedbackCreate, 'user'>
 
-export class FeedbackCreate implements FeedbackCreateT, ICreate<IFeedbackCreate> {
+export class FeedbackCreate implements FeedbackCreateT, ICreate<IFeedbackCreate>
+{
   @IsOptional()
   @IsPositive()
   @IsInt()

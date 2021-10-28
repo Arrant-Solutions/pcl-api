@@ -58,6 +58,7 @@ export default class AuthService {
           token: string
         }
       | string
+      | string[]
     >
   > {
     if (isUnderAge(user.date_of_birth)) {
@@ -109,6 +110,10 @@ export default class AuthService {
       user_group_id: 4, // default to customer
       user_status_id: user.user_status_id || 3, // default to pending activation
     })
+
+    if (Array.isArray(result)) {
+      return {statusCode: 422, data: result}
+    }
 
     if (typeof result === 'object') {
       const token = this.generateJWT(result)

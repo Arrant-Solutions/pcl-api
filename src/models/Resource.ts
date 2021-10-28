@@ -1,6 +1,14 @@
+// eslint-disable-next-line max-classes-per-file
+import {
+  IsOptional,
+  IsInt,
+  IsPositive,
+  IsString,
+  MaxLength,
+} from 'class-validator'
 import {Optional} from '../types'
 import {IAuthor} from './Author'
-import {IModel, Model} from './IModel'
+import {ICreate, IModel, Model} from './IModel'
 import {IMediaType} from './MediaType'
 import {IResourceAvailability} from './ResourceAvailability'
 import {IResourceType} from './ResourceType'
@@ -47,6 +55,82 @@ export type ResourceCreateT = Optional<
   | 'resource_availability_id'
   | 'media_type_id'
 >
+
+export class ResourceCreate implements
+    Omit<IResourceCreate, 'author'>,
+    ICreate<Omit<IResourceCreate, 'author'> & {author_id: number}>
+{
+  @IsOptional()
+  @IsInt()
+  @IsPositive()
+  resource_id: number
+
+  @IsString()
+  @MaxLength(250)
+  title: string
+
+  @IsString()
+  @MaxLength(255)
+  description: string
+
+  @IsInt()
+  @IsPositive()
+  author_id: number
+
+  @IsString()
+  @MaxLength(255)
+  resource_url: string
+
+  @IsString()
+  @MaxLength(255)
+  thumbnail_url: string
+
+  @IsInt()
+  @IsPositive()
+  user_id: number
+
+  @IsInt()
+  @IsPositive()
+  resource_category_id: number
+
+  @IsInt()
+  @IsPositive()
+  resource_type_id: number
+
+  @IsInt()
+  @IsPositive()
+  resource_availability_id: number
+
+  @IsInt()
+  @IsPositive()
+  media_type_id: number
+
+  set assign({
+    resource_id,
+    title,
+    description,
+    author_id,
+    resource_url,
+    thumbnail_url,
+    user_id,
+    resource_availability_id,
+    resource_type_id,
+    resource_category_id,
+    media_type_id,
+  }: Omit<IResourceCreate, 'author'> & {author_id: number}) {
+    this.resource_id = resource_id
+    this.title = title
+    this.description = description
+    this.author_id = author_id
+    this.resource_url = resource_url
+    this.thumbnail_url = thumbnail_url
+    this.user_id = user_id
+    this.resource_availability_id = resource_availability_id
+    this.resource_type_id = resource_type_id
+    this.resource_category_id = resource_category_id
+    this.media_type_id = media_type_id
+  }
+}
 
 export type IResourceView = IResource &
   IUserView &

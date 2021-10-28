@@ -1,4 +1,10 @@
-import {IsOptional, IsInt, IsPositive, IsString, Max} from 'class-validator'
+import {
+  IsOptional,
+  IsInt,
+  IsPositive,
+  IsString,
+  MaxLength,
+} from 'class-validator'
 import {ICreate, IModel, Model} from './IModel'
 
 export interface IResourceCategory extends IModel {
@@ -16,7 +22,7 @@ export class ResourceCategory
   resource_category_id: number
 
   @IsString()
-  @Max(30)
+  @MaxLength(30)
   resource_category_name: string
 
   set assign({

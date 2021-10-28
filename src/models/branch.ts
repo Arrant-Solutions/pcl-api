@@ -1,4 +1,10 @@
-import {IsInt, IsOptional, IsPositive, IsString, Max} from 'class-validator'
+import {
+  IsInt,
+  IsOptional,
+  IsPositive,
+  IsString,
+  MaxLength,
+} from 'class-validator'
 import {ICreate, IModel, Model} from './IModel'
 
 export interface IBranch extends IModel {
@@ -13,7 +19,7 @@ export class Branch extends Model implements IBranch, ICreate<IBranch> {
   branch_id: number
 
   @IsString()
-  @Max(100)
+  @MaxLength(100)
   branch_name: string
 
   set assign({branch_id, branch_name}: IBranch) {

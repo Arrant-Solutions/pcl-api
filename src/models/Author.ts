@@ -1,4 +1,10 @@
-import {IsInt, IsOptional, IsPositive, IsString, Max} from 'class-validator'
+import {
+  IsInt,
+  IsOptional,
+  IsPositive,
+  IsString,
+  MaxLength,
+} from 'class-validator'
 import {ICreate, IModel, Model} from './IModel'
 
 export interface IAuthor extends IModel {
@@ -16,19 +22,19 @@ export class Author extends Model implements IAuthor, ICreate<IAuthor> {
   author_id: number
 
   @IsString()
-  @Max(255)
+  @MaxLength(255)
   title: string
 
   @IsString()
-  @Max(100)
+  @MaxLength(100)
   first_name: string
 
   @IsString()
-  @Max(100)
+  @MaxLength(100)
   last_name: string
 
   @IsString()
-  @Max(255)
+  @MaxLength(255)
   suffix: string
 
   set assign({author_id, title, first_name, last_name, suffix}: IAuthor) {

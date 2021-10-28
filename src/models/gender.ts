@@ -1,4 +1,10 @@
-import {IsInt, IsOptional, IsPositive, IsString, Max} from 'class-validator'
+import {
+  IsInt,
+  IsOptional,
+  IsPositive,
+  IsString,
+  MaxLength,
+} from 'class-validator'
 import {ICreate, IModel, Model} from './IModel'
 
 export interface IGender extends IModel {
@@ -13,7 +19,7 @@ export class Gender extends Model implements IGender, ICreate<IGender> {
   gender_id: number
 
   @IsString()
-  @Max(20)
+  @MaxLength(20)
   gender_name: string
 
   set assign({gender_id, gender_name}: IGender) {

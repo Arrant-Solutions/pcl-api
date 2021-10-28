@@ -1,4 +1,10 @@
-import {IsOptional, IsInt, IsPositive, IsString, Max} from 'class-validator'
+import {
+  IsOptional,
+  IsInt,
+  IsPositive,
+  IsString,
+  MaxLength,
+} from 'class-validator'
 import {ICreate, IModel, Model} from './IModel'
 
 export interface IUserStatus extends IModel {
@@ -16,7 +22,7 @@ export class UserStatus
   user_status_id: number
 
   @IsString()
-  @Max(30)
+  @MaxLength(30)
   user_status_name: string
 
   set assign({user_status_id, user_status_name}) {
