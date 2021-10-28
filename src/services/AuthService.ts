@@ -2,7 +2,6 @@
 // import * as argon2 from 'argon2'
 import * as jwt from 'jsonwebtoken'
 import {JWT_EXPIRY, PRIVATE_KEY} from '../config'
-import {isUnderAge} from '../helpers'
 // import {auth} from '../loaders/firebase'
 import {ICreateUserT} from '../models/User'
 import {IResponse} from '../types'
@@ -61,10 +60,6 @@ export default class AuthService {
       | string[]
     >
   > {
-    if (isUnderAge(user.date_of_birth)) {
-      return {statusCode: 422, data: 'You are under age.'}
-    }
-
     if (!/^[\p{L}'][ \p{L}'-]*[\p{L}]$/u.test(user.first_name)) {
       return {statusCode: 422, data: 'Please input a valid first name'}
     }
@@ -81,13 +76,8 @@ export default class AuthService {
       return {statusCode: 422, data: 'Please select a valid country'}
     }
 
-    if (
-      // eslint-disable-next-line max-len
-      !/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(
-        user.email,
-      )
-    ) {
-      return {statusCode: 422, data: 'Please input a valid email address'}
+    if (!(user.user_status_id > 0 && user.user_status_id <= 4)) {
+      return {statusCode: 422, data: 'Please select a valid country'}
     }
 
     const {statusCode} = await this.userService.findOne(

@@ -1,15 +1,13 @@
 // eslint-disable-next-line max-classes-per-file
 import {Type} from 'class-transformer'
-import * as moment from 'moment'
 import {
-  IsDateString,
   IsEmail,
   IsInt,
   IsOptional,
   IsPositive,
   IsString,
   MaxLength,
-  ValidationArguments,
+  Validate,
 } from 'class-validator'
 import {Branch, IBranch} from './Branch'
 import {Country, ICountry} from './Country'
@@ -17,6 +15,7 @@ import {Gender, IGender} from './Gender'
 import {ICreate, IModel, Model} from './IModel'
 import {IUserGroup, UserGroup} from './UserGroup'
 import {IUserStatus, UserStatus} from './UserStatus'
+import IsAppropriateAge from '../validators/AgeValidator'
 
 // due to dependency cycle dude brought here
 type Optional<T, K extends keyof T> = Omit<T, K> & Partial<T>
@@ -115,28 +114,7 @@ export class UserCreate implements IUserCreate, ICreate<IUserCreate> {
   @MaxLength(255)
   phone: string
 
-  @IsDateString({
-    message: (args: ValidationArguments) => {
-      const lower = moment().subtract(150, 'years')
-      const upper = moment().subtract(1, 'years')
-
-      const dob = new Date(args.value)
-
-      if (Number.isNaN(dob.valueOf())) {
-        return 'Please input a valid date of birth'
-      }
-
-      if (dob.valueOf() <= lower.valueOf()) {
-        return 'You might be too old to use the app'
-      }
-
-      if (dob.valueOf() >= upper.valueOf()) {
-        return 'You might be too young to use the app'
-      }
-
-      return `${args.value} does not look like a valid date of birth`
-    },
-  })
+  @Validate(IsAppropriateAge)
   @MaxLength(255)
   date_of_birth: string
 
