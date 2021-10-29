@@ -13,6 +13,5 @@ export abstract class Model implements IModel {
 }
 
 export interface ICreate<T> {
-  // eslint-disable-next-line no-unused-vars
-  set assign(create: T)
+  assign: T
 }

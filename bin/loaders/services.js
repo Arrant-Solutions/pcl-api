@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authService = exports.favoriteService = exports.resourceService = exports.userService = exports.userStatusService = exports.resourceTypeService = exports.resourceCategoryService = exports.resourceAvailabilityService = exports.mediaTypeService = exports.userGroupService = exports.genderService = exports.countryService = exports.branchService = void 0;
+exports.authService = exports.favoriteService = exports.feedbackService = exports.resourceService = exports.userService = exports.userStatusService = exports.resourceTypeService = exports.resourceCategoryService = exports.resourceAvailabilityService = exports.mediaTypeService = exports.userGroupService = exports.genderService = exports.countryService = exports.branchService = void 0;
 var repositories_1 = require("../repositories");
 var AuthService_1 = require("../services/AuthService");
 var BranchService_1 = require("../services/BranchService");
 var CountryService_1 = require("../services/CountryService");
 var FavoritesService_1 = require("../services/FavoritesService");
+var FeedbackService_1 = require("../services/FeedbackService");
 var GenderService_1 = require("../services/GenderService");
 var MediaTypeService_1 = require("../services/MediaTypeService");
 var ResourceAvailabilityService_1 = require("../services/ResourceAvailabilityService");
@@ -154,6 +155,53 @@ exports.resourceService = new ResourceService_1.default(new repositories_1.Resou
         'author_first_name',
         'author_last_name',
         'author_suffix',
+    ],
+}));
+exports.feedbackService = new FeedbackService_1.default(new repositories_1.FeedbackRepository({
+    idColumn: 'feedback_id',
+    tableName: 'feedbacks',
+    viewName: 'feedback_view',
+    columns: [
+        'feedback_id',
+        'rating',
+        'message',
+        'user_id',
+        'thumbnail_url',
+        'first_name',
+        'last_name',
+        'email',
+        'phone',
+        'date_of_birth',
+        'user_group_name',
+        'user_group_id',
+        'branch_name',
+        'branch_id',
+        'country_name',
+        'country_id',
+        'country_abbr',
+        'gender_name',
+        'gender_id',
+        'user_status_id',
+        'user_status_name',
+    ],
+    ignore: [
+        'thumbnail_url',
+        'first_name',
+        'last_name',
+        'email',
+        'phone',
+        'date_of_birth',
+        'user_group_name',
+        'user_group_id',
+        'branch_name',
+        'branch_id',
+        'country_name',
+        'country_id',
+        'country_abbr',
+        'gender_name',
+        'gender_id',
+        'user_status_id',
+        'user_status_name',
     ],
 }));
 exports.favoriteService = new FavoritesService_1.default(new repositories_1.FavoriteRepository({

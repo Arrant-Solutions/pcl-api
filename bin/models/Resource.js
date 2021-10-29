@@ -3,20 +3,95 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Resource = void 0;
+exports.Resource = exports.ResourceCreate = void 0;
+// eslint-disable-next-line max-classes-per-file
+var class_validator_1 = require("class-validator");
 var IModel_1 = require("./IModel");
+var ResourceCreate = /** @class */ (function () {
+    function ResourceCreate() {
+    }
+    Object.defineProperty(ResourceCreate.prototype, "assign", {
+        set: function (_a) {
+            var resource_id = _a.resource_id, title = _a.title, description = _a.description, author_id = _a.author_id, resource_url = _a.resource_url, thumbnail_url = _a.thumbnail_url, user_id = _a.user_id, resource_availability_id = _a.resource_availability_id, resource_type_id = _a.resource_type_id, resource_category_id = _a.resource_category_id, media_type_id = _a.media_type_id;
+            this.resource_id = resource_id;
+            this.title = title;
+            this.description = description;
+            this.author_id = author_id;
+            this.resource_url = resource_url;
+            this.thumbnail_url = thumbnail_url;
+            this.user_id = user_id;
+            this.resource_availability_id = resource_availability_id;
+            this.resource_type_id = resource_type_id;
+            this.resource_category_id = resource_category_id;
+            this.media_type_id = media_type_id;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    __decorate([
+        class_validator_1.IsOptional(),
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
+    ], ResourceCreate.prototype, "resource_id", void 0);
+    __decorate([
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(250)
+    ], ResourceCreate.prototype, "title", void 0);
+    __decorate([
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(255)
+    ], ResourceCreate.prototype, "description", void 0);
+    __decorate([
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
+    ], ResourceCreate.prototype, "author_id", void 0);
+    __decorate([
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(255)
+    ], ResourceCreate.prototype, "resource_url", void 0);
+    __decorate([
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(255)
+    ], ResourceCreate.prototype, "thumbnail_url", void 0);
+    __decorate([
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
+    ], ResourceCreate.prototype, "user_id", void 0);
+    __decorate([
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
+    ], ResourceCreate.prototype, "resource_category_id", void 0);
+    __decorate([
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
+    ], ResourceCreate.prototype, "resource_type_id", void 0);
+    __decorate([
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
+    ], ResourceCreate.prototype, "resource_availability_id", void 0);
+    __decorate([
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
+    ], ResourceCreate.prototype, "media_type_id", void 0);
+    return ResourceCreate;
+}());
+exports.ResourceCreate = ResourceCreate;
 var Resource = /** @class */ (function (_super) {
     __extends(Resource, _super);
     function Resource(arg) {

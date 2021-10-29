@@ -51,7 +51,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // import * as argon2 from 'argon2'
 var jwt = require("jsonwebtoken");
 var config_1 = require("../config");
-var helpers_1 = require("../helpers");
 var AuthService = /** @class */ (function () {
     function AuthService(userService) {
         this.userService = userService;
@@ -89,9 +88,6 @@ var AuthService = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        if ((0, helpers_1.isUnderAge)(user.date_of_birth)) {
-                            return [2 /*return*/, { statusCode: 422, data: 'You are under age.' }];
-                        }
                         if (!/^[\p{L}'][ \p{L}'-]*[\p{L}]$/u.test(user.first_name)) {
                             return [2 /*return*/, { statusCode: 422, data: 'Please input a valid first name' }];
                         }
@@ -104,10 +100,8 @@ var AuthService = /** @class */ (function () {
                         if (!(user.country_id > 0 && user.country_id < 254)) {
                             return [2 /*return*/, { statusCode: 422, data: 'Please select a valid country' }];
                         }
-                        if (
-                        // eslint-disable-next-line max-len
-                        !/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(user.email)) {
-                            return [2 /*return*/, { statusCode: 422, data: 'Please input a valid email address' }];
+                        if (!(user.user_status_id > 0 && user.user_status_id <= 4)) {
+                            return [2 /*return*/, { statusCode: 422, data: 'Please select a valid country' }];
                         }
                         return [4 /*yield*/, this.userService.findOne({
                                 phone: user.phone,
@@ -124,6 +118,9 @@ var AuthService = /** @class */ (function () {
                         return [4 /*yield*/, this.userService.insert(__assign(__assign({}, user), { user_group_id: 4, user_status_id: user.user_status_id || 3 }))];
                     case 2:
                         _a = _b.sent(), status = _a.statusCode, result = _a.data;
+                        if (Array.isArray(result)) {
+                            return [2 /*return*/, { statusCode: 422, data: result }];
+                        }
                         if (typeof result === 'object') {
                             token = this.generateJWT(result);
                             return [2 /*return*/, {

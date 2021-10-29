@@ -3,12 +3,10 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -21,14 +19,95 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.User = exports.UserCreate = void 0;
+// eslint-disable-next-line max-classes-per-file
 var class_transformer_1 = require("class-transformer");
+var class_validator_1 = require("class-validator");
 var Branch_1 = require("./Branch");
 var Country_1 = require("./Country");
 var Gender_1 = require("./Gender");
 var IModel_1 = require("./IModel");
 var UserGroup_1 = require("./UserGroup");
 var UserStatus_1 = require("./UserStatus");
+var AgeValidator_1 = require("../validators/AgeValidator");
+var UserCreate = /** @class */ (function () {
+    function UserCreate() {
+    }
+    Object.defineProperty(UserCreate.prototype, "assign", {
+        set: function (_a) {
+            var user_id = _a.user_id, avatar = _a.avatar, first_name = _a.first_name, last_name = _a.last_name, email = _a.email, phone = _a.phone, date_of_birth = _a.date_of_birth, user_group_id = _a.user_group_id, country_id = _a.country_id, gender_id = _a.gender_id, branch_id = _a.branch_id, user_status_id = _a.user_status_id;
+            this.user_id = user_id;
+            this.avatar = avatar;
+            this.first_name = first_name;
+            this.last_name = last_name;
+            this.email = email;
+            this.phone = phone;
+            this.date_of_birth = date_of_birth;
+            this.user_group_id = user_group_id;
+            this.country_id = country_id;
+            this.gender_id = gender_id;
+            this.branch_id = branch_id;
+            this.user_status_id = user_status_id;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    __decorate([
+        class_validator_1.IsOptional(),
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
+    ], UserCreate.prototype, "user_id", void 0);
+    __decorate([
+        class_validator_1.IsOptional(),
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(255)
+    ], UserCreate.prototype, "avatar", void 0);
+    __decorate([
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(50)
+    ], UserCreate.prototype, "first_name", void 0);
+    __decorate([
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(50)
+    ], UserCreate.prototype, "last_name", void 0);
+    __decorate([
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(190),
+        class_validator_1.IsEmail()
+    ], UserCreate.prototype, "email", void 0);
+    __decorate([
+        class_validator_1.IsOptional(),
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(255)
+    ], UserCreate.prototype, "phone", void 0);
+    __decorate([
+        class_validator_1.Validate(AgeValidator_1.default),
+        class_validator_1.MaxLength(255)
+    ], UserCreate.prototype, "date_of_birth", void 0);
+    __decorate([
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
+    ], UserCreate.prototype, "user_group_id", void 0);
+    __decorate([
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
+    ], UserCreate.prototype, "country_id", void 0);
+    __decorate([
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
+    ], UserCreate.prototype, "gender_id", void 0);
+    __decorate([
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
+    ], UserCreate.prototype, "user_status_id", void 0);
+    __decorate([
+        class_validator_1.IsOptional(),
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
+    ], UserCreate.prototype, "branch_id", void 0);
+    return UserCreate;
+}());
+exports.UserCreate = UserCreate;
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User(param) {
@@ -82,19 +161,19 @@ var User = /** @class */ (function (_super) {
             typeof object.user_group_name === 'string');
     };
     __decorate([
-        (0, class_transformer_1.Type)(function () { return UserGroup_1.UserGroup; })
+        class_transformer_1.Type(function () { return UserGroup_1.UserGroup; })
     ], User.prototype, "user_group", void 0);
     __decorate([
-        (0, class_transformer_1.Type)(function () { return Country_1.Country; })
+        class_transformer_1.Type(function () { return Country_1.Country; })
     ], User.prototype, "country", void 0);
     __decorate([
-        (0, class_transformer_1.Type)(function () { return Gender_1.Gender; })
+        class_transformer_1.Type(function () { return Gender_1.Gender; })
     ], User.prototype, "gender", void 0);
     __decorate([
-        (0, class_transformer_1.Type)(function () { return Branch_1.Branch; })
+        class_transformer_1.Type(function () { return Branch_1.Branch; })
     ], User.prototype, "branch", void 0);
     __decorate([
-        (0, class_transformer_1.Type)(function () { return UserStatus_1.UserStatus; })
+        class_transformer_1.Type(function () { return UserStatus_1.UserStatus; })
     ], User.prototype, "user_status", void 0);
     return User;
 }(IModel_1.Model));

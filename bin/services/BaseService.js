@@ -76,6 +76,9 @@ var BaseService = /** @class */ (function () {
                         if (typeof result === 'boolean') {
                             return [2 /*return*/, { statusCode: 500, data: 'Failed to upload' }];
                         }
+                        if (Array.isArray(result)) {
+                            return [2 /*return*/, { statusCode: 422, data: result }];
+                        }
                         return [2 /*return*/, { statusCode: 200, data: result }];
                     case 3:
                         error_1 = _a.sent();
@@ -97,6 +100,9 @@ var BaseService = /** @class */ (function () {
                         result = _a.sent();
                         if (typeof result === 'boolean') {
                             return [2 /*return*/, { statusCode: 500, data: 'Failed to upload' }];
+                        }
+                        if (Array.isArray(result)) {
+                            return [2 /*return*/, { statusCode: 422, data: result }];
                         }
                         return [2 /*return*/, { statusCode: 200, data: result }];
                     case 2:

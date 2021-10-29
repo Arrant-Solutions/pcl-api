@@ -19,19 +19,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserStatus = void 0;
+exports.ResourceCategory = void 0;
 var class_validator_1 = require("class-validator");
 var IModel_1 = require("./IModel");
-var UserStatus = /** @class */ (function (_super) {
-    __extends(UserStatus, _super);
-    function UserStatus() {
+var ResourceCategory = /** @class */ (function (_super) {
+    __extends(ResourceCategory, _super);
+    function ResourceCategory() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(UserStatus.prototype, "assign", {
+    Object.defineProperty(ResourceCategory.prototype, "assign", {
         set: function (_a) {
-            var user_status_id = _a.user_status_id, user_status_name = _a.user_status_name;
-            this.user_status_id = user_status_id;
-            this.user_status_name = user_status_name;
+            var resource_category_id = _a.resource_category_id, resource_category_name = _a.resource_category_name;
+            this.resource_category_id = resource_category_id;
+            this.resource_category_name = resource_category_name;
         },
         enumerable: false,
         configurable: true
@@ -40,11 +40,11 @@ var UserStatus = /** @class */ (function (_super) {
         class_validator_1.IsOptional(),
         class_validator_1.IsInt(),
         class_validator_1.IsPositive()
-    ], UserStatus.prototype, "user_status_id", void 0);
+    ], ResourceCategory.prototype, "resource_category_id", void 0);
     __decorate([
         class_validator_1.IsString(),
         class_validator_1.MaxLength(30)
-    ], UserStatus.prototype, "user_status_name", void 0);
-    return UserStatus;
+    ], ResourceCategory.prototype, "resource_category_name", void 0);
+    return ResourceCategory;
 }(IModel_1.Model));
-exports.UserStatus = UserStatus;
+exports.ResourceCategory = ResourceCategory;

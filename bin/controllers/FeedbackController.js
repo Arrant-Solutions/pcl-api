@@ -45,19 +45,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-/* eslint-disable no-unused-vars */
 /* eslint-disable class-methods-use-this */
 var routing_controllers_1 = require("routing-controllers");
 var services_1 = require("../loaders/services");
-var BranchController = /** @class */ (function () {
-    function BranchController() {
+var feedbackController = /** @class */ (function () {
+    function feedbackController() {
     }
-    BranchController.prototype.getAll = function (request, response) {
+    feedbackController.prototype.getAll = function (request, response) {
         return __awaiter(this, void 0, void 0, function () {
             var _a, statusCode, data;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, services_1.branchService.findAll()];
+                    case 0: return [4 /*yield*/, services_1.feedbackService.findAll()];
                     case 1:
                         _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
                         return [2 /*return*/, response.status(statusCode).json({ statusCode: statusCode, data: data })];
@@ -65,12 +64,12 @@ var BranchController = /** @class */ (function () {
             });
         });
     };
-    BranchController.prototype.getOne = function (id, request, response) {
+    feedbackController.prototype.getOne = function (id, request, response) {
         return __awaiter(this, void 0, void 0, function () {
             var _a, statusCode, data;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, services_1.branchService.findById(id)];
+                    case 0: return [4 /*yield*/, services_1.feedbackService.findById(id)];
                     case 1:
                         _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
                         return [2 /*return*/, response.status(statusCode).json({ statusCode: statusCode, data: data })];
@@ -78,12 +77,12 @@ var BranchController = /** @class */ (function () {
             });
         });
     };
-    BranchController.prototype.post = function (branch, request, response) {
+    feedbackController.prototype.post = function (feedback, request, response) {
         return __awaiter(this, void 0, void 0, function () {
             var _a, statusCode, data;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, services_1.branchService.insert(branch)];
+                    case 0: return [4 /*yield*/, services_1.feedbackService.insert(feedback)];
                     case 1:
                         _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
                         return [2 /*return*/, response.status(statusCode).json({ statusCode: statusCode, data: data })];
@@ -91,12 +90,31 @@ var BranchController = /** @class */ (function () {
             });
         });
     };
-    BranchController.prototype.put = function (id, branch, request, response) {
+    feedbackController.prototype.fetchUser = function (user_id, request, response) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, statusCode, data, error_1;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, services_1.feedbackService.find({ user_id: user_id })];
+                    case 1:
+                        _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
+                        return [2 /*return*/, response.status(statusCode).json({ statusCode: statusCode, data: data })];
+                    case 2:
+                        error_1 = _b.sent();
+                        return [2 /*return*/, response.status(500).json({ statusCode: 500, data: error_1 })];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    feedbackController.prototype.put = function (id, feedback, request, response) {
         return __awaiter(this, void 0, void 0, function () {
             var _a, statusCode, data;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, services_1.branchService.update(id, branch)];
+                    case 0: return [4 /*yield*/, services_1.feedbackService.update(id, feedback)];
                     case 1:
                         _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
                         return [2 /*return*/, response.status(statusCode).json({ statusCode: statusCode, data: data })];
@@ -104,12 +122,12 @@ var BranchController = /** @class */ (function () {
             });
         });
     };
-    BranchController.prototype.remove = function (id, request, response) {
+    feedbackController.prototype.remove = function (id, request, response) {
         return __awaiter(this, void 0, void 0, function () {
             var _a, statusCode, data;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, services_1.branchService.deleteById(id)];
+                    case 0: return [4 /*yield*/, services_1.feedbackService.deleteById(id)];
                     case 1:
                         _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
                         return [2 /*return*/, response.status(statusCode).json({ statusCode: statusCode, data: data })];
@@ -118,37 +136,43 @@ var BranchController = /** @class */ (function () {
         });
     };
     __decorate([
-        routing_controllers_1.Get('/branches'),
+        routing_controllers_1.Get('/feedback'),
         __param(0, routing_controllers_1.Req()), __param(1, routing_controllers_1.Res())
-    ], BranchController.prototype, "getAll", null);
+    ], feedbackController.prototype, "getAll", null);
     __decorate([
-        routing_controllers_1.Get('/branches/:id'),
+        routing_controllers_1.Get('/feedback/:id'),
         __param(0, routing_controllers_1.Param('id')),
         __param(1, routing_controllers_1.Req()),
         __param(2, routing_controllers_1.Res())
-    ], BranchController.prototype, "getOne", null);
+    ], feedbackController.prototype, "getOne", null);
     __decorate([
-        routing_controllers_1.Post('/branches'),
+        routing_controllers_1.Post('/feedback'),
         __param(0, routing_controllers_1.Body()),
         __param(1, routing_controllers_1.Req()),
         __param(2, routing_controllers_1.Res())
-    ], BranchController.prototype, "post", null);
+    ], feedbackController.prototype, "post", null);
     __decorate([
-        routing_controllers_1.Put('/branches/:id'),
+        routing_controllers_1.Get('/feedback/byUser/:user_id'),
+        __param(0, routing_controllers_1.Param('user_id')),
+        __param(1, routing_controllers_1.Req()),
+        __param(2, routing_controllers_1.Res())
+    ], feedbackController.prototype, "fetchUser", null);
+    __decorate([
+        routing_controllers_1.Put('/feedback/:id'),
         __param(0, routing_controllers_1.Param('id')),
         __param(1, routing_controllers_1.Body()),
         __param(2, routing_controllers_1.Req()),
         __param(3, routing_controllers_1.Res())
-    ], BranchController.prototype, "put", null);
+    ], feedbackController.prototype, "put", null);
     __decorate([
-        routing_controllers_1.Delete('/branches/:id'),
+        routing_controllers_1.Delete('/feedback/:id'),
         __param(0, routing_controllers_1.Param('id')),
         __param(1, routing_controllers_1.Req()),
         __param(2, routing_controllers_1.Res())
-    ], BranchController.prototype, "remove", null);
-    BranchController = __decorate([
+    ], feedbackController.prototype, "remove", null);
+    feedbackController = __decorate([
         routing_controllers_1.JsonController()
-    ], BranchController);
-    return BranchController;
+    ], feedbackController);
+    return feedbackController;
 }());
-exports.default = BranchController;
+exports.default = feedbackController;

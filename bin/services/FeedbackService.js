@@ -14,11 +14,11 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var BaseService_1 = require("./BaseService");
-var BranchService = /** @class */ (function (_super) {
-    __extends(BranchService, _super);
-    function BranchService() {
+var FeedService = /** @class */ (function (_super) {
+    __extends(FeedService, _super);
+    function FeedService() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    return BranchService;
+    return FeedService;
 }(BaseService_1.default));
-exports.default = BranchService;
+exports.default = FeedService;
