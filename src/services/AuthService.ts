@@ -60,6 +60,7 @@ export default class AuthService {
       | string[]
     >
   > {
+    // console.log(JSON.stringify(user, null, 2))
     if (!/^[\p{L}'][ \p{L}'-]*[\p{L}]$/u.test(user.first_name)) {
       return {statusCode: 422, data: 'Please input a valid first name'}
     }
@@ -72,12 +73,15 @@ export default class AuthService {
       return {statusCode: 422, data: 'Please select a valid gender'}
     }
 
-    if (!(user.country_id > 0 && user.country_id < 254)) {
+    if (!(user.country_id > 0 && user.country_id <= 250)) {
       return {statusCode: 422, data: 'Please select a valid country'}
     }
 
-    if (!(user.user_status_id > 0 && user.user_status_id <= 4)) {
-      return {statusCode: 422, data: 'Please select a valid country'}
+    if (
+      user.user_status_id &&
+      !(user.user_status_id > 0 && user.user_status_id <= 4)
+    ) {
+      return {statusCode: 422, data: 'Please select a valid statuss'}
     }
 
     const {statusCode} = await this.userService.findOne(
