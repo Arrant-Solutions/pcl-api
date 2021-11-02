@@ -3,10 +3,12 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -45,49 +47,49 @@ var ResourceCreate = /** @class */ (function () {
         configurable: true
     });
     __decorate([
-        class_validator_1.IsOptional(),
-        class_validator_1.IsInt(),
-        class_validator_1.IsPositive()
+        (0, class_validator_1.IsOptional)(),
+        (0, class_validator_1.IsInt)(),
+        (0, class_validator_1.IsPositive)()
     ], ResourceCreate.prototype, "resource_id", void 0);
     __decorate([
-        class_validator_1.IsString(),
-        class_validator_1.MaxLength(250)
+        (0, class_validator_1.IsString)(),
+        (0, class_validator_1.MaxLength)(250)
     ], ResourceCreate.prototype, "title", void 0);
     __decorate([
-        class_validator_1.IsString(),
-        class_validator_1.MaxLength(255)
+        (0, class_validator_1.IsString)(),
+        (0, class_validator_1.MaxLength)(255)
     ], ResourceCreate.prototype, "description", void 0);
     __decorate([
-        class_validator_1.IsInt(),
-        class_validator_1.IsPositive()
+        (0, class_validator_1.IsInt)(),
+        (0, class_validator_1.IsPositive)()
     ], ResourceCreate.prototype, "author_id", void 0);
     __decorate([
-        class_validator_1.IsString(),
-        class_validator_1.MaxLength(255)
+        (0, class_validator_1.IsString)(),
+        (0, class_validator_1.MaxLength)(255)
     ], ResourceCreate.prototype, "resource_url", void 0);
     __decorate([
-        class_validator_1.IsString(),
-        class_validator_1.MaxLength(255)
+        (0, class_validator_1.IsString)(),
+        (0, class_validator_1.MaxLength)(255)
     ], ResourceCreate.prototype, "thumbnail_url", void 0);
     __decorate([
-        class_validator_1.IsInt(),
-        class_validator_1.IsPositive()
+        (0, class_validator_1.IsInt)(),
+        (0, class_validator_1.IsPositive)()
     ], ResourceCreate.prototype, "user_id", void 0);
     __decorate([
-        class_validator_1.IsInt(),
-        class_validator_1.IsPositive()
+        (0, class_validator_1.IsInt)(),
+        (0, class_validator_1.IsPositive)()
     ], ResourceCreate.prototype, "resource_category_id", void 0);
     __decorate([
-        class_validator_1.IsInt(),
-        class_validator_1.IsPositive()
+        (0, class_validator_1.IsInt)(),
+        (0, class_validator_1.IsPositive)()
     ], ResourceCreate.prototype, "resource_type_id", void 0);
     __decorate([
-        class_validator_1.IsInt(),
-        class_validator_1.IsPositive()
+        (0, class_validator_1.IsInt)(),
+        (0, class_validator_1.IsPositive)()
     ], ResourceCreate.prototype, "resource_availability_id", void 0);
     __decorate([
-        class_validator_1.IsInt(),
-        class_validator_1.IsPositive()
+        (0, class_validator_1.IsInt)(),
+        (0, class_validator_1.IsPositive)()
     ], ResourceCreate.prototype, "media_type_id", void 0);
     return ResourceCreate;
 }());

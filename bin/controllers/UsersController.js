@@ -104,30 +104,31 @@ var userController = /** @class */ (function () {
         });
     };
     __decorate([
-        routing_controllers_1.Get('/users'),
-        __param(0, routing_controllers_1.Req()), __param(1, routing_controllers_1.Res())
+        (0, routing_controllers_1.Get)('/users'),
+        __param(0, (0, routing_controllers_1.Req)()),
+        __param(1, (0, routing_controllers_1.Res)())
     ], userController.prototype, "getAll", null);
     __decorate([
-        routing_controllers_1.Get('/users/:id'),
-        __param(0, routing_controllers_1.Param('id')),
-        __param(1, routing_controllers_1.Req()),
-        __param(2, routing_controllers_1.Res())
+        (0, routing_controllers_1.Get)('/users/:id'),
+        __param(0, (0, routing_controllers_1.Param)('id')),
+        __param(1, (0, routing_controllers_1.Req)()),
+        __param(2, (0, routing_controllers_1.Res)())
     ], userController.prototype, "getOne", null);
     __decorate([
-        routing_controllers_1.Post('/users'),
-        __param(0, routing_controllers_1.Body()),
-        __param(1, routing_controllers_1.Req()),
-        __param(2, routing_controllers_1.Res())
+        (0, routing_controllers_1.Post)('/users'),
+        __param(0, (0, routing_controllers_1.Body)()),
+        __param(1, (0, routing_controllers_1.Req)()),
+        __param(2, (0, routing_controllers_1.Res)())
     ], userController.prototype, "post", null);
     __decorate([
-        routing_controllers_1.Put('/users/:id'),
-        __param(0, routing_controllers_1.Param('id')),
-        __param(1, routing_controllers_1.Body()),
-        __param(2, routing_controllers_1.Req()),
-        __param(3, routing_controllers_1.Res())
+        (0, routing_controllers_1.Put)('/users/:id'),
+        __param(0, (0, routing_controllers_1.Param)('id')),
+        __param(1, (0, routing_controllers_1.Body)()),
+        __param(2, (0, routing_controllers_1.Req)()),
+        __param(3, (0, routing_controllers_1.Res)())
     ], userController.prototype, "put", null);
     userController = __decorate([
-        routing_controllers_1.JsonController()
+        (0, routing_controllers_1.JsonController)()
     ], userController);
     return userController;
 }());

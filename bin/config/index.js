@@ -11,10 +11,10 @@ exports.database = {
 exports.PORT = process.env.PORT || 9000;
 exports.JWT_SECRET = (_a = process.env, _a.JWT_SECRET), exports.JWT_EXPIRY = _a.JWT_EXPIRY;
 exports.PUBLIC_KEY = process.env.NODE_ENV === 'development'
-    ? fs_1.readFileSync(__dirname + "/../../keys/public-key.pem", 'utf8')
+    ? (0, fs_1.readFileSync)(__dirname + "/../../keys/public-key.pem", 'utf8')
     : process.env.PUBLIC_KEY;
 exports.PRIVATE_KEY = process.env.NODE_ENV === 'development'
-    ? fs_1.readFileSync(__dirname + "/../../keys/private-key.pem", 'utf8')
+    ? (0, fs_1.readFileSync)(__dirname + "/../../keys/private-key.pem", 'utf8')
     : process.env.PRIVATE_KEY;
 // export const jwtSecret = process.env.passphrase
 // export const jwtExpiry = process.env.jwtExpiry || '90d'

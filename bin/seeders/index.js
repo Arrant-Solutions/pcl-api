@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable import/first */
 // eslint-disable-next-line import/newline-after-import
 var dotenv_1 = require("dotenv");
-dotenv_1.config();
+(0, dotenv_1.config)();
 var services_1 = require("../loaders/services");
 var branches_1 = require("./branches");
 var countries_1 = require("./countries");
