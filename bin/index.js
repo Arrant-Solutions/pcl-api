@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable import/first */
 /* eslint-disable import/newline-after-import */
 var dotenv_1 = require("dotenv");
-(0, dotenv_1.config)();
+dotenv_1.config();
 require("reflect-metadata");
 var routing_controllers_1 = require("routing-controllers");
 var express = require("express");
@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(compression());
 app.use(isAuth_1.default);
-(0, routing_controllers_1.useExpressServer)(app, {
+routing_controllers_1.useExpressServer(app, {
     cors: true,
     routePrefix: "/api/" + config_1.API_VERSION,
     controllers: [

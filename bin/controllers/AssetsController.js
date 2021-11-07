@@ -96,12 +96,11 @@ var AssetsController = /** @class */ (function () {
         });
     };
     __decorate([
-        (0, routing_controllers_1.Get)('/assets'),
-        __param(0, (0, routing_controllers_1.Req)()),
-        __param(1, (0, routing_controllers_1.Res)())
+        routing_controllers_1.Get('/assets'),
+        __param(0, routing_controllers_1.Req()), __param(1, routing_controllers_1.Res())
     ], AssetsController.prototype, "getAll", null);
     AssetsController = __decorate([
-        (0, routing_controllers_1.JsonController)()
+        routing_controllers_1.JsonController()
     ], AssetsController);
     return AssetsController;
 }());

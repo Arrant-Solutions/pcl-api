@@ -117,7 +117,7 @@ var AuthService = /** @class */ (function () {
                                     data: "Duplicate email: " + user.email,
                                 }];
                         }
-                        return [4 /*yield*/, this.userService.insert(__assign(__assign({}, user), { user_group_id: 4, user_status_id: user.user_status_id || 3 }))];
+                        return [4 /*yield*/, this.userService.insert(__assign(__assign({}, user), { branch_id: user.branch_id === 0 ? undefined : user.branch_id, user_group_id: 4, user_status_id: user.user_status_id || 3 }))];
                     case 2:
                         _a = _b.sent(), status = _a.statusCode, result = _a.data;
                         if (Array.isArray(result)) {

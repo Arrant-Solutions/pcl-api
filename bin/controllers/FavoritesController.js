@@ -126,38 +126,37 @@ var FavoritesController = /** @class */ (function () {
         });
     };
     __decorate([
-        (0, routing_controllers_1.Get)('/favorites'),
-        __param(0, (0, routing_controllers_1.Req)()),
-        __param(1, (0, routing_controllers_1.Res)())
+        routing_controllers_1.Get('/favorites'),
+        __param(0, routing_controllers_1.Req()), __param(1, routing_controllers_1.Res())
     ], FavoritesController.prototype, "getAll", null);
     __decorate([
-        (0, routing_controllers_1.Get)('/favorites/:id'),
-        __param(0, (0, routing_controllers_1.Param)('id')),
-        __param(1, (0, routing_controllers_1.Req)()),
-        __param(2, (0, routing_controllers_1.Res)())
+        routing_controllers_1.Get('/favorites/:id'),
+        __param(0, routing_controllers_1.Param('id')),
+        __param(1, routing_controllers_1.Req()),
+        __param(2, routing_controllers_1.Res())
     ], FavoritesController.prototype, "getOne", null);
     __decorate([
-        (0, routing_controllers_1.Post)('/favorites'),
-        __param(0, (0, routing_controllers_1.Body)()),
-        __param(1, (0, routing_controllers_1.Req)()),
-        __param(2, (0, routing_controllers_1.Res)())
+        routing_controllers_1.Post('/favorites'),
+        __param(0, routing_controllers_1.Body()),
+        __param(1, routing_controllers_1.Req()),
+        __param(2, routing_controllers_1.Res())
     ], FavoritesController.prototype, "post", null);
     __decorate([
-        (0, routing_controllers_1.Put)('/favorites/:id'),
-        __param(0, (0, routing_controllers_1.Param)('id')),
-        __param(1, (0, routing_controllers_1.Body)()),
-        __param(2, (0, routing_controllers_1.Req)()),
-        __param(3, (0, routing_controllers_1.Res)())
+        routing_controllers_1.Put('/favorites/:id'),
+        __param(0, routing_controllers_1.Param('id')),
+        __param(1, routing_controllers_1.Body()),
+        __param(2, routing_controllers_1.Req()),
+        __param(3, routing_controllers_1.Res())
     ], FavoritesController.prototype, "put", null);
     __decorate([
-        (0, routing_controllers_1.Delete)('/favorites/:id'),
-        __param(0, (0, routing_controllers_1.Param)('id')),
-        __param(1, (0, routing_controllers_1.Req)()),
-        __param(2, (0, routing_controllers_1.Res)())
+        routing_controllers_1.Delete('/favorites/:id'),
+        __param(0, routing_controllers_1.Param('id')),
+        __param(1, routing_controllers_1.Req()),
+        __param(2, routing_controllers_1.Res())
     ], FavoritesController.prototype, "remove", null);
     FavoritesController = __decorate([
-        (0, routing_controllers_1.JsonController)(),
-        (0, routing_controllers_1.UseBefore)((0, roleBasedAuth_1.default)(['Customer', 'Content Manager', 'Management', 'Super User']))
+        routing_controllers_1.JsonController(),
+        routing_controllers_1.UseBefore(roleBasedAuth_1.default(['Customer', 'Content Manager', 'Management', 'Super User']))
     ], FavoritesController);
     return FavoritesController;
 }());

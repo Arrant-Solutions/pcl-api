@@ -101,6 +101,7 @@ export default class AuthService {
 
     const {statusCode: status, data: result} = await this.userService.insert({
       ...user,
+      branch_id: user.branch_id === 0 ? undefined : user.branch_id,
       user_group_id: 4, // default to customer
       user_status_id: user.user_status_id || 3, // default to pending activation
     })

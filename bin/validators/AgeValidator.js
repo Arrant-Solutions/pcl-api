@@ -32,7 +32,7 @@ var IsAppropriateAge = /** @class */ (function () {
         return args.value + " does not look like a valid date of birth";
     };
     IsAppropriateAge = __decorate([
-        (0, class_validator_1.ValidatorConstraint)({ name: 'customText', async: false })
+        class_validator_1.ValidatorConstraint({ name: 'customText', async: false })
     ], IsAppropriateAge);
     return IsAppropriateAge;
 }());
