@@ -19,7 +19,7 @@ var NotFoundHandler = /** @class */ (function () {
         next();
     };
     NotFoundHandler = __decorate([
-        routing_controllers_1.Middleware({ type: 'after' })
+        (0, routing_controllers_1.Middleware)({ type: 'after' })
         // eslint-disable-next-line import/prefer-default-export
     ], NotFoundHandler);
     return NotFoundHandler;

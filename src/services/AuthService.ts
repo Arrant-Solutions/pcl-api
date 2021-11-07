@@ -84,6 +84,10 @@ export default class AuthService {
       return {statusCode: 422, data: 'Please select a valid statuss'}
     }
 
+    if (user.branch_id && !(user.branch_id > 0 && user.branch_id <= 2)) {
+      return {statusCode: 422, data: 'Please select a valid branch'}
+    }
+
     const {statusCode} = await this.userService.findOne(
       {
         phone: user.phone,
@@ -123,6 +127,54 @@ export default class AuthService {
     }
 
     return {statusCode: status, data: result}
+  }
+
+  public async update(
+    user_id: number,
+    user: Partial<ICreateUserT>,
+  ): Promise<IResponse<ICreateUserT | string[]>> {
+    if (!/^[\p{L}'][ \p{L}'-]*[\p{L}]$/u.test(user.first_name)) {
+      return {statusCode: 422, data: 'Please input a valid first name'}
+    }
+
+    if (!/^[\p{L}'][ \p{L}'-]*[\p{L}]$/u.test(user.last_name)) {
+      return {statusCode: 422, data: 'Please input a valid last name'}
+    }
+
+    if (!/^(1|2)$/.test(String(user.gender_id))) {
+      return {statusCode: 422, data: 'Please select a valid gender'}
+    }
+
+    if (!(user.country_id > 0 && user.country_id <= 250)) {
+      return {statusCode: 422, data: 'Please select a valid country'}
+    }
+
+    if (user.branch_id && !(user.branch_id > 0 && user.branch_id <= 2)) {
+      return {statusCode: 422, data: 'Please select a valid branch'}
+    }
+
+    const {statusCode, data} = await this.userService.findOne(
+      {
+        phone: user.phone,
+        email: user.email,
+      },
+      true,
+    )
+
+    if (statusCode === 500) {
+      return {statusCode, data}
+    }
+
+    if (typeof data !== 'object') {
+      return {
+        statusCode: 404,
+        data: `Unable to find user with email address: ${user.email}`,
+      }
+    }
+
+    const result = await this.userService.update(user_id, data)
+
+    return result
   }
 
   public async refreshToken(token: string) {

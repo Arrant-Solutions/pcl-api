@@ -12,10 +12,10 @@ var Model = /** @class */ (function () {
     function Model() {
     }
     __decorate([
-        class_transformer_1.Type(function () { return Date; })
+        (0, class_transformer_1.Type)(function () { return Date; })
     ], Model.prototype, "created_at", void 0);
     __decorate([
-        class_transformer_1.Type(function () { return Date; })
+        (0, class_transformer_1.Type)(function () { return Date; })
     ], Model.prototype, "updated_at", void 0);
     return Model;
 }());

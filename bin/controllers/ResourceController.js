@@ -153,42 +153,43 @@ var ResourceController = /** @class */ (function () {
         });
     };
     __decorate([
-        routing_controllers_1.Get('/resources'),
-        __param(0, routing_controllers_1.Req()), __param(1, routing_controllers_1.Res())
+        (0, routing_controllers_1.Get)('/resources'),
+        __param(0, (0, routing_controllers_1.Req)()),
+        __param(1, (0, routing_controllers_1.Res)())
     ], ResourceController.prototype, "getAll", null);
     __decorate([
-        routing_controllers_1.Get('/resources/home'),
-        __param(0, routing_controllers_1.Req()),
-        __param(1, routing_controllers_1.Res())
+        (0, routing_controllers_1.Get)('/resources/home'),
+        __param(0, (0, routing_controllers_1.Req)()),
+        __param(1, (0, routing_controllers_1.Res)())
     ], ResourceController.prototype, "getHomeResources", null);
     __decorate([
-        routing_controllers_1.Get('/resources/:id'),
-        __param(0, routing_controllers_1.Param('id')),
-        __param(1, routing_controllers_1.Req()),
-        __param(2, routing_controllers_1.Res())
+        (0, routing_controllers_1.Get)('/resources/:id'),
+        __param(0, (0, routing_controllers_1.Param)('id')),
+        __param(1, (0, routing_controllers_1.Req)()),
+        __param(2, (0, routing_controllers_1.Res)())
     ], ResourceController.prototype, "getOne", null);
     __decorate([
-        routing_controllers_1.Post('/resources'),
-        __param(0, routing_controllers_1.Body()),
-        __param(1, routing_controllers_1.Req()),
-        __param(2, routing_controllers_1.Res())
+        (0, routing_controllers_1.Post)('/resources'),
+        __param(0, (0, routing_controllers_1.Body)()),
+        __param(1, (0, routing_controllers_1.Req)()),
+        __param(2, (0, routing_controllers_1.Res)())
     ], ResourceController.prototype, "post", null);
     __decorate([
-        routing_controllers_1.Put('/resources/:id'),
-        __param(0, routing_controllers_1.Param('id')),
-        __param(1, routing_controllers_1.Body()),
-        __param(2, routing_controllers_1.Req()),
-        __param(3, routing_controllers_1.Res())
+        (0, routing_controllers_1.Put)('/resources/:id'),
+        __param(0, (0, routing_controllers_1.Param)('id')),
+        __param(1, (0, routing_controllers_1.Body)()),
+        __param(2, (0, routing_controllers_1.Req)()),
+        __param(3, (0, routing_controllers_1.Res)())
     ], ResourceController.prototype, "put", null);
     __decorate([
-        routing_controllers_1.Delete('/resources/:id'),
-        __param(0, routing_controllers_1.Param('id')),
-        __param(1, routing_controllers_1.Req()),
-        __param(2, routing_controllers_1.Res())
+        (0, routing_controllers_1.Delete)('/resources/:id'),
+        __param(0, (0, routing_controllers_1.Param)('id')),
+        __param(1, (0, routing_controllers_1.Req)()),
+        __param(2, (0, routing_controllers_1.Res)())
     ], ResourceController.prototype, "remove", null);
     ResourceController = __decorate([
-        routing_controllers_1.JsonController(),
-        routing_controllers_1.UseBefore(roleBasedAuth_1.default(['Customer', 'Content Manager', 'Management', 'Super User']))
+        (0, routing_controllers_1.JsonController)(),
+        (0, routing_controllers_1.UseBefore)((0, roleBasedAuth_1.default)(['Customer', 'Content Manager', 'Management', 'Super User']))
     ], ResourceController);
     return ResourceController;
 }());

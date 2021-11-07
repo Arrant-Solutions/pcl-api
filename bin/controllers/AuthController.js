@@ -103,25 +103,25 @@ var AuthController = /** @class */ (function () {
         });
     };
     __decorate([
-        routing_controllers_1.Post('/auth/refreshToken'),
-        __param(0, routing_controllers_1.HeaderParam('token')),
-        __param(1, routing_controllers_1.Req()),
-        __param(2, routing_controllers_1.Res())
+        (0, routing_controllers_1.Post)('/auth/refreshToken'),
+        __param(0, (0, routing_controllers_1.HeaderParam)('token')),
+        __param(1, (0, routing_controllers_1.Req)()),
+        __param(2, (0, routing_controllers_1.Res)())
     ], AuthController.prototype, "refreshToken", null);
     __decorate([
-        routing_controllers_1.Get('/auth/fetchUser/:email'),
-        __param(0, routing_controllers_1.Param('email')),
-        __param(1, routing_controllers_1.Req()),
-        __param(2, routing_controllers_1.Res())
+        (0, routing_controllers_1.Get)('/auth/fetchUser/:email'),
+        __param(0, (0, routing_controllers_1.Param)('email')),
+        __param(1, (0, routing_controllers_1.Req)()),
+        __param(2, (0, routing_controllers_1.Res)())
     ], AuthController.prototype, "fetchUser", null);
     __decorate([
-        routing_controllers_1.Post('/auth/register'),
-        __param(0, routing_controllers_1.Body({ required: true })),
-        __param(1, routing_controllers_1.Req()),
-        __param(2, routing_controllers_1.Res())
+        (0, routing_controllers_1.Post)('/auth/register'),
+        __param(0, (0, routing_controllers_1.Body)({ required: true })),
+        __param(1, (0, routing_controllers_1.Req)()),
+        __param(2, (0, routing_controllers_1.Res)())
     ], AuthController.prototype, "register", null);
     AuthController = __decorate([
-        routing_controllers_1.JsonController()
+        (0, routing_controllers_1.JsonController)()
     ], AuthController);
     return AuthController;
 }());

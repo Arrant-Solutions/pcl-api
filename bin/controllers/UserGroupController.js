@@ -117,36 +117,37 @@ var userGroupController = /** @class */ (function () {
         });
     };
     __decorate([
-        routing_controllers_1.Get('/userGroup'),
-        __param(0, routing_controllers_1.Req()), __param(1, routing_controllers_1.Res())
+        (0, routing_controllers_1.Get)('/userGroup'),
+        __param(0, (0, routing_controllers_1.Req)()),
+        __param(1, (0, routing_controllers_1.Res)())
     ], userGroupController.prototype, "getAll", null);
     __decorate([
-        routing_controllers_1.Get('/userGroup/:id'),
-        __param(0, routing_controllers_1.Param('id')),
-        __param(1, routing_controllers_1.Req()),
-        __param(2, routing_controllers_1.Res())
+        (0, routing_controllers_1.Get)('/userGroup/:id'),
+        __param(0, (0, routing_controllers_1.Param)('id')),
+        __param(1, (0, routing_controllers_1.Req)()),
+        __param(2, (0, routing_controllers_1.Res)())
     ], userGroupController.prototype, "getOne", null);
     __decorate([
-        routing_controllers_1.Post('/userGroup'),
-        __param(0, routing_controllers_1.Body()),
-        __param(1, routing_controllers_1.Req()),
-        __param(2, routing_controllers_1.Res())
+        (0, routing_controllers_1.Post)('/userGroup'),
+        __param(0, (0, routing_controllers_1.Body)()),
+        __param(1, (0, routing_controllers_1.Req)()),
+        __param(2, (0, routing_controllers_1.Res)())
     ], userGroupController.prototype, "post", null);
     __decorate([
-        routing_controllers_1.Put('/userGroup/:id'),
-        __param(0, routing_controllers_1.Param('id')),
-        __param(1, routing_controllers_1.Body()),
-        __param(2, routing_controllers_1.Req()),
-        __param(3, routing_controllers_1.Res())
+        (0, routing_controllers_1.Put)('/userGroup/:id'),
+        __param(0, (0, routing_controllers_1.Param)('id')),
+        __param(1, (0, routing_controllers_1.Body)()),
+        __param(2, (0, routing_controllers_1.Req)()),
+        __param(3, (0, routing_controllers_1.Res)())
     ], userGroupController.prototype, "put", null);
     __decorate([
-        routing_controllers_1.Delete('/userGroup/:id'),
-        __param(0, routing_controllers_1.Param('id')),
-        __param(1, routing_controllers_1.Req()),
-        __param(2, routing_controllers_1.Res())
+        (0, routing_controllers_1.Delete)('/userGroup/:id'),
+        __param(0, (0, routing_controllers_1.Param)('id')),
+        __param(1, (0, routing_controllers_1.Req)()),
+        __param(2, (0, routing_controllers_1.Res)())
     ], userGroupController.prototype, "remove", null);
     userGroupController = __decorate([
-        routing_controllers_1.JsonController()
+        (0, routing_controllers_1.JsonController)()
     ], userGroupController);
     return userGroupController;
 }());

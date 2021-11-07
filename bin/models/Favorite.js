@@ -22,17 +22,17 @@ var Favorite = /** @class */ (function () {
         configurable: true
     });
     __decorate([
-        class_validator_1.IsOptional(),
-        class_validator_1.IsInt(),
-        class_validator_1.IsPositive()
+        (0, class_validator_1.IsOptional)(),
+        (0, class_validator_1.IsInt)(),
+        (0, class_validator_1.IsPositive)()
     ], Favorite.prototype, "favorite_id", void 0);
     __decorate([
-        class_validator_1.IsInt(),
-        class_validator_1.IsPositive()
+        (0, class_validator_1.IsInt)(),
+        (0, class_validator_1.IsPositive)()
     ], Favorite.prototype, "resource_id", void 0);
     __decorate([
-        class_validator_1.IsInt(),
-        class_validator_1.IsPositive()
+        (0, class_validator_1.IsInt)(),
+        (0, class_validator_1.IsPositive)()
     ], Favorite.prototype, "user_id", void 0);
     return Favorite;
 }());
