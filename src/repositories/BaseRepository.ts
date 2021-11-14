@@ -339,10 +339,14 @@ export abstract class BaseRepository<
   }
 
   public async deleteById(id: number): Promise<T | false> {
-    const {rowCount, rows} = await db.result(
-      `DELETE FROM ${this.tableName} WHERE $1 RETURNING *`,
-      [id],
-    )
+    const {rowCount, rows} = this.tx
+      ? await this.tx.result(
+          `DELETE FROM ${this.tableName} WHERE $1 RETURNING *`,
+          [id],
+        )
+      : await db.result(`DELETE FROM ${this.tableName} WHERE $1 RETURNING *`, [
+          id,
+        ])
 
     return rowCount ? rows[0] : false
 
@@ -366,10 +370,15 @@ export abstract class BaseRepository<
       ignoreCase,
     )
 
-    const {rowCount, rows} = await db.result(
-      `DELETE FROM ${this.tableName} WHERE ${query} RETURNING *`,
-      values,
-    )
+    const {rowCount, rows} = this.tx
+      ? await this.tx.result(
+          `DELETE FROM ${this.tableName} WHERE ${query} RETURNING *`,
+          values,
+        )
+      : await db.result(
+          `DELETE FROM ${this.tableName} WHERE ${query} RETURNING *`,
+          values,
+        )
 
     return rowCount ? rows[0] : false
 
