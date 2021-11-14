@@ -1,5 +1,8 @@
 import {Pool, Client} from 'pg'
+import * as pgPromise from 'pg-promise'
 import {database} from '../config'
+
+const pgp = pgPromise()
 
 const connectionString = database.dbURL
 
@@ -15,4 +18,9 @@ export const client = new Client({
   ssl: {
     rejectUnauthorized: false,
   },
+})
+
+export const db = pgp({
+  connectionString,
+  max: 30,
 })

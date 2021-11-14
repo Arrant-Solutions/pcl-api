@@ -2,8 +2,9 @@
 /* eslint-disable no-unused-vars */
 
 import {validate} from 'class-validator'
-import {PoolClient, Pool} from 'pg'
-import {pool} from '../loaders/database'
+import pgPromise = require('pg-promise')
+// import {PoolClient, Pool} from 'pg'
+import {db} from '../loaders/database'
 import {ICreate, IModel} from '../models/IModel'
 
 interface IJoin<T> {
@@ -13,15 +14,9 @@ interface IJoin<T> {
 }
 
 export interface IBaseRepository<T extends IModel, C extends ICreate<unknown>> {
-  insert<Q extends T>(
-    model: Q,
-    withID?: boolean,
-    client?: Pool | PoolClient,
-  ): Promise<Q | false | string[]>
+  insert<Q extends T>(model: Q, withID?: boolean): Promise<Q | false | string[]>
 
-  setPool(client: PoolClient)
-
-  createTransactionClient(): Promise<PoolClient | void>
+  setTask(tx: pgPromise.ITask<T>)
 
   update<Q extends T>(
     id: number,
@@ -68,10 +63,12 @@ export interface IBaseRepository<T extends IModel, C extends ICreate<unknown>> {
   executeRawQuery<Q>(query: string, params?: (string | number)[]): Promise<Q[]>
 }
 
-export abstract class BaseRepository<T extends IModel, C extends ICreate<unknown>>
-  implements IBaseRepository<T, C>
+export abstract class BaseRepository<
+  T extends IModel,
+  C extends ICreate<unknown>,
+> implements IBaseRepository<T, C>
 {
-  protected pool: Pool | PoolClient
+  protected tx: pgPromise.ITask<T>
   protected tableName: string
   protected columns: string[]
   protected ignore: string[]
@@ -95,7 +92,8 @@ export abstract class BaseRepository<T extends IModel, C extends ICreate<unknown
     hasA?: IJoin<T>[]
     ignore?: string[]
   }) {
-    this.pool = pool
+    // this.pool = pool
+    this.tx = undefined
     this.idColumn = idColumn || tableName.replace(/(es|s)$/, '_id')
     this.columns = [...columns, 'created_at', 'updated_at']
     this.tableName = tableName
@@ -104,20 +102,24 @@ export abstract class BaseRepository<T extends IModel, C extends ICreate<unknown
     this.viewName = viewName
   }
 
-  setPool(client: PoolClient) {
-    this.pool = client
-  }
+  // setPool(client: PoolClient) {
+  //   this.pool = client
+  // }
 
-  async createTransactionClient(): Promise<PoolClient | void> {
-    const client = await this.pool.connect()
+  // async createTransactionClient(): Promise<PoolClient | void> {
+  //   const client = await this.pool.connect()
 
-    return client
+  //   return client
+  // }
+
+  setTask(tx: pgPromise.ITask<T>) {
+    this.tx = tx
   }
 
   public async insert<Q extends T>(
     model: Q,
     id?: boolean,
-    client?: Pool | PoolClient,
+    // client?: Pool | PoolClient,
   ): Promise<Q | false | string[]> {
     this.model.assign = model
 
@@ -141,9 +143,15 @@ export abstract class BaseRepository<T extends IModel, C extends ICreate<unknown
 
     // console.log(JSON.stringify({query, values}, null, 2))
 
-    const {rowCount, rows} = await (client || this.pool).query<Q>(query, values)
+    // const { rowCount, rows } = await (client || this.pool).query<Q>(query, values)
 
-    return rowCount ? rows[0] : false
+    // return rowCount ? rows[0] : false
+
+    const result = this.tx
+      ? await this.tx.one(query, values)
+      : await db.one<Q>(query, values)
+
+    return result
   }
 
   public async update<Q extends T>(
@@ -171,13 +179,19 @@ export abstract class BaseRepository<T extends IModel, C extends ICreate<unknown
 
     if (item) {
       const {columns, values} = this.generateUpdateQueryParts(model)
-      const query = `UPDATE ${this.tableName} SET (${columns}) WHERE ${
-        this.idColumn
-      } = $${values.length + 1} RETURNING *`
+      const query =
+        `UPDATE ${this.tableName} SET (${columns}) WHERE ` +
+        `${this.idColumn} = $${values.length + 1} RETURNING *`
 
-      const {rowCount, rows} = await this.pool.query<Q>(query, [...values, id])
+      // const {rowCount, rows} = await this.pool.query<Q>(query, [...values, id])
 
-      if (rowCount) return rows[0]
+      // if (rowCount) return rows[0]
+
+      const result = this.tx
+        ? await this.tx.one(query, [...values, id])
+        : await db.one<Q>(query, [...values, id])
+
+      return result
     }
 
     return false
@@ -218,42 +232,75 @@ export abstract class BaseRepository<T extends IModel, C extends ICreate<unknown
     models: Q[],
     withID?: boolean,
   ): Promise<boolean> {
-    const client = await pool.connect()
-    try {
-      client.query('BEGIN')
-
+    const result = await db.tx(async t => {
       // eslint-disable-next-line no-restricted-syntax
       for await (const model of models) {
-        const result = await this.insert(model, withID, client)
+        const response = await this.insert(model, withID)
+
+        if (!response) {
+          throw new Error(`failed to insert: ${JSON.stringify(model)}`)
+        }
 
         if (
-          !result ||
-          (typeof result === 'object' && Array.isArray((result as any).errors))
-        )
-          throw new Error(`failed to insert: ${JSON.stringify(model)}`)
+          typeof response === 'object' &&
+          Array.isArray((response as any).errors)
+        ) {
+          const errors = (response as any).errors as string[]
+          throw new Error(
+            errors.length > 0
+              ? errors[0]
+              : `Failed to insert: ${JSON.stringify(model)}`,
+          )
+        }
       }
 
-      await client.query('COMMIT')
       return true
-    } catch (e) {
-      // console.log(e)
-      await client.query('ROLLBACK')
-      return false
-    } finally {
-      client.release()
-    }
+    })
+
+    return result
+
+    // const client = await pool.connect()
+    // try {
+    //   client.query('BEGIN')
+
+    //   // eslint-disable-next-line no-restricted-syntax
+    //   for await (const model of models) {
+    //     const result = await this.insert(model, withID, client)
+
+    //     if (
+    //       !result ||
+    //       (typeof result === 'object' && Array.isArray((result as any).errors))
+    //     )
+    //       throw new Error(`failed to insert: ${JSON.stringify(model)}`)
+    //   }
+
+    //   await client.query('COMMIT')
+    //   return true
+    // } catch (e) {
+    //   // console.log(e)
+    //   await client.query('ROLLBACK')
+    //   return false
+    // } finally {
+    //   client.release()
+    // }
   }
 
   public async findById<Q extends T>(id: number): Promise<Q | null> {
     const columns = this.getColumns()
-    const {rowCount, rows} = await this.pool.query<Q>(
+
+    const result = await db.one<Q>(
       `SELECT ${columns} FROM ${this.tableName} WHERE ${this.idColumn} = $1`,
       [id],
     )
 
-    if (rowCount) return rows[0]
+    // const {rowCount, rows} = await this.pool.query<Q>(
+    //   `SELECT ${columns} FROM ${this.tableName} WHERE ${this.idColumn} = $1`,
+    //   [id],
+    // )
 
-    return null
+    // if (rowCount) return rows[0]
+
+    return result
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -277,22 +324,34 @@ export abstract class BaseRepository<T extends IModel, C extends ICreate<unknown
     const columns = this.getColumns()
     const limitOffset = this.getLimitOffset(limit, offset)
 
-    const {rows} = await this.pool.query<T>(
-      `SELECT ${columns} FROM ${this.viewName || this.tableName} ORDER BY ${
-        this.idColumn
-      } ${limitOffset}`,
+    const result = await db.many<T>(
+      `SELECT ${columns} FROM ${this.viewName || this.tableName} ORDER BY ` +
+        `${this.idColumn} ${limitOffset}`,
     )
 
-    return rows
+    // const {rows} = await this.pool.query<T>(
+    //   `SELECT ${columns} FROM ${this.viewName || this.tableName} ORDER BY ${
+    //     this.idColumn
+    //   } ${limitOffset}`,
+    // )
+
+    return result
   }
 
   public async deleteById(id: number): Promise<T | false> {
-    const {rowCount, rows} = await this.pool.query<T>(
+    const {rowCount, rows} = await db.result(
       `DELETE FROM ${this.tableName} WHERE $1 RETURNING *`,
       [id],
     )
 
     return rowCount ? rows[0] : false
+
+    // const {rowCount, rows} = await this.pool.query<T>(
+    //   `DELETE FROM ${this.tableName} WHERE $1 RETURNING *`,
+    //   [id],
+    // )
+
+    // return rowCount ? rows[0] : false
   }
 
   public async delete<Q = T>(
@@ -307,12 +366,19 @@ export abstract class BaseRepository<T extends IModel, C extends ICreate<unknown
       ignoreCase,
     )
 
-    const {rowCount, rows} = await this.pool.query<Q>(
+    const {rowCount, rows} = await db.result(
       `DELETE FROM ${this.tableName} WHERE ${query} RETURNING *`,
       values,
     )
 
     return rowCount ? rows[0] : false
+
+    // const {rowCount, rows} = await this.pool.query<Q>(
+    //   `DELETE FROM ${this.tableName} WHERE ${query} RETURNING *`,
+    //   values,
+    // )
+
+    // return rowCount ? rows[0] : false
   }
 
   public async find<Q = T>(
@@ -329,14 +395,22 @@ export abstract class BaseRepository<T extends IModel, C extends ICreate<unknown
       ignoreCase,
     )
 
-    const {rows} = await this.pool.query<Q>(
-      `SELECT ${columns} FROM ${
-        this.viewName || this.tableName
-      } WHERE ${query}`,
+    const result = await db.many<Q>(
+      `SELECT ${columns} FROM ` +
+        `${this.viewName || this.tableName} WHERE ${query}`,
       values,
     )
 
-    return rows
+    return result
+
+    // const {rows} = await this.pool.query<Q>(
+    //   `SELECT ${columns} FROM ${
+    //     this.viewName || this.tableName
+    //   } WHERE ${query}`,
+    //   values,
+    // )
+
+    // return rows
   }
 
   public async findOne<Q = T>(
@@ -349,11 +423,16 @@ export abstract class BaseRepository<T extends IModel, C extends ICreate<unknown
     return rows.length ? rows[0] : null
   }
 
+  // eslint-disable-next-line class-methods-use-this
   public async executeRawQuery<Q = unknown>(
     query: string,
     params?: (string | number)[],
   ): Promise<Q[]> {
-    const {rows} = await this.pool.query<Q>(query, params)
+    const {rows} = this.tx
+      ? await this.tx.result(query, params)
+      : await db.result(query, params)
+
+    // const {rows} = await this.pool.query<Q>(query, params)
 
     return rows
   }
@@ -370,12 +449,18 @@ export abstract class BaseRepository<T extends IModel, C extends ICreate<unknown
       or,
     )
 
-    const {rows} = await this.pool.query<T>(
-      `SELECT ${columns} FROM ${
-        this.viewName || this.tableName
-      } WHERE ${query}`,
+    const {rows} = await db.result(
+      `SELECT ${columns} FROM ` +
+        `${this.viewName || this.tableName} WHERE ${query}`,
       values,
     )
+
+    // const {rows} = await this.pool.query<T>(
+    //   `SELECT ${columns} FROM ${
+    //     this.viewName || this.tableName
+    //   } WHERE ${query}`,
+    //   values,
+    // )
 
     return rows
   }

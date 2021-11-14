@@ -1,4 +1,4 @@
-import {PoolClient} from 'pg'
+// import {PoolClient} from 'pg'
 import {IModel} from '../models/IModel'
 import {IBaseRepository} from '../repositories/BaseRepository'
 import {IResponse} from '../types'
@@ -11,19 +11,19 @@ abstract class BaseService<T extends IModel> {
     this.repository = repository
   }
 
-  public async getTransactionClient() {
-    const client = await this.repository.createTransactionClient()
+  // public async getTransactionClient() {
+  //   const client = await this.repository.createTransactionClient()
 
-    if (client) {
-      this.repository.setPool(client)
-    }
+  //   if (client) {
+  //     this.repository.setPool(client)
+  //   }
 
-    return client
-  }
+  //   return client
+  // }
 
-  public setRepositoryClient(client: PoolClient) {
-    this.repository.setPool(client)
-  }
+  // public setRepositoryClient(client: PoolClient) {
+  //   this.repository.setPool(client)
+  // }
 
   public async insert<Q extends T>(
     model: Q,
