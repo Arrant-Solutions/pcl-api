@@ -2,7 +2,9 @@ import {Pool, Client} from 'pg'
 import * as pgPromise from 'pg-promise'
 import {database} from '../config'
 
-const pgp = pgPromise()
+const pgp = pgPromise({
+  schema: process.env.ENV === 'production' ? ['public'] : ['staging'],
+})
 
 const connectionString = database.dbURL
 
@@ -23,4 +25,7 @@ export const client = new Client({
 export const db = pgp({
   connectionString,
   max: 30,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 })

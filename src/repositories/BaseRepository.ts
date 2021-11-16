@@ -180,7 +180,7 @@ export abstract class BaseRepository<
     if (item) {
       const {columns, values} = this.generateUpdateQueryParts(model)
       const query =
-        `UPDATE ${this.tableName} SET (${columns}) WHERE ` +
+        `UPDATE ${this.tableName} SET ${columns} WHERE ` +
         `${this.idColumn} = $${values.length + 1} RETURNING *`
 
       // const {rowCount, rows} = await this.pool.query<Q>(query, [...values, id])
