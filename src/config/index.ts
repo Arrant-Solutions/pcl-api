@@ -10,10 +10,9 @@ export const PORT = process.env.PORT || 9000
 
 export const {JWT_SECRET, JWT_EXPIRY} = process.env
 
-export const PUBLIC_KEY =
-  process.env.NODE_ENV === 'development'
-    ? readFileSync(`${__dirname}/../../keys/public-key.pem`, 'utf8')
-    : process.env.PUBLIC_KEY
+export const PUBLIC_KEY = /(development|test)/.test(process.env.NODE_ENV)
+  ? readFileSync(`${__dirname}/../../keys/public-key.pem`, 'utf8')
+  : process.env.PUBLIC_KEY
 
 export const PRIVATE_KEY =
   process.env.NODE_ENV === 'development'

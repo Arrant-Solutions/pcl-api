@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "build-sucker": "tsc",
-    "preinstall": "npm i -g pm2 && pm2 install pm2-logrotate",
+    "preinstall": "npm i -g pm2 && pm2 install pm2-logrotate && rm package-lock.json",
     "heroku-deploy": "tsc && git push heroku main",
     "heroku-push": "git push heroku main",
     "set-vars": "bash variables.sh",
@@ -39,6 +39,7 @@
     "@types/morgan": "^1.9.3",
     "@types/multer": "^1.4.7",
     "@types/pg": "^8.6.1",
+    "@types/supertest": "^2.0.11",
     "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^4.31.0",
     "@typescript-eslint/parser": "^4.31.0",
@@ -51,6 +52,7 @@
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.25.1",
+    "jest": "^27.3.1",
     "prettier": "^2.3.2",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.7"
@@ -77,6 +79,7 @@
     "pm2": "^5.1.2",
     "reflect-metadata": "^0.1.13",
     "routing-controllers": "^0.9.0",
+    "supertest": "^6.1.6",
     "typescript": "^4.4.2",
     "validate.js": "^0.13.1",
     "winston": "^3.3.3"
