@@ -11,8 +11,9 @@
   "baseUrl": "src",
   "watch": ["src", ".env"],
   "ext": "js,ts,json",
-  "ignore": ["src/**/*.spec.ts", "src/**/*.test.ts"],
+  "ignore": ["node_modules", "test/**/*.spec.ts"],
   "exec": "ts-node  --transpile-only ./src/index.ts",
+  "exclude": ["node_modules", "tests/**/*.spec.ts"],
   "files.exclude": {
     "**/*.js": {
       "when": "$(basename).ts"

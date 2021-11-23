@@ -1,12 +1,9 @@
 /* eslint-disable no-undef */
 /* eslint-disable import/first */
 /* eslint-disable import/newline-after-import */
-import {config} from 'dotenv'
-config()
-import 'reflect-metadata'
 import * as supertest from 'supertest'
-import app from '../app'
-import {API_VERSION} from '../config'
+import app from '../../src/app'
+import {API_VERSION} from '../../src/config'
 
 jest.setTimeout(15000)
 

@@ -3,7 +3,6 @@
 
 import {validate} from 'class-validator'
 import pgPromise = require('pg-promise')
-// import {PoolClient, Pool} from 'pg'
 import {db} from '../loaders/database'
 import {ICreate, IModel} from '../models/IModel'
 

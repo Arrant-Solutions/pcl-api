@@ -3,12 +3,10 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -55,57 +53,57 @@ var UserCreate = /** @class */ (function () {
         configurable: true
     });
     __decorate([
-        (0, class_validator_1.IsOptional)(),
-        (0, class_validator_1.IsInt)(),
-        (0, class_validator_1.IsPositive)()
+        class_validator_1.IsOptional(),
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
     ], UserCreate.prototype, "user_id", void 0);
     __decorate([
-        (0, class_validator_1.IsOptional)(),
-        (0, class_validator_1.IsString)(),
-        (0, class_validator_1.MaxLength)(255)
+        class_validator_1.IsOptional(),
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(255)
     ], UserCreate.prototype, "avatar", void 0);
     __decorate([
-        (0, class_validator_1.IsString)(),
-        (0, class_validator_1.MaxLength)(50)
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(50)
     ], UserCreate.prototype, "first_name", void 0);
     __decorate([
-        (0, class_validator_1.IsString)(),
-        (0, class_validator_1.MaxLength)(50)
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(50)
     ], UserCreate.prototype, "last_name", void 0);
     __decorate([
-        (0, class_validator_1.IsString)(),
-        (0, class_validator_1.MaxLength)(190),
-        (0, class_validator_1.IsEmail)()
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(190),
+        class_validator_1.IsEmail()
     ], UserCreate.prototype, "email", void 0);
     __decorate([
-        (0, class_validator_1.IsOptional)(),
-        (0, class_validator_1.IsString)(),
-        (0, class_validator_1.MaxLength)(255)
+        class_validator_1.IsOptional(),
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(255)
     ], UserCreate.prototype, "phone", void 0);
     __decorate([
-        (0, class_validator_1.Validate)(AgeValidator_1.default),
-        (0, class_validator_1.MaxLength)(255)
+        class_validator_1.Validate(AgeValidator_1.default),
+        class_validator_1.MaxLength(255)
     ], UserCreate.prototype, "date_of_birth", void 0);
     __decorate([
-        (0, class_validator_1.IsInt)(),
-        (0, class_validator_1.IsPositive)()
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
     ], UserCreate.prototype, "user_group_id", void 0);
     __decorate([
-        (0, class_validator_1.IsInt)(),
-        (0, class_validator_1.IsPositive)()
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
     ], UserCreate.prototype, "country_id", void 0);
     __decorate([
-        (0, class_validator_1.IsInt)(),
-        (0, class_validator_1.IsPositive)()
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
     ], UserCreate.prototype, "gender_id", void 0);
     __decorate([
-        (0, class_validator_1.IsInt)(),
-        (0, class_validator_1.IsPositive)()
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
     ], UserCreate.prototype, "user_status_id", void 0);
     __decorate([
-        (0, class_validator_1.IsOptional)(),
-        (0, class_validator_1.IsInt)(),
-        (0, class_validator_1.IsPositive)()
+        class_validator_1.IsOptional(),
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
     ], UserCreate.prototype, "branch_id", void 0);
     return UserCreate;
 }());
@@ -163,19 +161,19 @@ var User = /** @class */ (function (_super) {
             typeof object.user_group_name === 'string');
     };
     __decorate([
-        (0, class_transformer_1.Type)(function () { return UserGroup_1.UserGroup; })
+        class_transformer_1.Type(function () { return UserGroup_1.UserGroup; })
     ], User.prototype, "user_group", void 0);
     __decorate([
-        (0, class_transformer_1.Type)(function () { return Country_1.Country; })
+        class_transformer_1.Type(function () { return Country_1.Country; })
     ], User.prototype, "country", void 0);
     __decorate([
-        (0, class_transformer_1.Type)(function () { return Gender_1.Gender; })
+        class_transformer_1.Type(function () { return Gender_1.Gender; })
     ], User.prototype, "gender", void 0);
     __decorate([
-        (0, class_transformer_1.Type)(function () { return Branch_1.Branch; })
+        class_transformer_1.Type(function () { return Branch_1.Branch; })
     ], User.prototype, "branch", void 0);
     __decorate([
-        (0, class_transformer_1.Type)(function () { return UserStatus_1.UserStatus; })
+        class_transformer_1.Type(function () { return UserStatus_1.UserStatus; })
     ], User.prototype, "user_status", void 0);
     return User;
 }(IModel_1.Model));

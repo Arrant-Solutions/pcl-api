@@ -3,17 +3,26 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -51,6 +60,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// import * as argon2 from 'argon2'
+// import * as Bluebird from 'bluebird'
+// import {randomBytes} from 'crypto'
+var database_1 = require("../loaders/database");
 var BaseService_1 = require("./BaseService");
 var UserService = /** @class */ (function (_super) {
     __extends(UserService, _super);
@@ -59,65 +72,86 @@ var UserService = /** @class */ (function (_super) {
     }
     UserService.prototype.insert = function (model, withID) {
         return __awaiter(this, void 0, void 0, function () {
-            var client, result, error_1, error_2;
+            var response, error_1;
+            var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 12, , 13]);
-                        return [4 /*yield*/, this.repository.createTransactionClient()];
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, database_1.db.tx(function (t) { return __awaiter(_this, void 0, void 0, function () {
+                                var result;
+                                return __generator(this, function (_a) {
+                                    switch (_a.label) {
+                                        case 0:
+                                            this.repository.setTask(t);
+                                            return [4 /*yield*/, this.repository.insert(model, withID)];
+                                        case 1:
+                                            result = _a.sent();
+                                            if (typeof result === 'boolean') {
+                                                return [2 /*return*/, { statusCode: 500, data: 'Failed to upload' }];
+                                            }
+                                            if (Array.isArray(result)) {
+                                                return [2 /*return*/, { statusCode: 422, data: result }];
+                                            }
+                                            if (!model.branch_id) return [3 /*break*/, 3];
+                                            return [4 /*yield*/, this.repository.executeRawQuery('INSERT INTO user_branch_pivot (user_id, branch_id) VALUES ($1, $2)', [result.user_id, model.branch_id])];
+                                        case 2:
+                                            _a.sent();
+                                            _a.label = 3;
+                                        case 3: return [2 /*return*/, {
+                                                statusCode: 200,
+                                                data: __assign(__assign({}, result), { branch_id: model.branch_id }),
+                                            }];
+                                    }
+                                });
+                            }); })];
                     case 1:
-                        client = _a.sent();
-                        if (!client) return [3 /*break*/, 11];
-                        this.repository.setPool(client);
-                        _a.label = 2;
+                        response = _a.sent();
+                        return [2 /*return*/, response
+                            // const client = await this.repository.createTransactionClient()
+                            // if (client) {
+                            //   this.repository.setPool(client)
+                            //   try {
+                            //     await client.query('BEGIN')
+                            //     const result = await this.repository.insert<T>(model, withID)
+                            //     if (typeof result === 'boolean') {
+                            //       return {statusCode: 500, data: 'Failed to upload'}
+                            //     }
+                            //     if (Array.isArray(result)) {
+                            //       return {statusCode: 422, data: result}
+                            //     }
+                            //     if (model.branch_id) {
+                            //       await this.repository.executeRawQuery(
+                            //         'INSERT INTO user_branch_pivot (user_id, branch_id) VALUES ($1, $2)',
+                            //         [result.user_id, model.branch_id],
+                            //       )
+                            //     }
+                            //     await client.query('COMMIT')
+                            //     return {statusCode: 200, data: result}
+                            //   } catch (error) {
+                            //     await client.query('ROLLBACK')
+                            //     throw error
+                            //   } finally {
+                            //     client.release()
+                            //   }
+                            // }
+                            // return {
+                            //   statusCode: 200,
+                            //   data: 'An error occurred. Failed to create user.',
+                            // }
+                        ];
                     case 2:
-                        _a.trys.push([2, 8, 10, 11]);
-                        return [4 /*yield*/, client.query('BEGIN')];
-                    case 3:
-                        _a.sent();
-                        return [4 /*yield*/, this.repository.insert(model, withID)];
-                    case 4:
-                        result = _a.sent();
-                        if (typeof result === 'boolean') {
-                            return [2 /*return*/, { statusCode: 500, data: 'Failed to upload' }];
-                        }
-                        if (Array.isArray(result)) {
-                            return [2 /*return*/, { statusCode: 422, data: result }];
-                        }
-                        if (!model.branch_id) return [3 /*break*/, 6];
-                        return [4 /*yield*/, this.repository.executeRawQuery('INSERT INTO user_branch_pivot (user_id, branch_id) VALUES ($1, $2)', [result.user_id, model.branch_id])];
-                    case 5:
-                        _a.sent();
-                        _a.label = 6;
-                    case 6: return [4 /*yield*/, client.query('COMMIT')];
-                    case 7:
-                        _a.sent();
-                        return [2 /*return*/, { statusCode: 200, data: result }];
-                    case 8:
                         error_1 = _a.sent();
-                        return [4 /*yield*/, client.query('ROLLBACK')];
-                    case 9:
-                        _a.sent();
-                        throw error_1;
-                    case 10:
-                        client.release();
-                        return [7 /*endfinally*/];
-                    case 11: return [2 /*return*/, {
-                            statusCode: 200,
-                            data: 'An error occurred. Failed to create user.',
-                        }];
-                    case 12:
-                        error_2 = _a.sent();
-                        console.log(error_2);
-                        return [2 /*return*/, { statusCode: 500, data: error_2.message }];
-                    case 13: return [2 /*return*/];
+                        console.log(error_1);
+                        return [2 /*return*/, { statusCode: 500, data: error_1.message }];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
     };
     UserService.prototype.insertMany = function (models, withID) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, error_3;
+            var result, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -129,6 +163,115 @@ var UserService = /** @class */ (function (_super) {
                             return [2 /*return*/, { statusCode: 500, data: 'Failed to upload' }];
                         }
                         return [2 /*return*/, { statusCode: 200, data: result }];
+                    case 2:
+                        error_2 = _a.sent();
+                        console.log(error_2);
+                        return [2 /*return*/, { statusCode: 500, data: error_2.message }];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UserService.prototype.update = function (user_id, model) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, error_3;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, database_1.db.tx(function (t) { return __awaiter(_this, void 0, void 0, function () {
+                                var result, ubp;
+                                return __generator(this, function (_a) {
+                                    switch (_a.label) {
+                                        case 0:
+                                            this.repository.setTask(t);
+                                            return [4 /*yield*/, this.repository.update(user_id, model)];
+                                        case 1:
+                                            result = _a.sent();
+                                            if (typeof result === 'boolean') {
+                                                return [2 /*return*/, { statusCode: 500, data: 'Failed to update user' }];
+                                            }
+                                            if (Array.isArray(result)) {
+                                                return [2 /*return*/, { statusCode: 422, data: result }];
+                                            }
+                                            if (!model.branch_id) return [3 /*break*/, 6];
+                                            return [4 /*yield*/, this.repository.executeRawQuery('SELECT ubp.user_branch_pivot_id FROM user_branch_pivot WHERE ubp.user_id = $1', [user_id])];
+                                        case 2:
+                                            ubp = _a.sent();
+                                            if (!Array.isArray(ubp)) return [3 /*break*/, 6];
+                                            if (!ubp.length) return [3 /*break*/, 4];
+                                            return [4 /*yield*/, this.repository.executeRawQuery('UPDATE user_branch_pivot set branch_id = $1 WHERE user_branch_pivot_id = $2', [model.branch_id, user_id])];
+                                        case 3:
+                                            _a.sent();
+                                            return [3 /*break*/, 6];
+                                        case 4: return [4 /*yield*/, this.repository.executeRawQuery('INSERT INTO user_branch_pivot (user_id, branch_id) VALUES ($1, $2)', [result.user_id, model.branch_id])];
+                                        case 5:
+                                            _a.sent();
+                                            _a.label = 6;
+                                        case 6: return [2 /*return*/, {
+                                                statusCode: 200,
+                                                data: __assign(__assign({}, result), { branch_id: model.branch_id ? model.branch_id : undefined }),
+                                            }];
+                                    }
+                                });
+                            }); })];
+                    case 1:
+                        response = _a.sent();
+                        return [2 /*return*/, response
+                            // const client = await this.repository.createTransactionClient()
+                            // if (client) {
+                            //   this.repository.setPool(client)
+                            //   try {
+                            //     await client.query('BEGIN')
+                            //     const result = await this.repository.update<T>(user_id, model)
+                            //     if (typeof result === 'boolean') {
+                            //       return {statusCode: 500, data: 'Failed to update user'}
+                            //     }
+                            //     if (Array.isArray(result)) {
+                            //       return {statusCode: 422, data: result}
+                            //     }
+                            //     if (model.branch_id) {
+                            //       const ubp = await this.repository.executeRawQuery<{
+                            //         user_branch_pivot_id: number
+                            //       }>(
+                            //         'SELECT ubp.user_branch_pivot_id FROM user_branch_pivot WHERE ubp.user_id = $1',
+                            //         [user_id],
+                            //       )
+                            //       if (Array.isArray(ubp)) {
+                            //         if (ubp.length) {
+                            //           await this.repository.executeRawQuery(
+                            //             'UPDATE user_branch_pivot set branch_id = $1 WHERE user_branch_pivot_id = $2',
+                            //             [model.branch_id, user_id],
+                            //           )
+                            //         } else {
+                            //           await this.repository.executeRawQuery(
+                            //             'INSERT INTO user_branch_pivot (user_id, branch_id) VALUES ($1, $2)',
+                            //             [result.user_id, model.branch_id],
+                            //           )
+                            //         }
+                            //       }
+                            //     }
+                            //     await client.query('COMMIT')
+                            //     return {
+                            //       statusCode: 200,
+                            //       data: {
+                            //         ...result,
+                            //         branch_id: model.branch_id ? model.branch_id : undefined,
+                            //       } as any,
+                            //     }
+                            //   } catch (error) {
+                            //     await client.query('ROLLBACK')
+                            //     throw error
+                            //   } finally {
+                            //     client.release()
+                            //   }
+                            // }
+                            // return {
+                            //   statusCode: 200,
+                            //   data: 'An error occurred. Failed to create user.',
+                            // }
+                        ];
                     case 2:
                         error_3 = _a.sent();
                         console.log(error_3);

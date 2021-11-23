@@ -4,7 +4,7 @@ import 'reflect-metadata'
 import {config} from 'dotenv'
 config()
 // eslint-disable-next-line import/first
-import {CountryRepository} from '..'
+import {CountryRepository} from '../../src/repositories'
 
 const service = new CountryRepository({
   tableName: 'countries',

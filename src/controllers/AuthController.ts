@@ -9,6 +9,8 @@ import {
   Param,
   HeaderParam,
   Put,
+  Authorized,
+  // CurrentUser,
 } from 'routing-controllers'
 import {Response} from 'express'
 import {PCLRequest} from '../types'
@@ -34,7 +36,7 @@ export default class AuthController {
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
-    console.log(email)
+    // console.log(email)
     try {
       const {statusCode, data} = await authService.fetchUser({email})
 
@@ -51,13 +53,14 @@ export default class AuthController {
     @Req() request: PCLRequest,
     @Res() response: Response,
   ) {
-    console.log(JSON.stringify(user))
+    // console.log(JSON.stringify(user))
     const {statusCode, data} = await authService.register(user)
 
     return response.status(statusCode).json({statusCode, data})
   }
 
   @Put('/auth/:user_id')
+  @Authorized()
   async update(
     @Body({required: true}) user: ICreateUser,
     @Req() request: PCLRequest,

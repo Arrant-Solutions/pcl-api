@@ -118,37 +118,36 @@ var BranchController = /** @class */ (function () {
         });
     };
     __decorate([
-        (0, routing_controllers_1.Get)('/branches'),
-        __param(0, (0, routing_controllers_1.Req)()),
-        __param(1, (0, routing_controllers_1.Res)())
+        routing_controllers_1.Get('/branches'),
+        __param(0, routing_controllers_1.Req()), __param(1, routing_controllers_1.Res())
     ], BranchController.prototype, "getAll", null);
     __decorate([
-        (0, routing_controllers_1.Get)('/branches/:id'),
-        __param(0, (0, routing_controllers_1.Param)('id')),
-        __param(1, (0, routing_controllers_1.Req)()),
-        __param(2, (0, routing_controllers_1.Res)())
+        routing_controllers_1.Get('/branches/:id'),
+        __param(0, routing_controllers_1.Param('id')),
+        __param(1, routing_controllers_1.Req()),
+        __param(2, routing_controllers_1.Res())
     ], BranchController.prototype, "getOne", null);
     __decorate([
-        (0, routing_controllers_1.Post)('/branches'),
-        __param(0, (0, routing_controllers_1.Body)()),
-        __param(1, (0, routing_controllers_1.Req)()),
-        __param(2, (0, routing_controllers_1.Res)())
+        routing_controllers_1.Post('/branches'),
+        __param(0, routing_controllers_1.Body()),
+        __param(1, routing_controllers_1.Req()),
+        __param(2, routing_controllers_1.Res())
     ], BranchController.prototype, "post", null);
     __decorate([
-        (0, routing_controllers_1.Put)('/branches/:id'),
-        __param(0, (0, routing_controllers_1.Param)('id')),
-        __param(1, (0, routing_controllers_1.Body)()),
-        __param(2, (0, routing_controllers_1.Req)()),
-        __param(3, (0, routing_controllers_1.Res)())
+        routing_controllers_1.Put('/branches/:id'),
+        __param(0, routing_controllers_1.Param('id')),
+        __param(1, routing_controllers_1.Body()),
+        __param(2, routing_controllers_1.Req()),
+        __param(3, routing_controllers_1.Res())
     ], BranchController.prototype, "put", null);
     __decorate([
-        (0, routing_controllers_1.Delete)('/branches/:id'),
-        __param(0, (0, routing_controllers_1.Param)('id')),
-        __param(1, (0, routing_controllers_1.Req)()),
-        __param(2, (0, routing_controllers_1.Res)())
+        routing_controllers_1.Delete('/branches/:id'),
+        __param(0, routing_controllers_1.Param('id')),
+        __param(1, routing_controllers_1.Req()),
+        __param(2, routing_controllers_1.Res())
     ], BranchController.prototype, "remove", null);
     BranchController = __decorate([
-        (0, routing_controllers_1.JsonController)()
+        routing_controllers_1.JsonController()
     ], BranchController);
     return BranchController;
 }());

@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "build-sucker": "tsc",
-    "preinstall": "npm i -g pm2 && pm2 install pm2-logrotate && rm package-lock.json",
+    "preinstalls": "npm i -g pm2 && pm2 install pm2-logrotate && rm package-lock.json",
     "heroku-deploy": "tsc && git push heroku main",
     "heroku-push": "git push heroku main",
     "set-vars": "bash variables.sh",
@@ -13,7 +13,7 @@
     "seed": "ENV=dev ts-node ./src/seeders/index.ts",
     "seed-prod": "ENV=production ts-node ./src/seeders/index.ts",
     "lint": "eslint .",
-    "test": "NODE_ENV=test jest --detectOpenHandles",
+    "test": "NODE_ENV=test jest --detectOpenHandles --forceExit",
     "start": "pm2-runtime start ecosystem.config.js --env production",
     "prod-test": "ENV=production && bash variables.sh && nodemon ./bin/index.js",
     "copy-keys": "copyfiles keys/*.pem bin",
@@ -31,6 +31,7 @@
   "homepage": "https://github.com/Arrant-Solutions/pcl-api#readme",
   "devDependencies": {
     "@babel/preset-typescript": "^7.16.0",
+    "@jest/globals": "^27.3.1",
     "@types/bluebird": "^3.5.36",
     "@types/body-parser": "^1.19.1",
     "@types/express": "^4.17.13",

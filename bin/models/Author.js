@@ -3,12 +3,10 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -42,25 +40,25 @@ var Author = /** @class */ (function (_super) {
         configurable: true
     });
     __decorate([
-        (0, class_validator_1.IsOptional)(),
-        (0, class_validator_1.IsPositive)(),
-        (0, class_validator_1.IsInt)()
+        class_validator_1.IsOptional(),
+        class_validator_1.IsPositive(),
+        class_validator_1.IsInt()
     ], Author.prototype, "author_id", void 0);
     __decorate([
-        (0, class_validator_1.IsString)(),
-        (0, class_validator_1.MaxLength)(255)
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(255)
     ], Author.prototype, "title", void 0);
     __decorate([
-        (0, class_validator_1.IsString)(),
-        (0, class_validator_1.MaxLength)(100)
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(100)
     ], Author.prototype, "first_name", void 0);
     __decorate([
-        (0, class_validator_1.IsString)(),
-        (0, class_validator_1.MaxLength)(100)
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(100)
     ], Author.prototype, "last_name", void 0);
     __decorate([
-        (0, class_validator_1.IsString)(),
-        (0, class_validator_1.MaxLength)(255)
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(255)
     ], Author.prototype, "suffix", void 0);
     return Author;
 }(IModel_1.Model));

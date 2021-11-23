@@ -5,9 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -45,63 +42,47 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-/* eslint-disable class-methods-use-this */
+exports.TokenValidationMiddleware = void 0;
 var routing_controllers_1 = require("routing-controllers");
+var config_1 = require("../config");
 var services_1 = require("../loaders/services");
-var AssetsController = /** @class */ (function () {
-    function AssetsController() {
+var TokenValidationMiddleware = /** @class */ (function () {
+    function TokenValidationMiddleware() {
     }
-    AssetsController.prototype.getAll = function (request, response) {
+    TokenValidationMiddleware.prototype.use = function (req, response, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var branches, genders, countries, userStatuses, userGroups;
+            var regex, user;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, services_1.branchService.findAll()];
-                    case 1:
-                        branches = _a.sent();
-                        return [4 /*yield*/, services_1.genderService.findAll()];
-                    case 2:
-                        genders = _a.sent();
-                        return [4 /*yield*/, services_1.countryService.findAll()];
-                    case 3:
-                        countries = _a.sent();
-                        return [4 /*yield*/, services_1.userStatusService.findAll()];
-                    case 4:
-                        userStatuses = _a.sent();
-                        return [4 /*yield*/, services_1.userGroupService.findAll()];
-                    case 5:
-                        userGroups = _a.sent();
-                        if (branches.statusCode !== 200 ||
-                            genders.statusCode !== 200 ||
-                            countries.statusCode !== 200 ||
-                            userStatuses.statusCode !== 200 ||
-                            userGroups.statusCode !== 200) {
-                            return [2 /*return*/, response.status(400).json({
-                                    statusCode: 400,
-                                    data: 'Failed to fetch required resources',
-                                })];
+                    case 0:
+                        regex = new RegExp("^/api/" + config_1.API_VERSION + "/(assets|auth/(register|refreshToken|fetchUser(.*)))(/)?(.*)");
+                        if (regex.test(req.url)) {
+                            next();
                         }
-                        return [2 /*return*/, response.status(200).json({
-                                statusCode: 200,
-                                data: {
-                                    branches: branches.data,
-                                    genders: genders.data,
-                                    countries: countries.data,
-                                    userGroups: userGroups.data,
-                                    userStatuses: userStatuses.data,
-                                },
-                            })];
+                        if (!(req.headers.authorization &&
+                            req.headers.authorization.split(' ')[0] === 'Bearer')) {
+                            return [2 /*return*/, response
+                                    .status(401)
+                                    .json({ statusCode: 401, data: 'Invalid authentication token' })];
+                        }
+                        return [4 /*yield*/, services_1.authService.getUserFromJWT(req.headers.authorization.split(' ')[1])];
+                    case 1:
+                        user = _a.sent();
+                        if (typeof user === 'string') {
+                            return [2 /*return*/, response
+                                    .status(401)
+                                    .json({ statusCode: 401, data: 'Invalid authentication token' })];
+                        }
+                        // eslint-disable-next-line no-param-reassign
+                        req.user = user;
+                        return [2 /*return*/, next()];
                 }
             });
         });
     };
-    __decorate([
-        routing_controllers_1.Get('/assets'),
-        __param(0, routing_controllers_1.Req()), __param(1, routing_controllers_1.Res())
-    ], AssetsController.prototype, "getAll", null);
-    AssetsController = __decorate([
-        routing_controllers_1.JsonController()
-    ], AssetsController);
-    return AssetsController;
+    TokenValidationMiddleware = __decorate([
+        routing_controllers_1.Middleware({ type: 'before' })
+    ], TokenValidationMiddleware);
+    return TokenValidationMiddleware;
 }());
-exports.default = AssetsController;
+exports.TokenValidationMiddleware = TokenValidationMiddleware;

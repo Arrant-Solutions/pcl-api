@@ -55,73 +55,75 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BaseRepository = void 0;
 var class_validator_1 = require("class-validator");
+// import {PoolClient, Pool} from 'pg'
 var database_1 = require("../loaders/database");
 var BaseRepository = /** @class */ (function () {
     function BaseRepository(_a) {
         var tableName = _a.tableName, viewName = _a.viewName, columns = _a.columns, idColumn = _a.idColumn, hasA = _a.hasA, ignore = _a.ignore;
-        this.pool = database_1.pool;
+        // this.pool = pool
+        this.tx = undefined;
         this.idColumn = idColumn || tableName.replace(/(es|s)$/, '_id');
-        this.columns = __spreadArray(__spreadArray([], columns, true), ['created_at', 'updated_at'], false);
+        this.columns = __spreadArrays(columns, ['created_at', 'updated_at']);
         this.tableName = tableName;
         this.hasA = hasA || [];
         this.ignore = ignore || [];
         this.viewName = viewName;
     }
-    BaseRepository.prototype.setPool = function (client) {
-        this.pool = client;
+    // setPool(client: PoolClient) {
+    //   this.pool = client
+    // }
+    // async createTransactionClient(): Promise<PoolClient | void> {
+    //   const client = await this.pool.connect()
+    //   return client
+    // }
+    BaseRepository.prototype.setTask = function (tx) {
+        this.tx = tx;
     };
-    BaseRepository.prototype.createTransactionClient = function () {
+    BaseRepository.prototype.insert = function (model, id) {
         return __awaiter(this, void 0, void 0, function () {
-            var client;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.pool.connect()];
-                    case 1:
-                        client = _a.sent();
-                        return [2 /*return*/, client];
-                }
-            });
-        });
-    };
-    BaseRepository.prototype.insert = function (model, id, client) {
-        return __awaiter(this, void 0, void 0, function () {
-            var errors, errs, _a, columns, placeholders, values, query, _b, rowCount, rows;
+            var errors, errs, _a, columns, placeholders, values, query, result, _b;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
                         this.model.assign = model;
-                        return [4 /*yield*/, (0, class_validator_1.validate)(this.model)];
+                        return [4 /*yield*/, class_validator_1.validate(this.model)];
                     case 1:
                         errors = _c.sent();
                         if (errors.length > 0) {
-                            errs = errors.reduce(function (result, error) { return __spreadArray(__spreadArray([], result, true), Object.values(error.constraints), true); }, []);
+                            errs = errors.reduce(function (result, error) { return __spreadArrays(result, Object.values(error.constraints)); }, []);
                             return [2 /*return*/, errs];
                         }
                         _a = this.generateInsertQueryParts(model, id), columns = _a.columns, placeholders = _a.placeholders, values = _a.values;
                         query = "INSERT INTO " + this.tableName + " (" + columns + ") VALUES (" + placeholders + ") RETURNING *";
-                        return [4 /*yield*/, (client || this.pool).query(query, values)];
+                        if (!this.tx) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.tx.one(query, values)];
                     case 2:
-                        _b = _c.sent(), rowCount = _b.rowCount, rows = _b.rows;
-                        return [2 /*return*/, rowCount ? rows[0] : false];
+                        _b = _c.sent();
+                        return [3 /*break*/, 5];
+                    case 3: return [4 /*yield*/, database_1.db.one(query, values)];
+                    case 4:
+                        _b = _c.sent();
+                        _c.label = 5;
+                    case 5:
+                        result = _b;
+                        return [2 /*return*/, result];
                 }
             });
         });
     };
     BaseRepository.prototype.update = function (id, model, user_id) {
         return __awaiter(this, void 0, void 0, function () {
-            var arg, item, errors, errs, _a, columns, values, query, _b, rowCount, rows;
+            var arg, item, errors, errs, _a, columns, values, query, result, _b;
             var _c;
             return __generator(this, function (_d) {
                 switch (_d.label) {
@@ -133,23 +135,30 @@ var BaseRepository = /** @class */ (function () {
                     case 1:
                         item = _d.sent();
                         this.model.assign = __assign(__assign({}, item), model);
-                        return [4 /*yield*/, (0, class_validator_1.validate)(this.model)];
+                        return [4 /*yield*/, class_validator_1.validate(this.model)];
                     case 2:
                         errors = _d.sent();
                         if (errors.length > 0) {
-                            errs = errors.reduce(function (result, error) { return __spreadArray(__spreadArray([], result, true), Object.values(error.constraints), true); }, []);
+                            errs = errors.reduce(function (result, error) { return __spreadArrays(result, Object.values(error.constraints)); }, []);
                             return [2 /*return*/, errs];
                         }
-                        if (!item) return [3 /*break*/, 4];
+                        if (!item) return [3 /*break*/, 7];
                         _a = this.generateUpdateQueryParts(model), columns = _a.columns, values = _a.values;
-                        query = "UPDATE " + this.tableName + " SET (" + columns + ") WHERE " + this.idColumn + " = $" + (values.length + 1) + " RETURNING *";
-                        return [4 /*yield*/, this.pool.query(query, __spreadArray(__spreadArray([], values, true), [id], false))];
+                        query = "UPDATE " + this.tableName + " SET " + columns + " WHERE " +
+                            (this.idColumn + " = $" + (values.length + 1) + " RETURNING *");
+                        if (!this.tx) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.tx.one(query, __spreadArrays(values, [id]))];
                     case 3:
-                        _b = _d.sent(), rowCount = _b.rowCount, rows = _b.rows;
-                        if (rowCount)
-                            return [2 /*return*/, rows[0]];
-                        _d.label = 4;
-                    case 4: return [2 /*return*/, false];
+                        _b = _d.sent();
+                        return [3 /*break*/, 6];
+                    case 4: return [4 /*yield*/, database_1.db.one(query, __spreadArrays(values, [id]))];
+                    case 5:
+                        _b = _d.sent();
+                        _d.label = 6;
+                    case 6:
+                        result = _b;
+                        return [2 /*return*/, result];
+                    case 7: return [2 /*return*/, false];
                 }
             });
         });
@@ -172,11 +181,11 @@ var BaseRepository = /** @class */ (function () {
                     case 4:
                         item = _a;
                         this.model.assign = item ? __assign(__assign({}, item), model) : model;
-                        return [4 /*yield*/, (0, class_validator_1.validate)(this.model)];
+                        return [4 /*yield*/, class_validator_1.validate(this.model)];
                     case 5:
                         errors = _b.sent();
                         if (errors.length > 0) {
-                            errs = errors.reduce(function (result, error) { return __spreadArray(__spreadArray([], result, true), Object.values(error.constraints), true); }, []);
+                            errs = errors.reduce(function (result, error) { return __spreadArrays(result, Object.values(error.constraints)); }, []);
                             return [2 /*return*/, errs];
                         }
                         if (!item) return [3 /*break*/, 7];
@@ -194,86 +203,111 @@ var BaseRepository = /** @class */ (function () {
     };
     // insertMany<Q = T>(models: Q[], withID?: boolean): Promise<boolean>
     BaseRepository.prototype.insertMany = function (models, withID) {
-        var models_1, models_1_1;
-        var e_1, _a;
         return __awaiter(this, void 0, void 0, function () {
-            var client, model, result, e_1_1, e_2;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, database_1.pool.connect()];
+            var result;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, database_1.db.tx(function (t) { return __awaiter(_this, void 0, void 0, function () {
+                            var models_1, models_1_1, model, response, errors, e_1_1;
+                            var e_1, _a;
+                            return __generator(this, function (_b) {
+                                switch (_b.label) {
+                                    case 0:
+                                        _b.trys.push([0, 6, 7, 12]);
+                                        models_1 = __asyncValues(models);
+                                        _b.label = 1;
+                                    case 1: return [4 /*yield*/, models_1.next()];
+                                    case 2:
+                                        if (!(models_1_1 = _b.sent(), !models_1_1.done)) return [3 /*break*/, 5];
+                                        model = models_1_1.value;
+                                        return [4 /*yield*/, this.insert(model, withID)];
+                                    case 3:
+                                        response = _b.sent();
+                                        if (!response) {
+                                            throw new Error("failed to insert: " + JSON.stringify(model));
+                                        }
+                                        if (typeof response === 'object' &&
+                                            Array.isArray(response.errors)) {
+                                            errors = response.errors;
+                                            throw new Error(errors.length > 0
+                                                ? errors[0]
+                                                : "Failed to insert: " + JSON.stringify(model));
+                                        }
+                                        _b.label = 4;
+                                    case 4: return [3 /*break*/, 1];
+                                    case 5: return [3 /*break*/, 12];
+                                    case 6:
+                                        e_1_1 = _b.sent();
+                                        e_1 = { error: e_1_1 };
+                                        return [3 /*break*/, 12];
+                                    case 7:
+                                        _b.trys.push([7, , 10, 11]);
+                                        if (!(models_1_1 && !models_1_1.done && (_a = models_1.return))) return [3 /*break*/, 9];
+                                        return [4 /*yield*/, _a.call(models_1)];
+                                    case 8:
+                                        _b.sent();
+                                        _b.label = 9;
+                                    case 9: return [3 /*break*/, 11];
+                                    case 10:
+                                        if (e_1) throw e_1.error;
+                                        return [7 /*endfinally*/];
+                                    case 11: return [7 /*endfinally*/];
+                                    case 12: return [2 /*return*/, true];
+                                }
+                            });
+                        }); })];
                     case 1:
-                        client = _b.sent();
-                        _b.label = 2;
-                    case 2:
-                        _b.trys.push([2, 17, 19, 20]);
-                        client.query('BEGIN');
-                        _b.label = 3;
-                    case 3:
-                        _b.trys.push([3, 9, 10, 15]);
-                        models_1 = __asyncValues(models);
-                        _b.label = 4;
-                    case 4: return [4 /*yield*/, models_1.next()];
-                    case 5:
-                        if (!(models_1_1 = _b.sent(), !models_1_1.done)) return [3 /*break*/, 8];
-                        model = models_1_1.value;
-                        return [4 /*yield*/, this.insert(model, withID, client)];
-                    case 6:
-                        result = _b.sent();
-                        if (!result ||
-                            (typeof result === 'object' && Array.isArray(result.errors)))
-                            throw new Error("failed to insert: " + JSON.stringify(model));
-                        _b.label = 7;
-                    case 7: return [3 /*break*/, 4];
-                    case 8: return [3 /*break*/, 15];
-                    case 9:
-                        e_1_1 = _b.sent();
-                        e_1 = { error: e_1_1 };
-                        return [3 /*break*/, 15];
-                    case 10:
-                        _b.trys.push([10, , 13, 14]);
-                        if (!(models_1_1 && !models_1_1.done && (_a = models_1.return))) return [3 /*break*/, 12];
-                        return [4 /*yield*/, _a.call(models_1)];
-                    case 11:
-                        _b.sent();
-                        _b.label = 12;
-                    case 12: return [3 /*break*/, 14];
-                    case 13:
-                        if (e_1) throw e_1.error;
-                        return [7 /*endfinally*/];
-                    case 14: return [7 /*endfinally*/];
-                    case 15: return [4 /*yield*/, client.query('COMMIT')];
-                    case 16:
-                        _b.sent();
-                        return [2 /*return*/, true];
-                    case 17:
-                        e_2 = _b.sent();
-                        // console.log(e)
-                        return [4 /*yield*/, client.query('ROLLBACK')];
-                    case 18:
-                        // console.log(e)
-                        _b.sent();
-                        return [2 /*return*/, false];
-                    case 19:
-                        client.release();
-                        return [7 /*endfinally*/];
-                    case 20: return [2 /*return*/];
+                        result = _a.sent();
+                        return [2 /*return*/, result
+                            // const client = await pool.connect()
+                            // try {
+                            //   client.query('BEGIN')
+                            //   // eslint-disable-next-line no-restricted-syntax
+                            //   for await (const model of models) {
+                            //     const result = await this.insert(model, withID, client)
+                            //     if (
+                            //       !result ||
+                            //       (typeof result === 'object' && Array.isArray((result as any).errors))
+                            //     )
+                            //       throw new Error(`failed to insert: ${JSON.stringify(model)}`)
+                            //   }
+                            //   await client.query('COMMIT')
+                            //   return true
+                            // } catch (e) {
+                            //   // console.log(e)
+                            //   await client.query('ROLLBACK')
+                            //   return false
+                            // } finally {
+                            //   client.release()
+                            // }
+                        ];
                 }
             });
         });
     };
     BaseRepository.prototype.findById = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var columns, _a, rowCount, rows;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var columns, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         columns = this.getColumns();
-                        return [4 /*yield*/, this.pool.query("SELECT " + columns + " FROM " + this.tableName + " WHERE " + this.idColumn + " = $1", [id])];
+                        return [4 /*yield*/, database_1.db.one("SELECT " + columns + " FROM " + this.tableName + " WHERE " + this.idColumn + " = $1", [id])
+                            // const {rowCount, rows} = await this.pool.query<Q>(
+                            //   `SELECT ${columns} FROM ${this.tableName} WHERE ${this.idColumn} = $1`,
+                            //   [id],
+                            // )
+                            // if (rowCount) return rows[0]
+                        ];
                     case 1:
-                        _a = _b.sent(), rowCount = _a.rowCount, rows = _a.rows;
-                        if (rowCount)
-                            return [2 /*return*/, rows[0]];
-                        return [2 /*return*/, null];
+                        result = _a.sent();
+                        // const {rowCount, rows} = await this.pool.query<Q>(
+                        //   `SELECT ${columns} FROM ${this.tableName} WHERE ${this.idColumn} = $1`,
+                        //   [id],
+                        // )
+                        // if (rowCount) return rows[0]
+                        return [2 /*return*/, result];
                 }
             });
         });
@@ -293,60 +327,112 @@ var BaseRepository = /** @class */ (function () {
     };
     BaseRepository.prototype.findAll = function (limit, offset) {
         return __awaiter(this, void 0, void 0, function () {
-            var columns, limitOffset, rows;
+            var columns, limitOffset, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         columns = this.getColumns();
                         limitOffset = this.getLimitOffset(limit, offset);
-                        return [4 /*yield*/, this.pool.query("SELECT " + columns + " FROM " + (this.viewName || this.tableName) + " ORDER BY " + this.idColumn + " " + limitOffset)];
+                        return [4 /*yield*/, database_1.db.many("SELECT " + columns + " FROM " + (this.viewName || this.tableName) + " ORDER BY " +
+                                (this.idColumn + " " + limitOffset))
+                            // const {rows} = await this.pool.query<T>(
+                            //   `SELECT ${columns} FROM ${this.viewName || this.tableName} ORDER BY ${
+                            //     this.idColumn
+                            //   } ${limitOffset}`,
+                            // )
+                        ];
                     case 1:
-                        rows = (_a.sent()).rows;
-                        return [2 /*return*/, rows];
+                        result = _a.sent();
+                        // const {rows} = await this.pool.query<T>(
+                        //   `SELECT ${columns} FROM ${this.viewName || this.tableName} ORDER BY ${
+                        //     this.idColumn
+                        //   } ${limitOffset}`,
+                        // )
+                        return [2 /*return*/, result];
                 }
             });
         });
     };
     BaseRepository.prototype.deleteById = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, rowCount, rows;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, this.pool.query("DELETE FROM " + this.tableName + " WHERE $1 RETURNING *", [id])];
+            var _a, rowCount, rows, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        if (!this.tx) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.tx.result("DELETE FROM " + this.tableName + " WHERE $1 RETURNING *", [id])];
                     case 1:
-                        _a = _b.sent(), rowCount = _a.rowCount, rows = _a.rows;
-                        return [2 /*return*/, rowCount ? rows[0] : false];
+                        _b = _c.sent();
+                        return [3 /*break*/, 4];
+                    case 2: return [4 /*yield*/, database_1.db.result("DELETE FROM " + this.tableName + " WHERE $1 RETURNING *", [
+                            id,
+                        ])];
+                    case 3:
+                        _b = _c.sent();
+                        _c.label = 4;
+                    case 4:
+                        _a = _b, rowCount = _a.rowCount, rows = _a.rows;
+                        return [2 /*return*/, rowCount ? rows[0] : false
+                            // const {rowCount, rows} = await this.pool.query<T>(
+                            //   `DELETE FROM ${this.tableName} WHERE $1 RETURNING *`,
+                            //   [id],
+                            // )
+                            // return rowCount ? rows[0] : false
+                        ];
                 }
             });
         });
     };
     BaseRepository.prototype.delete = function (filter, or, ignoreCase) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, query, values, _b, rowCount, rows;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var _a, query, values, _b, rowCount, rows, _c;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
                         _a = BaseRepository.generateSearchQueryParts(filter, false, or, ignoreCase), query = _a.query, values = _a.values;
-                        return [4 /*yield*/, this.pool.query("DELETE FROM " + this.tableName + " WHERE " + query + " RETURNING *", values)];
+                        if (!this.tx) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.tx.result("DELETE FROM " + this.tableName + " WHERE " + query + " RETURNING *", values)];
                     case 1:
-                        _b = _c.sent(), rowCount = _b.rowCount, rows = _b.rows;
-                        return [2 /*return*/, rowCount ? rows[0] : false];
+                        _c = _d.sent();
+                        return [3 /*break*/, 4];
+                    case 2: return [4 /*yield*/, database_1.db.result("DELETE FROM " + this.tableName + " WHERE " + query + " RETURNING *", values)];
+                    case 3:
+                        _c = _d.sent();
+                        _d.label = 4;
+                    case 4:
+                        _b = _c, rowCount = _b.rowCount, rows = _b.rows;
+                        return [2 /*return*/, rowCount ? rows[0] : false
+                            // const {rowCount, rows} = await this.pool.query<Q>(
+                            //   `DELETE FROM ${this.tableName} WHERE ${query} RETURNING *`,
+                            //   values,
+                            // )
+                            // return rowCount ? rows[0] : false
+                        ];
                 }
             });
         });
     };
     BaseRepository.prototype.find = function (filter, or, ignoreCase) {
         return __awaiter(this, void 0, void 0, function () {
-            var columns, _a, query, values, rows;
+            var columns, _a, query, values, result;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         columns = this.getColumns();
                         _a = BaseRepository.generateSearchQueryParts(filter, false, or, ignoreCase), query = _a.query, values = _a.values;
-                        return [4 /*yield*/, this.pool.query("SELECT " + columns + " FROM " + (this.viewName || this.tableName) + " WHERE " + query, values)];
+                        return [4 /*yield*/, database_1.db.many("SELECT " + columns + " FROM " +
+                                ((this.viewName || this.tableName) + " WHERE " + query), values)];
                     case 1:
-                        rows = (_b.sent()).rows;
-                        return [2 /*return*/, rows];
+                        result = _b.sent();
+                        return [2 /*return*/, result
+                            // const {rows} = await this.pool.query<Q>(
+                            //   `SELECT ${columns} FROM ${
+                            //     this.viewName || this.tableName
+                            //   } WHERE ${query}`,
+                            //   values,
+                            // )
+                            // return rows
+                        ];
                 }
             });
         });
@@ -364,14 +450,27 @@ var BaseRepository = /** @class */ (function () {
             });
         });
     };
+    // eslint-disable-next-line class-methods-use-this
     BaseRepository.prototype.executeRawQuery = function (query, params) {
         return __awaiter(this, void 0, void 0, function () {
-            var rows;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.pool.query(query, params)];
+            var rows, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        if (!this.tx) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.tx.result(query, params)];
                     case 1:
-                        rows = (_a.sent()).rows;
+                        _a = _b.sent();
+                        return [3 /*break*/, 4];
+                    case 2: return [4 /*yield*/, database_1.db.result(query, params)
+                        // const {rows} = await this.pool.query<Q>(query, params)
+                    ];
+                    case 3:
+                        _a = _b.sent();
+                        _b.label = 4;
+                    case 4:
+                        rows = (_a).rows;
+                        // const {rows} = await this.pool.query<Q>(query, params)
                         return [2 /*return*/, rows];
                 }
             });
@@ -385,9 +484,23 @@ var BaseRepository = /** @class */ (function () {
                     case 0:
                         columns = this.getColumns();
                         _a = BaseRepository.generateSearchQueryParts(filter, true, or), query = _a.query, values = _a.values;
-                        return [4 /*yield*/, this.pool.query("SELECT " + columns + " FROM " + (this.viewName || this.tableName) + " WHERE " + query, values)];
+                        return [4 /*yield*/, database_1.db.result("SELECT " + columns + " FROM " +
+                                ((this.viewName || this.tableName) + " WHERE " + query), values)
+                            // const {rows} = await this.pool.query<T>(
+                            //   `SELECT ${columns} FROM ${
+                            //     this.viewName || this.tableName
+                            //   } WHERE ${query}`,
+                            //   values,
+                            // )
+                        ];
                     case 1:
                         rows = (_b.sent()).rows;
+                        // const {rows} = await this.pool.query<T>(
+                        //   `SELECT ${columns} FROM ${
+                        //     this.viewName || this.tableName
+                        //   } WHERE ${query}`,
+                        //   values,
+                        // )
                         return [2 /*return*/, rows];
                 }
             });
@@ -401,7 +514,7 @@ var BaseRepository = /** @class */ (function () {
                 // eslint-disable-next-line no-bitwise
                 ~_this.ignore.indexOf(col));
         }); // remove id column and date guys
-        var columns = withID ? __spreadArray([this.idColumn], cols, true) : cols;
+        var columns = withID ? __spreadArrays([this.idColumn], cols) : cols;
         return columns.reduce(function (acc, col, index) {
             // eslint-disable-next-line no-param-reassign
             acc.columns += index === columns.length - 1 ? "" + col : col + ", ";
@@ -453,7 +566,7 @@ var BaseRepository = /** @class */ (function () {
     };
     BaseRepository.prototype.getColumns = function () {
         var _this = this;
-        var columns = __spreadArray([this.idColumn], this.columns, true).filter(function (col) { return !!_this.viewName || !~_this.ignore.indexOf(col); });
+        var columns = __spreadArrays([this.idColumn], this.columns).filter(function (col) { return !!_this.viewName || !~_this.ignore.indexOf(col); });
         return columns.reduce(function (acc, col, index) {
             // eslint-disable-next-line no-param-reassign
             acc +=

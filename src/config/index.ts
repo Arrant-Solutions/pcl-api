@@ -14,10 +14,9 @@ export const PUBLIC_KEY = /(development|test)/.test(process.env.NODE_ENV)
   ? readFileSync(`${__dirname}/../../keys/public-key.pem`, 'utf8')
   : process.env.PUBLIC_KEY
 
-export const PRIVATE_KEY =
-  process.env.NODE_ENV === 'development'
-    ? readFileSync(`${__dirname}/../../keys/private-key.pem`, 'utf8')
-    : process.env.PRIVATE_KEY
+export const PRIVATE_KEY = /(development|test)/.test(process.env.NODE_ENV)
+  ? readFileSync(`${__dirname}/../../keys/private-key.pem`, 'utf8')
+  : process.env.PRIVATE_KEY
 
 // export const jwtSecret = process.env.passphrase
 

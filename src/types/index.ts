@@ -3,7 +3,7 @@ import {ICreateUserT, IUser} from '../models/User'
 
 export interface PCLRequest extends Request {
   tokenData: Pick<IUser, 'email' | 'phone' | 'user_id'>
-  user: ICreateUserT
+  user: ICreateUserT | IUser
 }
 
 export interface IResponse<T = unknown> {

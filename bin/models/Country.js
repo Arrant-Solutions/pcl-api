@@ -3,12 +3,10 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -41,21 +39,21 @@ var Country = /** @class */ (function (_super) {
         configurable: true
     });
     __decorate([
-        (0, class_validator_1.IsOptional)(),
-        (0, class_validator_1.IsInt)(),
-        (0, class_validator_1.IsPositive)()
+        class_validator_1.IsOptional(),
+        class_validator_1.IsInt(),
+        class_validator_1.IsPositive()
     ], Country.prototype, "country_id", void 0);
     __decorate([
-        (0, class_validator_1.IsString)(),
-        (0, class_validator_1.MaxLength)(60)
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(60)
     ], Country.prototype, "country_name", void 0);
     __decorate([
-        (0, class_validator_1.IsString)(),
-        (0, class_validator_1.MaxLength)(10)
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(10)
     ], Country.prototype, "country_abbr", void 0);
     __decorate([
-        (0, class_validator_1.IsString)(),
-        (0, class_validator_1.MaxLength)(10)
+        class_validator_1.IsString(),
+        class_validator_1.MaxLength(10)
     ], Country.prototype, "country_code", void 0);
     return Country;
 }(IModel_1.Model));

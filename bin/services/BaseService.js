@@ -41,25 +41,16 @@ var BaseService = /** @class */ (function () {
     function BaseService(repository) {
         this.repository = repository;
     }
-    BaseService.prototype.getTransactionClient = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var client;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.repository.createTransactionClient()];
-                    case 1:
-                        client = _a.sent();
-                        if (client) {
-                            this.repository.setPool(client);
-                        }
-                        return [2 /*return*/, client];
-                }
-            });
-        });
-    };
-    BaseService.prototype.setRepositoryClient = function (client) {
-        this.repository.setPool(client);
-    };
+    // public async getTransactionClient() {
+    //   const client = await this.repository.createTransactionClient()
+    //   if (client) {
+    //     this.repository.setPool(client)
+    //   }
+    //   return client
+    // }
+    // public setRepositoryClient(client: PoolClient) {
+    //   this.repository.setPool(client)
+    // }
     BaseService.prototype.insert = function (model, withID) {
         return __awaiter(this, void 0, void 0, function () {
             var result, error_1;

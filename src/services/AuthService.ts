@@ -3,7 +3,7 @@
 import * as jwt from 'jsonwebtoken'
 import {JWT_EXPIRY, PRIVATE_KEY} from '../config'
 // import {auth} from '../loaders/firebase'
-import {ICreateUserT} from '../models/User'
+import {ICreateUserT, User} from '../models/User'
 import {IResponse} from '../types'
 import UserService from './UserService'
 
@@ -217,6 +217,33 @@ export default class AuthService {
       return decoded.data as Pick<ICreateUserT, 'user_id' | 'phone' | 'email'>
     } catch (error) {
       return error.message as string
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  public async findUserByToken(header: string) {
+    try {
+      if (!(header && header.split(' ')[0] === 'Bearer')) {
+        return null
+      }
+
+      const token = header.split(' ')[1]
+
+      const {
+        data: {email, user_id},
+      } = jwt.verify(token, PRIVATE_KEY, {
+        algorithms: 'RS256',
+      }) as {data: Pick<ICreateUserT, 'user_id' | 'phone' | 'email'>}
+
+      const {data} = await this.userService.findOne(
+        {user_id, email},
+        false,
+        true,
+      )
+
+      return typeof data === 'object' ? new User(data) : null
+    } catch (error) {
+      return null
     }
   }
 }

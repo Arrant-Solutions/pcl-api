@@ -70,19 +70,16 @@ var AuthController = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        console.log(email);
-                        _b.label = 1;
-                    case 1:
-                        _b.trys.push([1, 3, , 4]);
+                        _b.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, services_1.authService.fetchUser({ email: email })];
-                    case 2:
+                    case 1:
                         _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
                         return [2 /*return*/, response.status(statusCode).json({ statusCode: statusCode, data: data })];
-                    case 3:
+                    case 2:
                         error_1 = _b.sent();
                         console.log(error_1);
                         return [2 /*return*/, response.status(500).json({ statusCode: 500, data: error_1 })];
-                    case 4: return [2 /*return*/];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
@@ -92,9 +89,23 @@ var AuthController = /** @class */ (function () {
             var _a, statusCode, data;
             return __generator(this, function (_b) {
                 switch (_b.label) {
+                    case 0: return [4 /*yield*/, services_1.authService.register(user)];
+                    case 1:
+                        _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
+                        return [2 /*return*/, response.status(statusCode).json({ statusCode: statusCode, data: data })];
+                }
+            });
+        });
+    };
+    AuthController.prototype.update = function (users, user, request, response) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, statusCode, data;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        console.log(JSON.stringify(user));
-                        return [4 /*yield*/, services_1.authService.register(user)];
+                        console.log(request.user);
+                        return [4 /*yield*/, services_1.authService.update(16, // request.user.user_id,
+                            user)];
                     case 1:
                         _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
                         return [2 /*return*/, response.status(statusCode).json({ statusCode: statusCode, data: data })];
@@ -103,25 +114,32 @@ var AuthController = /** @class */ (function () {
         });
     };
     __decorate([
-        (0, routing_controllers_1.Post)('/auth/refreshToken'),
-        __param(0, (0, routing_controllers_1.HeaderParam)('token')),
-        __param(1, (0, routing_controllers_1.Req)()),
-        __param(2, (0, routing_controllers_1.Res)())
+        routing_controllers_1.Post('/auth/refreshToken'),
+        __param(0, routing_controllers_1.HeaderParam('token')),
+        __param(1, routing_controllers_1.Req()),
+        __param(2, routing_controllers_1.Res())
     ], AuthController.prototype, "refreshToken", null);
     __decorate([
-        (0, routing_controllers_1.Get)('/auth/fetchUser/:email'),
-        __param(0, (0, routing_controllers_1.Param)('email')),
-        __param(1, (0, routing_controllers_1.Req)()),
-        __param(2, (0, routing_controllers_1.Res)())
+        routing_controllers_1.Get('/auth/fetchUser/:email'),
+        __param(0, routing_controllers_1.Param('email')),
+        __param(1, routing_controllers_1.Req()),
+        __param(2, routing_controllers_1.Res())
     ], AuthController.prototype, "fetchUser", null);
     __decorate([
-        (0, routing_controllers_1.Post)('/auth/register'),
-        __param(0, (0, routing_controllers_1.Body)({ required: true })),
-        __param(1, (0, routing_controllers_1.Req)()),
-        __param(2, (0, routing_controllers_1.Res)())
+        routing_controllers_1.Post('/auth/register'),
+        __param(0, routing_controllers_1.Body({ required: true })),
+        __param(1, routing_controllers_1.Req()),
+        __param(2, routing_controllers_1.Res())
     ], AuthController.prototype, "register", null);
+    __decorate([
+        routing_controllers_1.Put('/auth/:user_id'),
+        __param(0, routing_controllers_1.CurrentUser({ required: true })),
+        __param(1, routing_controllers_1.Body({ required: true })),
+        __param(2, routing_controllers_1.Req()),
+        __param(3, routing_controllers_1.Res())
+    ], AuthController.prototype, "update", null);
     AuthController = __decorate([
-        (0, routing_controllers_1.JsonController)()
+        routing_controllers_1.JsonController()
     ], AuthController);
     return AuthController;
 }());

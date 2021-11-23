@@ -221,6 +221,8 @@ export class User extends Model implements IUser {
       this.last_name = param.last_name
       this.email = param.email
       this.phone = param.phone
+      this.created_at = param.created_at
+      this.updated_at = param.updated_at
       // this.password = param.password
       // this.password_salt = param.password_salt
       this.user_group = {
@@ -254,7 +256,6 @@ export class User extends Model implements IUser {
       typeof object.first_name === 'string' &&
       typeof object.last_name === 'string' &&
       typeof object.email === 'string' &&
-      typeof object.phone === 'string' &&
       typeof object.country_id === 'number' &&
       typeof object.country_abbr === 'string' &&
       typeof object.country_name === 'string' &&

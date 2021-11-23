@@ -36,42 +36,54 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTokenFromHeader = void 0;
-var jwt = require("express-jwt");
-var config_1 = require("../config");
-var services_1 = require("../loaders/services");
-exports.getTokenFromHeader = function (req) { return __awaiter(void 0, void 0, void 0, function () {
-    var decoded, data;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                if (!(req.headers.authorization &&
-                    req.headers.authorization.split(' ')[0] === 'Bearer')) return [3 /*break*/, 3];
-                decoded = services_1.authService.decodeJWT(req.headers.authorization.split(' ')[1]);
-                if (!(typeof decoded === 'object')) return [3 /*break*/, 2];
-                return [4 /*yield*/, services_1.authService.fetchUser({
-                        user_id: decoded.user_id,
-                        email: decoded.email,
-                    })];
-            case 1:
-                data = (_a.sent()).data;
-                if (typeof data === 'object') {
-                    // eslint-disable-next-line no-param-reassign
-                    req.user = data.user;
-                }
-                // eslint-disable-next-line no-param-reassign
-                req.tokenData = decoded;
-                _a.label = 2;
-            case 2: return [2 /*return*/, req.headers.authorization.split(' ')[1]];
-            case 3: return [2 /*return*/, ''];
-        }
-    });
-}); };
-var path = "^/api/" + config_1.API_VERSION + "/(assets|auth/(register|refreshToken|fetchUser(.*)))(/)?(.*)";
-exports.default = jwt({
-    secret: config_1.PUBLIC_KEY,
-    userProperty: 'token',
-    getToken: exports.getTokenFromHeader,
-    credentialsRequired: false,
-    algorithms: ['RS256'],
-}).unless({ path: new RegExp(path) });
+/* eslint-disable import/first */
+/* eslint-disable import/newline-after-import */
+var dotenv_1 = require("dotenv");
+dotenv_1.config();
+require("reflect-metadata");
+var routing_controllers_1 = require("routing-controllers");
+var express = require("express");
+var compression = require("compression");
+// import listEndpoints from 'express-list-endpoints'
+var logger_1 = require("./config/logger");
+var morgan_1 = require("./middleware/morgan");
+var isAuth_1 = require("./middleware/isAuth");
+var config_1 = require("./config");
+// import {TokenValidationMiddleware} from './middleware/TokenValidationMiddleware'
+var app = routing_controllers_1.createExpressServer({
+    authorizationChecker: function (action, roles) { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            console.log(action.request.url);
+            console.log(roles);
+            return [2 /*return*/, false];
+        });
+    }); },
+});
+app.use(morgan_1.default);
+app.get('/logger', function (_, res) {
+    logger_1.default.error('This is an error log');
+    logger_1.default.warn('This is a warn log');
+    logger_1.default.info('This is a info log');
+    logger_1.default.http('This is a http log');
+    logger_1.default.debug("/api/" + config_1.API_VERSION);
+    res.send('Hello world');
+});
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(compression());
+app.use(isAuth_1.default);
+routing_controllers_1.useExpressServer(app, {
+    cors: true,
+    routePrefix: "/api/" + config_1.API_VERSION,
+    controllers: [
+        __dirname + "/controllers/*." + (config_1.ENV === 'production' ? 'js' : 'ts'),
+    ],
+    middlewares: [
+    // `${__dirname}/handlers/*.${ENV === 'production' ? 'js' : 'ts'}`,
+    // TokenValidationMiddleware,
+    ],
+});
+app.use('/health', function (req, res) {
+    return res.send('<html><head></head><body><p style="color: green; font-size: 1.8rem; padding: 20px;">Healthy</p></body></html>');
+});
+exports.default = app;

@@ -105,6 +105,9 @@ var AuthService = /** @class */ (function () {
                             !(user.user_status_id > 0 && user.user_status_id <= 4)) {
                             return [2 /*return*/, { statusCode: 422, data: 'Please select a valid statuss' }];
                         }
+                        if (user.branch_id && !(user.branch_id > 0 && user.branch_id <= 2)) {
+                            return [2 /*return*/, { statusCode: 422, data: 'Please select a valid branch' }];
+                        }
                         return [4 /*yield*/, this.userService.findOne({
                                 phone: user.phone,
                                 email: user.email,
@@ -134,6 +137,50 @@ var AuthService = /** @class */ (function () {
                                 }];
                         }
                         return [2 /*return*/, { statusCode: status, data: result }];
+                }
+            });
+        });
+    };
+    AuthService.prototype.update = function (user_id, user) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, statusCode, data, result;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        if (!/^[\p{L}'][ \p{L}'-]*[\p{L}]$/u.test(user.first_name)) {
+                            return [2 /*return*/, { statusCode: 422, data: 'Please input a valid first name' }];
+                        }
+                        if (!/^[\p{L}'][ \p{L}'-]*[\p{L}]$/u.test(user.last_name)) {
+                            return [2 /*return*/, { statusCode: 422, data: 'Please input a valid last name' }];
+                        }
+                        if (!/^(1|2)$/.test(String(user.gender_id))) {
+                            return [2 /*return*/, { statusCode: 422, data: 'Please select a valid gender' }];
+                        }
+                        if (!(user.country_id > 0 && user.country_id <= 250)) {
+                            return [2 /*return*/, { statusCode: 422, data: 'Please select a valid country' }];
+                        }
+                        if (user.branch_id && !(user.branch_id > 0 && user.branch_id <= 2)) {
+                            return [2 /*return*/, { statusCode: 422, data: 'Please select a valid branch' }];
+                        }
+                        return [4 /*yield*/, this.userService.findOne({
+                                phone: user.phone,
+                                email: user.email,
+                            }, true)];
+                    case 1:
+                        _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
+                        if (statusCode === 500) {
+                            return [2 /*return*/, { statusCode: statusCode, data: data }];
+                        }
+                        if (typeof data !== 'object') {
+                            return [2 /*return*/, {
+                                    statusCode: 404,
+                                    data: "Unable to find user with email address: " + user.email,
+                                }];
+                        }
+                        return [4 /*yield*/, this.userService.update(user_id, data)];
+                    case 2:
+                        result = _b.sent();
+                        return [2 /*return*/, result];
                 }
             });
         });
@@ -180,6 +227,29 @@ var AuthService = /** @class */ (function () {
         catch (error) {
             return error.message;
         }
+    };
+    // eslint-disable-next-line class-methods-use-this
+    AuthService.prototype.getUserFromJWT = function (token) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, email, user_id, data, error_1;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        _a = jwt.verify(token, config_1.PRIVATE_KEY, {
+                            algorithms: 'RS256',
+                        }).data, email = _a.email, user_id = _a.user_id;
+                        return [4 /*yield*/, this.userService.findOne({ user_id: user_id, email: email }, false, true)];
+                    case 1:
+                        data = (_b.sent()).data;
+                        return [2 /*return*/, data];
+                    case 2:
+                        error_1 = _b.sent();
+                        return [2 /*return*/, error_1.message];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
     };
     return AuthService;
 }());
