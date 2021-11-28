@@ -56,6 +56,7 @@ var TokenValidationMiddleware = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         regex = new RegExp("^/api/" + config_1.API_VERSION + "/(assets|auth/(register|refreshToken|fetchUser(.*)))(/)?(.*)");
+                        // throw new NotFoundError('User was not found.')
                         if (regex.test(req.url)) {
                             next();
                         }
@@ -65,7 +66,7 @@ var TokenValidationMiddleware = /** @class */ (function () {
                                     .status(401)
                                     .json({ statusCode: 401, data: 'Invalid authentication token' })];
                         }
-                        return [4 /*yield*/, services_1.authService.getUserFromJWT(req.headers.authorization.split(' ')[1])];
+                        return [4 /*yield*/, services_1.authService.findUserByToken(req.headers.authorization)];
                     case 1:
                         user = _a.sent();
                         if (typeof user === 'string') {
@@ -81,7 +82,7 @@ var TokenValidationMiddleware = /** @class */ (function () {
         });
     };
     TokenValidationMiddleware = __decorate([
-        routing_controllers_1.Middleware({ type: 'before' })
+        (0, routing_controllers_1.Middleware)({ type: 'before' })
     ], TokenValidationMiddleware);
     return TokenValidationMiddleware;
 }());

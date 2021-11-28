@@ -51,6 +51,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // import * as argon2 from 'argon2'
 var jwt = require("jsonwebtoken");
 var config_1 = require("../config");
+// import {auth} from '../loaders/firebase'
+var User_1 = require("../models/User");
 var AuthService = /** @class */ (function () {
     function AuthService(userService) {
         this.userService = userService;
@@ -143,43 +145,35 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.update = function (user_id, user) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, statusCode, data, result;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        if (!/^[\p{L}'][ \p{L}'-]*[\p{L}]$/u.test(user.first_name)) {
+            var findUserResponse, updateUser, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.userService.findById(user_id)];
+                    case 1:
+                        findUserResponse = _a.sent();
+                        if (typeof findUserResponse.data !== 'object') {
+                            return [2 /*return*/, findUserResponse];
+                        }
+                        updateUser = __assign(__assign({}, findUserResponse.data), user);
+                        if (!/^[\p{L}'][ \p{L}'-]*[\p{L}]$/u.test(updateUser.first_name)) {
                             return [2 /*return*/, { statusCode: 422, data: 'Please input a valid first name' }];
                         }
-                        if (!/^[\p{L}'][ \p{L}'-]*[\p{L}]$/u.test(user.last_name)) {
+                        if (!/^[\p{L}'][ \p{L}'-]*[\p{L}]$/u.test(updateUser.last_name)) {
                             return [2 /*return*/, { statusCode: 422, data: 'Please input a valid last name' }];
                         }
-                        if (!/^(1|2)$/.test(String(user.gender_id))) {
+                        if (!/^(1|2)$/.test(String(updateUser.gender_id))) {
                             return [2 /*return*/, { statusCode: 422, data: 'Please select a valid gender' }];
                         }
-                        if (!(user.country_id > 0 && user.country_id <= 250)) {
+                        if (!(updateUser.country_id > 0 && updateUser.country_id <= 250)) {
                             return [2 /*return*/, { statusCode: 422, data: 'Please select a valid country' }];
                         }
-                        if (user.branch_id && !(user.branch_id > 0 && user.branch_id <= 2)) {
+                        if (updateUser.branch_id &&
+                            !(updateUser.branch_id > 0 && updateUser.branch_id <= 2)) {
                             return [2 /*return*/, { statusCode: 422, data: 'Please select a valid branch' }];
                         }
-                        return [4 /*yield*/, this.userService.findOne({
-                                phone: user.phone,
-                                email: user.email,
-                            }, true)];
-                    case 1:
-                        _a = _b.sent(), statusCode = _a.statusCode, data = _a.data;
-                        if (statusCode === 500) {
-                            return [2 /*return*/, { statusCode: statusCode, data: data }];
-                        }
-                        if (typeof data !== 'object') {
-                            return [2 /*return*/, {
-                                    statusCode: 404,
-                                    data: "Unable to find user with email address: " + user.email,
-                                }];
-                        }
-                        return [4 /*yield*/, this.userService.update(user_id, data)];
+                        return [4 /*yield*/, this.userService.update(user_id, updateUser)];
                     case 2:
-                        result = _b.sent();
+                        result = _a.sent();
                         return [2 /*return*/, result];
                 }
             });
@@ -229,23 +223,27 @@ var AuthService = /** @class */ (function () {
         }
     };
     // eslint-disable-next-line class-methods-use-this
-    AuthService.prototype.getUserFromJWT = function (token) {
+    AuthService.prototype.findUserByToken = function (header) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, email, user_id, data, error_1;
+            var token, _a, email, user_id, data, error_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 2, , 3]);
+                        if (!(header && header.split(' ')[0] === 'Bearer')) {
+                            return [2 /*return*/, null];
+                        }
+                        token = header.split(' ')[1];
                         _a = jwt.verify(token, config_1.PRIVATE_KEY, {
                             algorithms: 'RS256',
                         }).data, email = _a.email, user_id = _a.user_id;
                         return [4 /*yield*/, this.userService.findOne({ user_id: user_id, email: email }, false, true)];
                     case 1:
                         data = (_b.sent()).data;
-                        return [2 /*return*/, data];
+                        return [2 /*return*/, typeof data === 'object' ? new User_1.User(data) : null];
                     case 2:
                         error_1 = _b.sent();
-                        return [2 /*return*/, error_1.message];
+                        return [2 /*return*/, null];
                     case 3: return [2 /*return*/];
                 }
             });

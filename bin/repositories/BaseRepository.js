@@ -55,17 +55,18 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BaseRepository = void 0;
 var class_validator_1 = require("class-validator");
-// import {PoolClient, Pool} from 'pg'
 var database_1 = require("../loaders/database");
 var BaseRepository = /** @class */ (function () {
     function BaseRepository(_a) {
@@ -73,7 +74,7 @@ var BaseRepository = /** @class */ (function () {
         // this.pool = pool
         this.tx = undefined;
         this.idColumn = idColumn || tableName.replace(/(es|s)$/, '_id');
-        this.columns = __spreadArrays(columns, ['created_at', 'updated_at']);
+        this.columns = __spreadArray(__spreadArray([], columns, true), ['created_at', 'updated_at'], false);
         this.tableName = tableName;
         this.hasA = hasA || [];
         this.ignore = ignore || [];
@@ -96,11 +97,11 @@ var BaseRepository = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         this.model.assign = model;
-                        return [4 /*yield*/, class_validator_1.validate(this.model)];
+                        return [4 /*yield*/, (0, class_validator_1.validate)(this.model)];
                     case 1:
                         errors = _c.sent();
                         if (errors.length > 0) {
-                            errs = errors.reduce(function (result, error) { return __spreadArrays(result, Object.values(error.constraints)); }, []);
+                            errs = errors.reduce(function (result, error) { return __spreadArray(__spreadArray([], result, true), Object.values(error.constraints), true); }, []);
                             return [2 /*return*/, errs];
                         }
                         _a = this.generateInsertQueryParts(model, id), columns = _a.columns, placeholders = _a.placeholders, values = _a.values;
@@ -135,11 +136,11 @@ var BaseRepository = /** @class */ (function () {
                     case 1:
                         item = _d.sent();
                         this.model.assign = __assign(__assign({}, item), model);
-                        return [4 /*yield*/, class_validator_1.validate(this.model)];
+                        return [4 /*yield*/, (0, class_validator_1.validate)(this.model)];
                     case 2:
                         errors = _d.sent();
                         if (errors.length > 0) {
-                            errs = errors.reduce(function (result, error) { return __spreadArrays(result, Object.values(error.constraints)); }, []);
+                            errs = errors.reduce(function (result, error) { return __spreadArray(__spreadArray([], result, true), Object.values(error.constraints), true); }, []);
                             return [2 /*return*/, errs];
                         }
                         if (!item) return [3 /*break*/, 7];
@@ -147,11 +148,11 @@ var BaseRepository = /** @class */ (function () {
                         query = "UPDATE " + this.tableName + " SET " + columns + " WHERE " +
                             (this.idColumn + " = $" + (values.length + 1) + " RETURNING *");
                         if (!this.tx) return [3 /*break*/, 4];
-                        return [4 /*yield*/, this.tx.one(query, __spreadArrays(values, [id]))];
+                        return [4 /*yield*/, this.tx.one(query, __spreadArray(__spreadArray([], values, true), [id], false))];
                     case 3:
                         _b = _d.sent();
                         return [3 /*break*/, 6];
-                    case 4: return [4 /*yield*/, database_1.db.one(query, __spreadArrays(values, [id]))];
+                    case 4: return [4 /*yield*/, database_1.db.one(query, __spreadArray(__spreadArray([], values, true), [id], false))];
                     case 5:
                         _b = _d.sent();
                         _d.label = 6;
@@ -181,11 +182,11 @@ var BaseRepository = /** @class */ (function () {
                     case 4:
                         item = _a;
                         this.model.assign = item ? __assign(__assign({}, item), model) : model;
-                        return [4 /*yield*/, class_validator_1.validate(this.model)];
+                        return [4 /*yield*/, (0, class_validator_1.validate)(this.model)];
                     case 5:
                         errors = _b.sent();
                         if (errors.length > 0) {
-                            errs = errors.reduce(function (result, error) { return __spreadArrays(result, Object.values(error.constraints)); }, []);
+                            errs = errors.reduce(function (result, error) { return __spreadArray(__spreadArray([], result, true), Object.values(error.constraints), true); }, []);
                             return [2 /*return*/, errs];
                         }
                         if (!item) return [3 /*break*/, 7];
@@ -293,20 +294,9 @@ var BaseRepository = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         columns = this.getColumns();
-                        return [4 /*yield*/, database_1.db.one("SELECT " + columns + " FROM " + this.tableName + " WHERE " + this.idColumn + " = $1", [id])
-                            // const {rowCount, rows} = await this.pool.query<Q>(
-                            //   `SELECT ${columns} FROM ${this.tableName} WHERE ${this.idColumn} = $1`,
-                            //   [id],
-                            // )
-                            // if (rowCount) return rows[0]
-                        ];
+                        return [4 /*yield*/, database_1.db.one("SELECT " + columns + " FROM " + (this.viewName || this.tableName) + " WHERE " + this.idColumn + " = $1", [id])];
                     case 1:
                         result = _a.sent();
-                        // const {rowCount, rows} = await this.pool.query<Q>(
-                        //   `SELECT ${columns} FROM ${this.tableName} WHERE ${this.idColumn} = $1`,
-                        //   [id],
-                        // )
-                        // if (rowCount) return rows[0]
                         return [2 /*return*/, result];
                 }
             });
@@ -514,7 +504,7 @@ var BaseRepository = /** @class */ (function () {
                 // eslint-disable-next-line no-bitwise
                 ~_this.ignore.indexOf(col));
         }); // remove id column and date guys
-        var columns = withID ? __spreadArrays([this.idColumn], cols) : cols;
+        var columns = withID ? __spreadArray([this.idColumn], cols, true) : cols;
         return columns.reduce(function (acc, col, index) {
             // eslint-disable-next-line no-param-reassign
             acc.columns += index === columns.length - 1 ? "" + col : col + ", ";
@@ -566,7 +556,7 @@ var BaseRepository = /** @class */ (function () {
     };
     BaseRepository.prototype.getColumns = function () {
         var _this = this;
-        var columns = __spreadArrays([this.idColumn], this.columns).filter(function (col) { return !!_this.viewName || !~_this.ignore.indexOf(col); });
+        var columns = __spreadArray([this.idColumn], this.columns, true).filter(function (col) { return !!_this.viewName || !~_this.ignore.indexOf(col); });
         return columns.reduce(function (acc, col, index) {
             // eslint-disable-next-line no-param-reassign
             acc +=

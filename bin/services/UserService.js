@@ -3,10 +3,12 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -196,7 +198,7 @@ var UserService = /** @class */ (function (_super) {
                                                 return [2 /*return*/, { statusCode: 422, data: result }];
                                             }
                                             if (!model.branch_id) return [3 /*break*/, 6];
-                                            return [4 /*yield*/, this.repository.executeRawQuery('SELECT ubp.user_branch_pivot_id FROM user_branch_pivot WHERE ubp.user_id = $1', [user_id])];
+                                            return [4 /*yield*/, this.repository.executeRawQuery('SELECT ubp.user_branch_pivot_id FROM user_branch_pivot ubp WHERE ubp.user_id = $1', [user_id])];
                                         case 2:
                                             ubp = _a.sent();
                                             if (!Array.isArray(ubp)) return [3 /*break*/, 6];

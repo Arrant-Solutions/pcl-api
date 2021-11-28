@@ -4,8 +4,8 @@
   "description": "a nodejs api for the PCL app and dashboard",
   "main": "index.ts",
   "scripts": {
-    "build-prod": "ENV=production && tsc",
-    "build-staging": "ENV=staging && tsc",
+    "build-prod": "rm -rf bin/* && ENV=production && tsc",
+    "build-staging": "rm -rf bin/* && ENV=staging && tsc",
     "preinstalls": "npm i -g pm2 && pm2 install pm2-logrotate && rm package-lock.json",
     "heroku-deploy": "ENV=production && tsc && git push heroku main",
     "heroku-push": "git push heroku main",

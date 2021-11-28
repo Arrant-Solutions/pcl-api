@@ -40,7 +40,7 @@ exports.getTokenFromHeader = void 0;
 var jwt = require("express-jwt");
 var config_1 = require("../config");
 var services_1 = require("../loaders/services");
-exports.getTokenFromHeader = function (req) { return __awaiter(void 0, void 0, void 0, function () {
+var getTokenFromHeader = function (req) { return __awaiter(void 0, void 0, void 0, function () {
     var decoded, data;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -67,11 +67,12 @@ exports.getTokenFromHeader = function (req) { return __awaiter(void 0, void 0, v
         }
     });
 }); };
+exports.getTokenFromHeader = getTokenFromHeader;
 var path = "^/api/" + config_1.API_VERSION + "/(assets|auth/(register|refreshToken|fetchUser(.*)))(/)?(.*)";
 exports.default = jwt({
     secret: config_1.PUBLIC_KEY,
     userProperty: 'token',
     getToken: exports.getTokenFromHeader,
-    credentialsRequired: false,
+    credentialsRequired: true,
     algorithms: ['RS256'],
 }).unless({ path: new RegExp(path) });

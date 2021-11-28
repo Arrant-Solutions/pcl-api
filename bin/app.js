@@ -38,26 +38,70 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable import/first */
 /* eslint-disable import/newline-after-import */
-var dotenv_1 = require("dotenv");
-dotenv_1.config();
 require("reflect-metadata");
+var dotenv_1 = require("dotenv");
+(0, dotenv_1.config)();
 var routing_controllers_1 = require("routing-controllers");
 var express = require("express");
 var compression = require("compression");
 // import listEndpoints from 'express-list-endpoints'
 var logger_1 = require("./config/logger");
 var morgan_1 = require("./middleware/morgan");
-var isAuth_1 = require("./middleware/isAuth");
+// import isAuth from './middleware/isAuth'
 var config_1 = require("./config");
+var ErrorHandlerMiddleware_1 = require("./middleware/ErrorHandlerMiddleware");
+var services_1 = require("./loaders/services");
 // import {TokenValidationMiddleware} from './middleware/TokenValidationMiddleware'
-var app = routing_controllers_1.createExpressServer({
+// import {authService} from './loaders/services'
+console.log("^(/health|/api/" + config_1.API_VERSION + "/(assets|auth/(register|refreshToken|fetchUser(.*)))(/)?(.*))");
+var app = (0, routing_controllers_1.createExpressServer)({
     authorizationChecker: function (action, roles) { return __awaiter(void 0, void 0, void 0, function () {
+        var regexp, header, user;
         return __generator(this, function (_a) {
-            console.log(action.request.url);
-            console.log(roles);
-            return [2 /*return*/, false];
+            switch (_a.label) {
+                case 0:
+                    console.log("^(/health|/api/" + config_1.API_VERSION + "/(assets|auth/(register|refreshToken|fetchUser(.*)))(/)?(.*))");
+                    console.log(action.request.url);
+                    regexp = new RegExp("^(/health|/api/" + config_1.API_VERSION + "/(assets|auth/(register|refreshToken|fetchUser(.*)))(/)?(.*))");
+                    if (regexp.test(action.request.url)) {
+                        return [2 /*return*/, true];
+                    }
+                    header = action.request.headers.authorization;
+                    return [4 /*yield*/, services_1.authService.findUserByToken(header)];
+                case 1:
+                    user = _a.sent();
+                    if (!user) {
+                        return [2 /*return*/, false];
+                    }
+                    if (user && !roles.length) {
+                        // eslint-disable-next-line no-param-reassign
+                        action.request.user = user;
+                        return [2 /*return*/, true];
+                    }
+                    if (user && roles.find(function (role) { return role === user.user_group.user_group_name; })) {
+                        // eslint-disable-next-line no-param-reassign
+                        action.request.user = user;
+                        return [2 /*return*/, true];
+                    }
+                    return [2 /*return*/, false];
+            }
         });
     }); },
+    currentUserChecker: function (action) { return action.request.user; },
+    cors: true,
+    routePrefix: "/api/" + config_1.API_VERSION,
+    defaultErrorHandler: false,
+    controllers: [
+        __dirname + "/controllers/*." + (config_1.ENV === 'production' ? 'js' : 'ts'),
+    ],
+    interceptors: [
+    // `${__dirname}/interceptors/*.${ENV === 'production' ? 'js' : 'ts'}`,
+    ],
+    middlewares: [
+        // `${__dirname}/handlers/*.${ENV === 'production' ? 'js' : 'ts'}`,
+        // TokenValidationMiddleware,
+        ErrorHandlerMiddleware_1.default,
+    ],
 });
 app.use(morgan_1.default);
 app.get('/logger', function (_, res) {
@@ -71,19 +115,8 @@ app.get('/logger', function (_, res) {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(compression());
-app.use(isAuth_1.default);
-routing_controllers_1.useExpressServer(app, {
-    cors: true,
-    routePrefix: "/api/" + config_1.API_VERSION,
-    controllers: [
-        __dirname + "/controllers/*." + (config_1.ENV === 'production' ? 'js' : 'ts'),
-    ],
-    middlewares: [
-    // `${__dirname}/handlers/*.${ENV === 'production' ? 'js' : 'ts'}`,
-    // TokenValidationMiddleware,
-    ],
-});
+// app.use(isAuth)
 app.use('/health', function (req, res) {
-    return res.send('<html><head></head><body><p style="color: green; font-size: 1.8rem; padding: 20px;">Healthy</p></body></html>');
+    return res.send("<html>\n    <head><title>API Health</title></head>\n    <body>\n      <p style=\"color: green; font-size: 1.8rem; padding: 20px;\">\n      Healthy<br/>Version: " + process.env.UPDATE_CODE + "\n      </p>\n      </body>\n      </html>");
 });
 exports.default = app;
