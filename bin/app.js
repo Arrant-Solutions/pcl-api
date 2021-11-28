@@ -53,15 +53,12 @@ var ErrorHandlerMiddleware_1 = require("./middleware/ErrorHandlerMiddleware");
 var services_1 = require("./loaders/services");
 // import {TokenValidationMiddleware} from './middleware/TokenValidationMiddleware'
 // import {authService} from './loaders/services'
-console.log("^(/health|/api/" + config_1.API_VERSION + "/(assets|auth/(register|refreshToken|fetchUser(.*)))(/)?(.*))");
 var app = (0, routing_controllers_1.createExpressServer)({
     authorizationChecker: function (action, roles) { return __awaiter(void 0, void 0, void 0, function () {
         var regexp, header, user;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log("^(/health|/api/" + config_1.API_VERSION + "/(assets|auth/(register|refreshToken|fetchUser(.*)))(/)?(.*))");
-                    console.log(action.request.url);
                     regexp = new RegExp("^(/health|/api/" + config_1.API_VERSION + "/(assets|auth/(register|refreshToken|fetchUser(.*)))(/)?(.*))");
                     if (regexp.test(action.request.url)) {
                         return [2 /*return*/, true];
