@@ -133,46 +133,38 @@ export default class AuthService {
     user_id: number,
     user: Partial<ICreateUserT>,
   ): Promise<IResponse<ICreateUserT | string[]>> {
-    if (!/^[\p{L}'][ \p{L}'-]*[\p{L}]$/u.test(user.first_name)) {
+    const findUserResponse = await this.userService.findById(user_id)
+
+    if (typeof findUserResponse.data !== 'object') {
+      return findUserResponse
+    }
+
+    const updateUser = {...findUserResponse.data, ...user}
+
+    if (!/^[\p{L}'][ \p{L}'-]*[\p{L}]$/u.test(updateUser.first_name)) {
       return {statusCode: 422, data: 'Please input a valid first name'}
     }
 
-    if (!/^[\p{L}'][ \p{L}'-]*[\p{L}]$/u.test(user.last_name)) {
+    if (!/^[\p{L}'][ \p{L}'-]*[\p{L}]$/u.test(updateUser.last_name)) {
       return {statusCode: 422, data: 'Please input a valid last name'}
     }
 
-    if (!/^(1|2)$/.test(String(user.gender_id))) {
+    if (!/^(1|2)$/.test(String(updateUser.gender_id))) {
       return {statusCode: 422, data: 'Please select a valid gender'}
     }
 
-    if (!(user.country_id > 0 && user.country_id <= 250)) {
+    if (!(updateUser.country_id > 0 && updateUser.country_id <= 250)) {
       return {statusCode: 422, data: 'Please select a valid country'}
     }
 
-    if (user.branch_id && !(user.branch_id > 0 && user.branch_id <= 2)) {
+    if (
+      updateUser.branch_id &&
+      !(updateUser.branch_id > 0 && updateUser.branch_id <= 2)
+    ) {
       return {statusCode: 422, data: 'Please select a valid branch'}
     }
 
-    const {statusCode, data} = await this.userService.findOne(
-      {
-        phone: user.phone,
-        email: user.email,
-      },
-      true,
-    )
-
-    if (statusCode === 500) {
-      return {statusCode, data}
-    }
-
-    if (typeof data !== 'object') {
-      return {
-        statusCode: 404,
-        data: `Unable to find user with email address: ${user.email}`,
-      }
-    }
-
-    const result = await this.userService.update(user_id, data)
+    const result = await this.userService.update(user_id, updateUser)
 
     return result
   }

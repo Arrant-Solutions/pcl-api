@@ -83,12 +83,12 @@ describe('Auth Test Suite', () => {
   it(`it /api/${API_VERSION}/auth/:user_id should update a user with given user_id`, async () => {
     const res = await supertest(app)
       .put(`/api/${API_VERSION}/auth/${auth.user_id}`)
-      // .auth(auth.token, {type: 'bearer'})
+      .auth(auth.token, {type: 'bearer'})
       .send({
         first_name: 'NewFName',
       })
 
-    console.log(res.status, auth, res.body)
+    console.log(res.status, res.body)
     // expect(2).toBe(2)
     expect(res.status).toBe(200)
     // expect(res.body).toBeTruthy()

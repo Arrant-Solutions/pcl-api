@@ -138,7 +138,7 @@ export default class UserService extends BaseService<ICreateUserT> {
           const ubp = await this.repository.executeRawQuery<{
             user_branch_pivot_id: number
           }>(
-            'SELECT ubp.user_branch_pivot_id FROM user_branch_pivot WHERE ubp.user_id = $1',
+            'SELECT ubp.user_branch_pivot_id FROM user_branch_pivot ubp WHERE ubp.user_id = $1',
             [user_id],
           )
 

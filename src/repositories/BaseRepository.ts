@@ -288,16 +288,11 @@ export abstract class BaseRepository<
     const columns = this.getColumns()
 
     const result = await db.one<Q>(
-      `SELECT ${columns} FROM ${this.tableName} WHERE ${this.idColumn} = $1`,
+      `SELECT ${columns} FROM ${this.viewName || this.tableName} WHERE ${
+        this.idColumn
+      } = $1`,
       [id],
     )
-
-    // const {rowCount, rows} = await this.pool.query<Q>(
-    //   `SELECT ${columns} FROM ${this.tableName} WHERE ${this.idColumn} = $1`,
-    //   [id],
-    // )
-
-    // if (rowCount) return rows[0]
 
     return result
   }

@@ -115,7 +115,6 @@ export class UserCreate implements IUserCreate, ICreate<IUserCreate> {
   phone: string
 
   @Validate(IsAppropriateAge)
-  @MaxLength(255)
   date_of_birth: string
 
   @IsInt()
