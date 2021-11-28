@@ -53,6 +53,7 @@ var ErrorHandlerMiddleware_1 = require("./middleware/ErrorHandlerMiddleware");
 var services_1 = require("./loaders/services");
 // import {TokenValidationMiddleware} from './middleware/TokenValidationMiddleware'
 // import {authService} from './loaders/services'
+console.log("^(/health|/api/" + config_1.API_VERSION + "/(assets|auth/(register|refreshToken|fetchUser(.*)))(/)?(.*))");
 var app = (0, routing_controllers_1.createExpressServer)({
     authorizationChecker: function (action, roles) { return __awaiter(void 0, void 0, void 0, function () {
         var regexp, header, user;

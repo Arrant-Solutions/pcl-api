@@ -19,7 +19,9 @@ import ErrorHandlerMiddleware from './middleware/ErrorHandlerMiddleware'
 import {authService} from './loaders/services'
 // import {TokenValidationMiddleware} from './middleware/TokenValidationMiddleware'
 // import {authService} from './loaders/services'
-
+console.log(
+  `^(/health|/api/${API_VERSION}/(assets|auth/(register|refreshToken|fetchUser(.*)))(/)?(.*))`,
+)
 const app = createExpressServer({
   authorizationChecker: async (action: Action, roles: string[]) => {
     console.log(
