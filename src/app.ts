@@ -46,8 +46,6 @@ const app = createExpressServer({
       return true
     }
     return false
-    // console.log(action.request.url, roles)
-    // return true
   },
   currentUserChecker: (action: Action) => action.request.user,
   cors: true,

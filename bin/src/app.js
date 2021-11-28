@@ -80,10 +80,7 @@ var app = (0, routing_controllers_1.createExpressServer)({
                         action.request.user = user;
                         return [2 /*return*/, true];
                     }
-                    return [2 /*return*/, false
-                        // console.log(action.request.url, roles)
-                        // return true
-                    ];
+                    return [2 /*return*/, false];
             }
         });
     }); },
