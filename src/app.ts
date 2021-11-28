@@ -23,7 +23,7 @@ import {authService} from './loaders/services'
 const app = createExpressServer({
   authorizationChecker: async (action: Action, roles: string[]) => {
     const regexp = new RegExp(
-      `^(health|/api/${API_VERSION}/(assets|auth/(register|refreshToken|fetchUser(.*)))(/)?(.*))`,
+      `^(/health|/api/${API_VERSION}/(assets|auth/(register|refreshToken|fetchUser(.*)))(/)?(.*))`,
     )
 
     if (regexp.test(action.request.url)) {
