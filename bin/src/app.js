@@ -59,6 +59,8 @@ var app = (0, routing_controllers_1.createExpressServer)({
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    console.log("^(/health|/api/" + config_1.API_VERSION + "/(assets|auth/(register|refreshToken|fetchUser(.*)))(/)?(.*))");
+                    console.log(action.request.url);
                     regexp = new RegExp("^(/health|/api/" + config_1.API_VERSION + "/(assets|auth/(register|refreshToken|fetchUser(.*)))(/)?(.*))");
                     if (regexp.test(action.request.url)) {
                         return [2 /*return*/, true];
