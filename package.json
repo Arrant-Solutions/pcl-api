@@ -4,7 +4,7 @@
   "description": "a nodejs api for the PCL app and dashboard",
   "main": "index.ts",
   "scripts": {
-    "build-sucker": "tsc",
+    "build-sucker": "ENV=production && tsc",
     "preinstalls": "npm i -g pm2 && pm2 install pm2-logrotate && rm package-lock.json",
     "heroku-deploy": "tsc && git push heroku main",
     "heroku-push": "git push heroku main",
