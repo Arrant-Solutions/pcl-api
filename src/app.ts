@@ -85,7 +85,14 @@ app.use(compression())
 
 app.use('/health', (req: express.Request, res: express.Response) =>
   res.send(
-    '<html><head></head><body><p style="color: green; font-size: 1.8rem; padding: 20px;">Healthy</p></body></html>',
+    `<html>
+    <head><title>API Health</title></head>
+    <body>
+      <p style="color: green; font-size: 1.8rem; padding: 20px;">
+      Healthy<br/>Version: ${process.env.UPDATE_CODE}
+      </p>
+      </body>
+      </html>`,
   ),
 )
 

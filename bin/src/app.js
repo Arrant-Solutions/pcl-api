@@ -117,6 +117,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(compression());
 // app.use(isAuth)
 app.use('/health', function (req, res) {
-    return res.send('<html><head></head><body><p style="color: green; font-size: 1.8rem; padding: 20px;">Healthy</p></body></html>');
+    return res.send("<html>\n    <head><title>API Health</title></head>\n    <body>\n      <p style=\"color: green; font-size: 1.8rem; padding: 20px;\">\n      Healthy<br/>Version: " + process.env.UPDATE_CODE + "\n      </p>\n      </body>\n      </html>");
 });
 exports.default = app;
